@@ -28,6 +28,7 @@ constexpr int API_VERSION_PATCH = 2;
 										constexpr int VERSION_MINOR = MINOR; \
 										constexpr int VERSION_PATCH = PATCH;
 
+#define FUNCALIAS(NEWNAME, OLDNAME) constexpr auto NEWNAME = OLDNAME;
 
 /*
 * VERSIONFUNC(progname) macro for automatic version printing.
