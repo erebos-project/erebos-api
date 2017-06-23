@@ -1,0 +1,8 @@
+*.exe
+*.pyc
+*.m4a
+*.so
+*.dll
+*.o
+*.a
+*.lib
