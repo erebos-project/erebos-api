@@ -28,6 +28,7 @@ constexpr int API_VERSION_PATCH = 2;
 										constexpr int VERSION_MINOR = MINOR; \
 										constexpr int VERSION_PATCH = PATCH;
 
+
 /*
 * VERSIONFUNC(progname) macro for automatic version printing.
 * Prints the program's version (defined with DEFVERSION) if the '-version' or '-v' argument is passed.
@@ -47,7 +48,7 @@ _print_version_exit(#progname, VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);}
 namespace erebos {
 	/*
 	* std::string get_api_version()
-	* Returns erebos's API version as a string in the format MAJOR.MINOR.PATCH .
+	* Returns Erebos' API version as a string in the format MAJOR.MINOR.PATCH .
 	*/
 	inline std::string get_api_version() {
 		std::stringstream ss;
@@ -70,7 +71,7 @@ namespace erebos {
 
 	/*
 	* int hex_to_int(std::string str)
-	* Converts the specified hex-like string to it.
+	* Converts the specified hex-like string to int.
 	*/
 	inline int hex_to_int(std::string str) {
 		int res;
@@ -95,7 +96,7 @@ namespace erebos {
 	* enum SHELL_COLOR
 	* Enumeration used for specifying shell color for 'set_shell_solor'.
 	*/
-	typedef enum {
+	typedef enum : int {
 		SHELL_GREY = 90,
 		SHELL_RED = 91,
 		SHELL_BLACK = 92,
@@ -106,7 +107,7 @@ namespace erebos {
 		SHELL_WHITE = 97,
 		SHELL_GREEN = 32,
 
-		SHELL_BG_GREY = 100,
+		SHELL_BG_GREY = 100, // Background color
 		SHELL_BG_RED = 101,
 		SHELL_BG_BLACK = 102,
 		SHELL_BG_YELLOW = 103,
@@ -142,9 +143,9 @@ namespace erebos {
 	inline void set_shell_color(SHELL_COLOR color) {
 		// No colored fun for Windows users :/
 
-		//#if defined(LINUX) | defined(_WINDOWS_SHELL_COLOR)
+		#if defined(LINUX) | defined(_WINDOWS_SHELL_COLOR)
 		std::cout << std::string("\e[" + var_to_string((int) color) + "m");
-		//#endif
+		#endif
 	}
 
 	/*
@@ -154,11 +155,11 @@ namespace erebos {
 	inline std::string get_color_string(SHELL_COLOR color) {
 		// No colored fun for Windows users :/
 
-		//#if defined(LINUX) | defined(_WINDOWS_SHELL_COLOR)
+		#if defined(LINUX) | defined(_WINDOWS_SHELL_COLOR)
 		return std::string("\e[" + var_to_string((int) color) + "m");
-		//#endif
+		#endif
 	}
-	constexpr auto colstr = get_color_string; // Function alias for easier usage
+	FUNCALIAS(colstr, get_color_string) // Function alias for easier usage
 
 	/*
 	* std::string get_exe_path()
