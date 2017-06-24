@@ -33,7 +33,7 @@ std::string erebos::file::get_path(std::string s) {
 
 std::string erebos::file::get_extension(std::string filename) {
 	size_t index = 0;
-
+	
 	for (int i = 0; i < filename.size(); ++i)
 		if(filename[i] == '.') index = i;
 

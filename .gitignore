@@ -18,6 +18,7 @@
 *.ilk
 lib/
 bin/
+.vs/
 CMakeCache.txt
 CMakeFiles/
 CMakeScripts/
