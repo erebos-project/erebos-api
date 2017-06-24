@@ -1,21 +1,19 @@
 language: cpp
 
-compiler: 
+dist: trusty
+
+compiler:
   - gcc
   - clang
-  
+
 addons:
   apt:
     packages:
       - cmake
 
 script:
-  - mkdir build-gcc
-  - cd build-gcc
-  - cmake .. -DCMAKE_CXX_COMPILER="g++"
+  - mkdir build
+  - cd build
+  - cmake .. -D
   - make -j3
   - cd ..
-  - mkdir build-clang
-  - cd build-clang
-  - cmake .. -DCMAKE_CXX_COMPILER="clang++"
-  - make -j3
