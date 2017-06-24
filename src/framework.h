@@ -169,18 +169,14 @@ namespace erebos {
 	*/
 	std::string get_exe_path();
 
-	/*
-	* std::string get_erebos_folder()
-	* Alias for 'get_exe_path'.
-	*/
-	inline std::string get_erebos_folder() { return get_exe_path(); }
+	FUNCALIAS(get_erebos_folder, get_exe_path);
 
 	/*
 	* std::string get_help_string()
 	* Returns "-help Get help for this program."
 	* Used for unified help information.
 	*/
-	inline std::string get_help_string() {
+	inline const std::string get_help_string() {
 		return "-help Get help for this program.";
 	}
 
