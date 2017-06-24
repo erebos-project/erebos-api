@@ -2,7 +2,6 @@ version: "{build}-{branch}"
 
 platform:
   - Win32
-  - x64
 
 init:
   - cmake --version
