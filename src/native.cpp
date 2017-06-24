@@ -130,7 +130,7 @@ int erebos::proc::get_pid_by_win_name_w(std::string win_name) {
 
 }
 
-
+/*
 bool erebos::proc::kill(int pid) {
 
 	#ifdef WINDOWS
@@ -145,7 +145,7 @@ bool erebos::proc::kill(int pid) {
 	#endif
 
 	return false;
-}
+}*/
 
 /*
 char* erebos::proc::mem_read(unsigned int pid, size_t address, size_t size, size_t* bytecount) {
@@ -230,6 +230,7 @@ int erebos::proc::mem_write(unsigned int pid, size_t address, char* value, size_
 	return 0;
 }
 
+/* Linux build broken
 bool erebos::proc::mem_lock(void* address, size_t size) {
 
 	#ifdef WINDOWS
@@ -260,8 +261,6 @@ bool erebos::proc::mem_unlock(void* address, size_t size) {
 	return false;
 }
 
-
-/*
 int erebos::proc::fork_bg() {
 
 	#ifdef WINDOWS
@@ -310,7 +309,7 @@ bool erebos::is_privileged() {
 	return false;
 }
 
-
+/*
 int erebos::get_random_secure() {
 
 	#ifdef WINDOWS
@@ -338,14 +337,14 @@ int erebos::get_random_secure() {
 
 	// Read 4 bytes from /dev/random using getrandom().
 	int res;
-	syscall(SYS_getrandom, &res, 4, GRND_RANDOM);
+	syscall(SYS_getrandom, &res, 4, GRND_RANDOM); //RANDOMIZATION SYSCALL POTENTIALLY NOT SUPPORTED ON OLDER LINUX VERSION
 
 	return res;
 
 	#endif
 
 	return 0;
-}
+}*/
 
 /*
 bool erebos::file::get_dir_file_list(std::string dir, std::vector<std::string>& output) {
@@ -488,7 +487,7 @@ unsigned long int erebos::file::get_size(std::string filename) {
 	return 0;
 }
 
-
+/* Linux broken
 int erebos::cmd_get_output(const std::string& command, std::string& output) {
 
 	output = "";
@@ -540,8 +539,6 @@ int erebos::cmd_get_output(const std::string& command, std::string& output) {
 	#endif
 
 }
-
-/*
 
 int erebos::cmd(const std::string& command) {
 
