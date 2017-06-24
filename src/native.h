@@ -18,7 +18,7 @@
 /*
 * Operative system defines.
 * WIN32 might not be defined by default on MinGW (but it's defined by build.py).
-*/
+
 #if defined(WIN32) || defined(_win32)
 	#ifndef WINDOWS
 	#define WINDOWS
@@ -36,6 +36,8 @@
 #else
 	#error "Platform not defined."
 #endif
+-----PLANNING FOR REMOVAL------
+*/
 
 namespace erebos {
 

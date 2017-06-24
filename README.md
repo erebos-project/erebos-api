@@ -1,6 +1,23 @@
 # erebos-api
 A C++ library providing cross-platform low-level functions.
 
+### CMake usage
+CMake is very easy and portable build system, so proceed as follows:
+
+*Note: on Windows, CMake will most likely produce a Visual Studio Solution Project,
+but you can avoid this by telling CMake to produce NMAKE Makefiles (if you want to use only the cmdline)*
+
+~~~
+erebos> md ..\erebos-build
+erebos> cd ..\erebos-build
+erebos-build> cmake ..\erebos -G "NMake Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="/EHsc"
+erebos-build> nmake
+~~~
+
+Its done!
+
+Same for GNU/Linux, just omit the -G switch
+
 ### Guidelines for contribution
 * Use tabs, do not use spaces for indentation
 * If you use these utilities frequently please consider contributing

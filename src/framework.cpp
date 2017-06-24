@@ -93,7 +93,7 @@ std::string erebos::file::read(std::string filename) {
 	return ss.str();
 }
 
-
+/*
 data_t erebos::file::read_bin(std::string filename, unsigned long long* bytecount) {
 
 	data_t data;
@@ -117,7 +117,7 @@ data_t erebos::file::read_bin(std::string filename, unsigned long long* bytecoun
 
 	return data;
 }
-
+*/
 
 bool erebos::file::write(std::string filename, std::string data, bool truncate) {
 	std::ofstream stream;
@@ -128,7 +128,7 @@ bool erebos::file::write(std::string filename, std::string data, bool truncate) 
 	return true;
 }
 
-
+/*
 bool erebos::file::write_bin(std::string filename, data_t data, bool truncate) {
 
 	std::string flags = "wb";
@@ -145,7 +145,7 @@ bool erebos::file::write_bin(std::string filename, data_t data, bool truncate) {
 
 	return true;
 }
-
+*/
 
 void erebos::cmd(const std::string& command) {
 	system(command.c_str());
