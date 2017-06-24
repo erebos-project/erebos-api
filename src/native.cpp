@@ -66,7 +66,7 @@ int erebos::proc::get_pid() {
 	return -1;
 }
 
-
+/*
 int erebos::proc::get_pid_by_name(std::string name) {
 
 	#ifdef WINDOWS
@@ -108,7 +108,7 @@ int erebos::proc::get_pid_by_name(std::string name) {
 
 	#endif
 }
-
+*/
 
 int erebos::proc::get_pid_by_win_name_w(std::string win_name) {
 
@@ -147,7 +147,7 @@ bool erebos::proc::kill(int pid) {
 	return false;
 }
 
-
+/*
 char* erebos::proc::mem_read(unsigned int pid, size_t address, size_t size, size_t* bytecount) {
 	#ifdef WINDOWS
 
@@ -191,7 +191,7 @@ char* erebos::proc::mem_read(unsigned int pid, size_t address, size_t size, size
 
 	return nullptr;
 }
-
+*/
 
 int erebos::proc::mem_write(unsigned int pid, size_t address, char* value, size_t size) {
 	#ifdef WINDOWS
@@ -347,7 +347,7 @@ int erebos::get_random_secure() {
 	return 0;
 }
 
-
+/*
 bool erebos::file::get_dir_file_list(std::string dir, std::vector<std::string>& output) {
 
 	#ifdef WINDOWS
@@ -445,7 +445,7 @@ bool erebos::file::get_dir_folder_list(std::string dir, std::vector<std::string>
 
 	#endif
 }
-
+*/
 
 bool erebos::file::get_folder_exists(std::string foldername) {
 	#ifdef WINDOWS

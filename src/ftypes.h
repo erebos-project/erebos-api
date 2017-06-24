@@ -85,7 +85,8 @@ namespace erebos {
 			}
 
 	};
-
+	
+	/*
 	class data_t {
 
 		using data_size = unsigned long int;
@@ -123,7 +124,9 @@ namespace erebos {
 			}
 
 	};
-
+	
+	-----NEEDS REVIEW-----
+	*/
 }
 
 #endif

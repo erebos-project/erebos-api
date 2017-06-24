@@ -152,7 +152,7 @@ namespace erebos {
 	/*
 	* get_color_string(enum SHELL_COLOR color)
 	* Get a string to change shell color.
-	*/
+	
 	inline std::string get_color_string(SHELL_COLOR color) {
 		// No colored fun for Windows users :/
 
@@ -161,7 +161,8 @@ namespace erebos {
 		#endif
 	}
 	FUNCALIAS(colstr, get_color_string) // Function alias for easier usage
-
+	*/
+	
 	/*
 	* std::string get_exe_path()
 	* Returns the path to the program's binary.
@@ -243,8 +244,9 @@ namespace erebos {
 		* data_t read_bin(std::string filename)
 		* Reads the whole file content into a string as binary data.
 		* Returns an empty data_t structure on fail.
-		*/
+		
 		data_t read_bin(std::string filename, unsigned long long* bytecount = nullptr);
+*/
 
 		/*
 		* bool write(std::string filename, std::string data, bool truncate)
@@ -257,9 +259,10 @@ namespace erebos {
 		* bool write_bin(std::string filename, data_t data, bool truncate)
 		* Writes the given data to the specified file as binary data.
 		* Returns 'true' if successful, 'false' otherwise.
-		*/
+	
 		bool write_bin(std::string filename, data_t data, bool truncate = true);
-
+		*/
+		
 		/*
 		* remove(std::string filename)
 		* Deletes the specified file, cross-platform way.
@@ -321,11 +324,11 @@ namespace erebos {
 	/*
 	* ferror(std::string message, int code)
 	* Fatal error: Output an error message (colored in red) and exit with <code> exit value.
-	*/
+	
 	inline void ferror(std::string message, int code) {
 		println(colstr(SHELL_RED), message, colstr(SHELL_RESET));
 		exit(code);
-	}
+	}*/
 
 	/*
 	* log(std::string message)
