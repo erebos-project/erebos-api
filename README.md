@@ -21,6 +21,12 @@ erebos-build> nmake
 
 Its done!
 
+If you want to use MinGW:
+
+~~~
+erebos-build> cmake ..\erebos -G "Unix Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_COMPILER="g++"
+~~~
+
 Same for GNU/Linux, just omit the -G switch
 
 ### Guidelines for contribution
