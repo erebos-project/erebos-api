@@ -1,0 +1,9 @@
+version: {build}
+
+platform:
+  - Win32
+  - x64
+
+init:
+  - cmake --version
+
