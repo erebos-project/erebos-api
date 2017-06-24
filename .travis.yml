@@ -14,6 +14,6 @@ addons:
 script:
   - mkdir build
   - cd build
-  - cmake .. -D
+  - cmake ..
   - make -j3
   - cd ..
