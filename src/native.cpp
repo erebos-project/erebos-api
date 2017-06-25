@@ -46,8 +46,6 @@ std::string erebos::get_exe_path_()  {
 	return std::string(buff);
 
 #endif
-
-	return "";
 }
 
 
@@ -246,7 +244,7 @@ bool erebos::proc::mem_unlock(void* address, size_t size) {
 
 #elif defined(LINUX)
 
-	return !munlock(address, size);
+	//return !munlock(address, size);
 
 #endif
 }
@@ -353,7 +351,7 @@ bool erebos::file::get_dir_file_list(std::string dir, std::vector<std::string>& 
 
 	do {
 
-		if(wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY);
+		if(wfd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL);
 		else
 			output.push_back(std::string(wfd.cFileName));
 
@@ -395,8 +393,8 @@ bool erebos::file::get_dir_folder_list(std::string dir, std::vector<std::string>
 	std::string path = (dir.find("/") == std::string::npos) ? dir : strutil::replace(dir, "/", "\\");
 	path.append("\\*");
 
-	path_ch[path.size()] = '\0';
-	std::copy(path.begin(), path.end(), path_ch);
+	path_ch[(size_t) path.size()] = '\0';
+	std::copy(path.begin(), path.end(), (char*) path_ch);
 
 	hFile = FindFirstFile(path_ch, &wfd);
 	if(hFile == INVALID_HANDLE_VALUE)

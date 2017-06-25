@@ -16,27 +16,6 @@
 #include "stringutils.h"
 
 
-//Operative system defines.
-//WIN32 might not be defined by default on MinGW (but it's defined by build.py).
-
-#if defined(WIN32) || defined(_win32)
-	#ifndef WINDOWS
-	#define WINDOWS
-	#endif
-#elif defined(__linux__) || defined(__gnu_linux__)
-	#ifndef LINUX
-	#define LINUX
-	#endif
-#elif defined(__mac__) || defined(__macintosh__)
-	#ifndef MAC
-	#define MAC
-	//Mac is currently unsupported.
-	#error "Mac not supported."
-	#endif
-#else
-	#error "Platform not defined."
-#endif
-
 namespace erebos {
 
 	/*

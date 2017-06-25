@@ -1,35 +1,40 @@
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](github.com/erebos-project/erebos-api)
-[![GitHub release](https://img.shields.io/github/release/erebos-project/erebos-api.svg)](https://github.com/erebos-project/erebos-api/releases)
-[![Travis](https://img.shields.io/travis/erebos-project/erebos-api.svg)](https://travis-ci.org/erebos-project/erebos-api)
-[![AppVeyor](https://img.shields.io/appveyor/ci/erebos/erebos-api.svg)](https://ci.appveyor.com/project/erebos/erebos-api)
+[![GitHub release](https://img.shields.io/github/release/erebos-project/erebos-api.svg)]()
+[![Travis](https://img.shields.io/travis/erebos-project/erebos-api.svg)]()
+[![AppVeyor](https://img.shields.io/appveyor/ci/erebos/erebos-api.svg)]()
 [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=erebos-framework%3Amaster)](https://sonarcloud.io/dashboard/index/erebos-framework%3Amaster)
 
 # erebos-api
 A C++ library providing cross-platform low-level functions.
 
-### CMake usage
-CMake is very easy and portable build system, so proceed as follows:
+### Compiling from source
+This project uses CMake as build system.
 
-*Note: on Windows, CMake will most likely produce a Visual Studio Solution Project,
-but you can avoid this by telling CMake to produce NMAKE Makefiles (if you want to use only the cmdline)*
+You can setup by command line with the following commands:
+
+* Create a new directory in the same folder as the repo
+* `cd` into the new directory
+* Run the following commands based on your compiler
+
+#### GCC
 
 ~~~
-erebos-api> md ..\erebos-build
-erebos-api> cd ..\erebos-build
-erebos-build> cmake ../erebos-api -G "NMake Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="/EHsc"
-erebos-build> nmake
+erebos-build> cmake ../erebos-api "Unix Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_COMPILER="g++"
+erebos-build> make
 ~~~
 
-It's done!
-
-If you want to use MinGW:
+#### MinGW
 
 ~~~
 erebos-build> cmake ../erebos-api -G "Unix Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_COMPILER="g++"
-make
+erebos-build> make
 ~~~
 
-Same for GNU/Linux, just omit the -G switch
+#### NMake
+~~~
+erebos-build> cmake ../erebos-api -G "NMake Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="/EHsc"
+erebos-build> nmake
+~~~
 
 ### Using the library
 * Create a file named `toolname.cpp`

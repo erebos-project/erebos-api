@@ -110,7 +110,7 @@ namespace erebos {
 				memcpy(this->data, data, size);
 			}
 
-			inline free() {
+			inline void free() {
 				delete[] data;
 				size = 0;
 			}
@@ -118,7 +118,7 @@ namespace erebos {
 			inline ~data_t() {}
 
 
-			inline operator[](data_size index) {
+			inline char operator[](data_size index) {
 				return data[index];
 			}
 
