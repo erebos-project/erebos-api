@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 2.8)
 
 #find_package if required
+configure_file("${PROJECT_SOURCE_DIR}/src/version.h.in" "${PROJECT_SOURCE_DIR}/src/version.h")
 
 set(CMAKE_CXX_STANDARD 11)
 

@@ -15,10 +15,7 @@
 
 #include "native.h"
 #include "ftypes.h"
-
-constexpr int API_VERSION_MAJOR = 0;
-constexpr int API_VERSION_MINOR = 6;
-constexpr int API_VERSION_PATCH = 2;
+#include "version.h"
 
 /*
 * DEFVERSION(int MAJOR, int MINOR, int PATCH) macro for defining a program's version easily.

@@ -1,0 +1,8 @@
+#ifndef VERSION_H
+#define VERSION_H
+
+constexpr int API_VERSION_MAJOR = @API_VERSION_MAJOR@;
+constexpr int API_VERSION_MINOR = @API_VERSION_MINOR@;
+constexpr int API_VERSION_PATCH = @API_VERSION_PATCH@;
+
+#endif //VERSION_H
