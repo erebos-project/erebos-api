@@ -19,6 +19,7 @@ before_script:
    - cmake --version
 
 script:
+   - sonar-scanner
    - mkdir build
    - cd build
    - cmake .. -DCMAKE_BUILD_TYPE="Release"
