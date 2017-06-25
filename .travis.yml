@@ -19,9 +19,9 @@ before_script:
    - cmake --version
 
 script:
-   - sonar-scanner
    - mkdir build
    - cd build
    - cmake .. -DCMAKE_BUILD_TYPE="Release"
-   - make -j3
+   - build-wrapper --out-dir build_wrapper make -j3
+   - sonar-scanner
    - cd ..
