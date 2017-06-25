@@ -19,6 +19,6 @@ before_script:
    - cmake --version
 
 script:
-   - cmake .. -DCMAKE_BUILD_TYPE="Release"
+   - cmake . -DCMAKE_BUILD_TYPE="Release"
    - build-wrapper-linux-x86-64 --out-dir build_wrapper make -j3
    - sonar-scanner
