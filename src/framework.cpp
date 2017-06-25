@@ -221,9 +221,15 @@ void erebos::parse_arg(std::string input, std::vector<std::string>& output) {
 Time erebos::get_localtime() {
 
 	time_t time_now = time(0);
+	tm* now;
 
-	// Consider using localtime_r on GCC and localtime_s on VC
-	tm* now = localtime(&time_now);
+	#if defined(__GNUC__) & defined(LINUX)
+	localtime_r(&time_now, now);
+	#elif defined(_MSC_VER)
+	localtime_s(now, &time_now);
+	#else
+	now = localtime(&time_now);
+	#endif
 
 	Time t;
 	t.year = now->tm_year + 1900;
