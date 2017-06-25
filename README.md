@@ -2,6 +2,7 @@
 [![GitHub release](https://img.shields.io/github/release/erebos-project/erebos-api.svg)]()
 [![Travis](https://img.shields.io/travis/erebos-project/erebos-api.svg)]()
 [![AppVeyor](https://img.shields.io/appveyor/ci/erebos/erebos-api.svg)]()
+[![Quality Gate](https://sonarcloud.io/api/badges/gate?key=erebos-framework%3Amaster)](https://sonarcloud.io/dashboard/index/erebos-framework%3Amaster)
 
 # erebos-api
 A C++ library providing cross-platform low-level functions.
