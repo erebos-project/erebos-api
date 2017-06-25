@@ -57,18 +57,18 @@ namespace erebos {
 		bool kill(int pid);
 
 		/*
-		* char* read_procmem(unsigned int pid, int adress, size_t size = 1, size_t* bytecount)
-		* Reads [size] bytes from the specified address from the specified process and returns it.
-		* If the memory couldn't be read it returns a nullptr.
+		* size_t mem_read(unsigned int pid, size_t address, char* result, size_t size = 1)
+		* Reads [size] bytes from the specified address from the specified process and writes to result.
+		* Returns the amount of bytes read.
 		*/
-		char* mem_read(unsigned int pid, size_t address, size_t size = 1, size_t* bytecount = nullptr);
+		size_t mem_read(unsigned int pid, size_t address, char* result, size_t size = 1);
 
 		/*
-		* int write_procmem(unsigned int pid, int adress, char* value, size_t size = 1)
+		* size_t mem_write(unsigned int pid, size_t address, char* data, size_t size = 1)
 		* This function writes [size] bytes to the specified address from the specified process.
 		* Returns the count of written bytes.
 		*/
-		int mem_write(unsigned int pid, size_t address, char* value, size_t size = 1);
+		size_t mem_write(unsigned int pid, size_t address, char* data, size_t size = 1);
 
 		/*
 		* bool mem_lock(void* address, size_t size)

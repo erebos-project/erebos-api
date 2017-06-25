@@ -98,7 +98,7 @@ namespace erebos {
 
 			inline data_t() : data(nullptr), size(0) {}
 
-			inline data_t(std::string str) : data((char*) str.c_str()), size(str.size()) {
+			inline explicit data_t(std::string str) : data((char*) str.c_str()), size(str.size()) {
 
 				this->data = new char[size];
 				memcpy(this->data, (char*) &str, size);
@@ -114,9 +114,6 @@ namespace erebos {
 				delete[] data;
 				size = 0;
 			}
-
-			inline ~data_t() {}
-
 
 			inline char operator[](data_size index) {
 				return data[index];

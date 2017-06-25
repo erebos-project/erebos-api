@@ -94,7 +94,7 @@ int erebos::proc::get_pid_by_name(std::string name) {
 
 	std::string target_output;
 
-	if(!cmd_get_output("pidof " + win_name, target_output))
+	if(!cmd_get_output("pidof " + name, target_output))
 		return -1;
 
 	if(target_output == "" || target_output.empty())
@@ -140,29 +140,28 @@ bool erebos::proc::kill(int pid) {
 }
 
 
-char* erebos::proc::mem_read(unsigned int pid, size_t address, size_t size, size_t* bytecount) {
+size_t erebos::proc::mem_read(unsigned int pid, size_t address, char* result, size_t size) {
 
 #ifdef WINDOWS
 
 	HANDLE process_handle;
-	char* result = new char[size];
 
 	process_handle = OpenProcess(PROCESS_VM_READ, FALSE, pid);
 	if(!process_handle)
 		return '\0';
 
-	*bytecount = ReadProcessMemory(process_handle, (LPVOID) address,
+	size_t bytecount = ReadProcessMemory(process_handle, (LPVOID) address,
 								 result, (SIZE_T) size, (PDWORD) &bytecount);
 
 	CloseHandle(process_handle);
 
-	return result;
+	return bytecount;
 
 #elif defined(LINUX)
 
 	char* result = new char[size];
 
-	/*iovec local;
+	iovec local;
 	iovec remote;
 
 	local.iov_base = result;
@@ -171,21 +170,13 @@ char* erebos::proc::mem_read(unsigned int pid, size_t address, size_t size, size
 	remote.iov_base = (void*) address;
 	remote.iov_len = size;
 
-	size_t res = process_vm_readv(pid, &local, 1, &remote, 1, 0);
-
-	if(bytecount)
-		*bytecount = res;
-
-	if(res == 0)
-		return nullptr;
-
-	return result;*/
+	return process_vm_readv(pid, &local, 1, &remote, 1, 0);
 
 #endif
 }
 
 
-int erebos::proc::mem_write(unsigned int pid, size_t address, char* value, size_t size) {
+size_t erebos::proc::mem_write(unsigned int pid, size_t address, char* value, size_t size) {
 
 #ifdef WINDOWS
 
