@@ -1,7 +1,7 @@
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](github.com/erebos-project/erebos-api)
-[![GitHub release](https://img.shields.io/github/release/erebos-project/erebos-api.svg)]()
-[![Travis](https://img.shields.io/travis/erebos-project/erebos-api.svg)]()
-[![AppVeyor](https://img.shields.io/appveyor/ci/erebos/erebos-api.svg)]()
+[![GitHub release](https://img.shields.io/github/release/erebos-project/erebos-api.svg)](https://github.com/erebos-project/erebos-api/releases)
+[![Travis](https://img.shields.io/travis/erebos-project/erebos-api.svg)](https://travis-ci.org/erebos-project/erebos-api)
+[![AppVeyor](https://img.shields.io/appveyor/ci/erebos/erebos-api.svg)](https://ci.appveyor.com/project/erebos/erebos-api)
 [![Quality Gate](https://sonarcloud.io/api/badges/gate?key=erebos-framework%3Amaster)](https://sonarcloud.io/dashboard/index/erebos-framework%3Amaster)
 
 # erebos-api
