@@ -15,9 +15,9 @@
 
 #include "stringutils.h"
 
-/*
-* Operative system defines.
-* WIN32 might not be defined by default on MinGW (but it's defined by build.py).
+
+//Operative system defines.
+//WIN32 might not be defined by default on MinGW (but it's defined by build.py).
 
 #if defined(WIN32) || defined(_win32)
 	#ifndef WINDOWS
@@ -36,8 +36,6 @@
 #else
 	#error "Platform not defined."
 #endif
------PLANNING FOR REMOVAL------
-*/
 
 namespace erebos {
 
@@ -163,9 +161,6 @@ namespace erebos {
 	* Puts into output the entire command output result.
 	*/
 	int cmd_get_output(const std::string& command, std::string& output);
-
-
-	//int cmd(const std::string& command);
 
 	/*
 	#ifdef LINUX

@@ -43,7 +43,7 @@ constexpr int API_VERSION_PATCH = 2;
 *
 */
 #define VERSIONFUNC(progname) if(args.contains_s("-version")) { \
-_print_version_exit(#progname, VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);}
+_print_version_exit(progname, VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);}
 
 
 namespace erebos {
@@ -76,7 +76,8 @@ namespace erebos {
 	*/
 	inline int hex_to_int(std::string str) {
 		int res;
-		std::stringstream(str) >> std::hex >> res;
+		std::stringstream ss(str);
+		ss >> std::hex >> res;
 		return res;
 	}
 
@@ -142,26 +143,25 @@ namespace erebos {
 	* Change the shell's character color using escape codes.
 	*/
 	inline void set_shell_color(SHELL_COLOR color) {
-		// No colored fun for Windows users :/
 
-		#if defined(LINUX) | defined(_WINDOWS_SHELL_COLOR)
+#if defined(LINUX) | defined(_WINDOWS_SHELL_COLOR)
 		std::cout << std::string("\e[" + var_to_string((int) color) + "m");
-		#endif
+#endif
+
 	}
 
 	/*
 	* get_color_string(enum SHELL_COLOR color)
 	* Get a string to change shell color.
-	
-	inline std::string get_color_string(SHELL_COLOR color) {
-		// No colored fun for Windows users :/
-
-		#if defined(LINUX) | defined(_WINDOWS_SHELL_COLOR)
-		return std::string("\e[" + var_to_string((int) color) + "m");
-		#endif
-	}
-	FUNCALIAS(colstr, get_color_string) // Function alias for easier usage
 	*/
+	inline std::string get_color_string(SHELL_COLOR color) {
+
+#if defined(LINUX) | defined(_WINDOWS_SHELL_COLOR)
+		return std::string("\e[" + var_to_string((int) color) + "m");
+#endif
+	}
+
+	FUNCALIAS(colstr, get_color_string) // Function alias for easier usage
 	
 	/*
 	* std::string get_exe_path()
@@ -244,9 +244,9 @@ namespace erebos {
 		* data_t read_bin(std::string filename)
 		* Reads the whole file content into a string as binary data.
 		* Returns an empty data_t structure on fail.
-		
+		*/
 		data_t read_bin(std::string filename, unsigned long long* bytecount = nullptr);
-*/
+
 
 		/*
 		* bool write(std::string filename, std::string data, bool truncate)
@@ -259,9 +259,8 @@ namespace erebos {
 		* bool write_bin(std::string filename, data_t data, bool truncate)
 		* Writes the given data to the specified file as binary data.
 		* Returns 'true' if successful, 'false' otherwise.
-	
-		bool write_bin(std::string filename, data_t data, bool truncate = true);
 		*/
+		bool write_bin(std::string filename, data_t data, bool truncate = true);
 		
 		/*
 		* remove(std::string filename)
@@ -289,7 +288,10 @@ namespace erebos {
 	* print(...)
 	* Prints the data.
 	*/
-	inline void print() {}
+	inline void print() {
+		// Template last expansion.
+	}
+
 	template<typename first, typename ... many>
 	inline void print(first arg, const many&... rest) {
 		std::cout << arg;
@@ -314,7 +316,10 @@ namespace erebos {
 	* printerr(...)
 	* Prints the data to err.
 	*/
-	inline void printerr() {}
+	inline void printerr() {
+		// Template last expansion.
+	}
+	
 	template<typename first, typename ... many>
 	inline void printerr(first arg, const many&... rest) {
 		std::cerr << arg;
@@ -324,11 +329,11 @@ namespace erebos {
 	/*
 	* ferror(std::string message, int code)
 	* Fatal error: Output an error message (colored in red) and exit with <code> exit value.
-	
+	*/
 	inline void ferror(std::string message, int code) {
 		println(colstr(SHELL_RED), message, colstr(SHELL_RESET));
 		exit(code);
-	}*/
+	}
 
 	/*
 	* log(std::string message)
@@ -351,7 +356,7 @@ namespace erebos {
 	* Prints Erebos' logo.
 	*/
 	inline void print_logo() {
-		println("");
+		println(""); // TO-DO
 	}
 
 	/*
@@ -399,8 +404,6 @@ namespace erebos {
 		size_t hour;
 		size_t min;
 		size_t sec;
-
-		//std::string format(std::string format);
 
 	};
 
