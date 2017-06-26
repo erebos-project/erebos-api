@@ -63,7 +63,7 @@ DEFVERSION(1, 0, 0)
 
 int main(int argc, char* argv[]) {
 	Args args(argc, argv);
-	VERSIONFUNC(toolname);
+	VERSIONFUNC("toolname");
 
 	// Code
 

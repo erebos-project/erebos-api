@@ -28,6 +28,9 @@
 	constexpr int VERSION_MINOR = MINOR; \
 	constexpr int VERSION_PATCH = PATCH
 
+/*
+* FUNCALIAS(NEWNAME, OLDNAME) macro for defining an alias for a function.
+*/
 #define FUNCALIAS(NEWNAME, OLDNAME) \
 	constexpr auto NEWNAME = OLDNAME
 
@@ -162,15 +165,13 @@ namespace erebos {
 	}
 
 	FUNCALIAS(color, get_color_string); // Function alias for easier usage
-	
+
 	/*
 	* std::string get_exe_path()
 	* Returns the path to the program's binary.
 	* Uses the lower level 'get_exe_path_' from 'native.h'.
 	*/
 	std::string get_exe_path();
-
-	FUNCALIAS(get_erebos_folder, get_exe_path);
 
 	/*
 	* std::string get_help_string()
@@ -261,7 +262,7 @@ namespace erebos {
 		* Returns 'true' if successful, 'false' otherwise.
 		*/
 		bool write_bin(const std::string& filename,const data_t& data, bool truncate = true);
-		
+
 		/*
 		* remove(std::string filename)
 		* Deletes the specified file, cross-platform way.
@@ -319,7 +320,7 @@ namespace erebos {
 	inline void printerr() {
 		// Template last expansion.
 	}
-	
+
 	template<typename First, typename ... Many>
 	inline void printerr(const First& arg, const Many&... rest) {
 		std::cerr << arg;

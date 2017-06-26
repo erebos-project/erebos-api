@@ -18,7 +18,6 @@ namespace erebos {
 	class Args {
 		private:
 			std::vector<std::string> list;
-			size_t argsize;
 
 		public:
 			inline Args(const int& argc, char const *argv[]) {
@@ -28,8 +27,6 @@ namespace erebos {
 
 				if(argc)
 					parse_arg(s, list);
-
-				argsize = list.size();
 			}
 
 			/*
@@ -37,7 +34,7 @@ namespace erebos {
 			* Get the nth argument.
 			*/
 			inline std::string operator[](const size_t& i) const {
-				if(list.size() > i) 
+				if(list.size() > i)
 					return list[i];
 
 				return "";
@@ -48,8 +45,8 @@ namespace erebos {
 			* Checks whether the argument list contains the specified string.
 			*/
 			inline bool contains(const std::string& s) const {
-				for (size_t i = 0; i < argsize; ++i)
-					if(list[i] == s) 
+				for (size_t i = 0; i < list.size(); ++i)
+					if(list[i] == s)
 						return true;
 				return false;
 			}
@@ -60,22 +57,22 @@ namespace erebos {
 			*/
 			inline bool contains_s(const std::string& s) const {
 
-				for (size_t i = 0; i < argsize; ++i)
-					if(list[i] == s) 
+				for (size_t i = 0; i < list.size(); ++i)
+					if(list[i] == s)
 						return true;
 
 				std::string s2;
 				s2 += s[0];
 				s2 += s[1];
 
-				for (size_t i = 0; i < argsize; ++i)
-					if(list[i] == s2) 
+				for (size_t i = 0; i < list.size(); ++i)
+					if(list[i] == s2)
 						return true;
 
 				std::string s3 = std::string("-") + s;
 
-				for (size_t i = 0; i < argsize; ++i)
-					if(list[i] == s3) 
+				for (size_t i = 0; i < list.size(); ++i)
+					if(list[i] == s3)
 						return true;
 
 
@@ -87,10 +84,10 @@ namespace erebos {
 			* Get the argument list size.
 			*/
 			inline size_t size() const {
-				return argsize;
+				return list.size();
 			}
 	};
-	
+
 	class data_t {
 		using data_size = unsigned long;
 
@@ -100,8 +97,8 @@ namespace erebos {
 
 			inline data_t() : data(nullptr), size(0) {}
 
-			inline explicit data_t(const std::string& str) 
-					: data(const_cast<char*>(str.c_str())), 
+			inline explicit data_t(const std::string& str)
+					: data(const_cast<char*>(str.c_str())),
 						size(static_cast<data_size>(str.size())) {
 				this->data = new char[size];
 				memcpy(this->data, str.c_str(), size);
@@ -111,12 +108,13 @@ namespace erebos {
 				free();
 			}
 
-			inline data_t(const char* data, const data_size& size) 
+			inline data_t(const char* data, const data_size& size)
 					: size(size) {
 				this->data = new char[size];
 				memcpy(this->data, data, size);
 			}
-			
+
+			// Makes a deep copy of the passed data_t structure.
 			inline data_t(const data_t& prev) {
 				this->data = new char[prev.size];
 				this->size = prev.size;
