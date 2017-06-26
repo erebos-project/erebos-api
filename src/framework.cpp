@@ -77,7 +77,7 @@ bool erebos::file::get_exists(const std::string& filename) {
 	FILE* file = nullptr;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
-	fopen(filename.c_str(), "r");
+	file = fopen(filename.c_str(), "r");
 #elif defined(_COMPILER_MSVC)
 	errno_t err = fopen_s(&file, filename.c_str(), "r");
 	if (err != 0)
@@ -120,7 +120,7 @@ data_t erebos::file::read_bin(const std::string& filename, unsigned long long* b
 	FILE* fd = nullptr;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
-	fopen(filename.c_str(), "rb");
+	fd = fopen(filename.c_str(), "rb");
 #elif defined(_COMPILER_MSVC)
 	errno_t err = fopen_s(&fd, filename.c_str(), "rb");
 	if (err != 0)
@@ -163,7 +163,7 @@ bool erebos::file::write_bin(const std::string& filename, const data_t& data, bo
 	FILE* fd = nullptr;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
-	fopen(filename.c_str(), flags.c_str());
+	fd = fopen(filename.c_str(), flags.c_str());
 #elif defined(_COMPILER_MSVC)
 	errno_t err = fopen_s(&fd, filename.c_str(), flags.c_str());
 	if (err != 0)

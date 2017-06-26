@@ -123,12 +123,12 @@ size_t erebos::proc::mem_read(const std::uint32_t pid, const size_t& address, ch
 
 	return bytecount;
 #elif defined(LINUX)
-	char* result = new char[size];
+	char* res = new char[size];
 
 	iovec local;
 	iovec remote;
 
-	local.iov_base = result;
+	local.iov_base = res;
 	local.iov_len = size;
 
 	remote.iov_base = (void*) address;
