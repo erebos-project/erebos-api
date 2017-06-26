@@ -12,33 +12,40 @@
 namespace erebos {
 
 	namespace strutil {
+		using ssize = long long;
 
 		/*
 		* bool is_literal(char c)
 		* Checks wether the given character is a letter.
 		*/
-		inline bool is_literal(char c) { return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); }
+		inline bool is_literal(const char& c) { 
+			return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); 
+		}
 
 		/*
 		* bool is_numeral(char c)
 		* Checks wether the given character is a number.
 		*/
-		inline bool is_numeral(char c) { return (c >= '0') && (c <= '9'); }
+		inline bool is_numeral(const char& c) { 
+			return (c >= '0') && (c <= '9'); 
+		}
 
 		/*
 		* bool is_quotes(char c)
 		* Checks wether the given character is a quote (" or ')
 		*/
-		inline bool is_quotes(char c) { return c == '\'' || c == '\"'; }
+		inline bool is_quotes(const char& c) { 
+			return c == '\'' || c == '\"'; 
+		}
 
 		/*
 		* bool is_literal(std::string s)
 		* Checks wether the whole string is made of letters.
 		*/
-		inline bool is_literal(std::string s) {
-			const size_t size = s.size();
-			for (int i = 0; i < size; ++i) {
-				if(!is_literal(s[i])) return false;
+		inline bool is_literal(const std::string& s) {
+			for (size_t i = 0; i < s.size(); ++i) {
+				if(!is_literal(s[i])) 
+					return false;
 			}
 			return true;
 		}
@@ -47,10 +54,10 @@ namespace erebos {
 		* bool is_numeral(std::string)
 		* Checks wether the given string is made of numbers.
 		*/
-		inline bool is_numeral(std::string s) {
-			const size_t size = s.size();
-			for (int i = 0; i < size; ++i) {
-				if(!is_numeral(s[i])) return false;
+		inline bool is_numeral(const std::string& s) {
+			for (size_t i = 0; i < s.size(); ++i) {
+				if(!is_numeral(s[i])) 
+					return false;
 			}
 			return true;
 		}
@@ -59,11 +66,12 @@ namespace erebos {
 		* std::string string_cut(std::string s, size_t offset, size_t size)
 		* Returns a part of the specified string, starting from [offset] and reading [size] characters.
 		*/
-		inline std::string cut(std::string s, size_t offset, size_t size = 0) {
+		inline std::string cut(const std::string& s, const size_t& offset, size_t size = 0) {
 			std::string res;
-			if(!size) size = s.size() - offset;
+			if(!size) 
+				size = s.size() - offset;
 			res.reserve(size);
-			for (int i = offset; i < offset + size; ++i)
+			for (size_t i = offset; i < offset + size; ++i)
 				res += s[i];
 			return res;
 		}
@@ -72,13 +80,12 @@ namespace erebos {
 		* string string_replace(std::string target, std::string replaced, std::string replacement, size_t n = 0)
 		* Replace 'n' occurrences of 'replaced' with 'replacement'.
 		*/
-		inline std::string replace(std::string target, std::string replaced,
-										  std::string replacement, size_t n = 0) {
-			size_t position = -1;
-			int replaced_length  = replaced.length();
-			int iterations = 0;
+		inline void replace(std::string& target, const std::string& replaced,
+										  const std::string& replacement, const size_t& n = 0) {
+			size_t replaced_length  = replaced.length(), 
+				position = 0, iterations = 0;
 
-			while ((position = target.find(replaced, position + 1)) != std::string::npos) {
+			while ((position = target.find(replaced, position) + 1) != std::string::npos) {
 				target.replace(position, replaced_length, replacement);
 				iterations++;
 
@@ -86,17 +93,17 @@ namespace erebos {
 					break;
 			}
 
-		  return target;
+		  //return target;
 		}
 
 		/*
 		* std::string string_replace(std::string target, std::string replaced, std::string replacement, size_t n = 0)
 		* Replace 'n' occurrences of 'replaced' with 'replacement'.
 		*/
-		inline std::string replace(std::string target, char replaced, char replacement, size_t n = 0) {
-
-			int iterations = 0;
-			for (int i = 0; i < target.size(); ++i) {
+		inline void replace(std::string& target, const char& replaced, 
+							const char& replacement, const size_t& n = 0) {
+			size_t iterations = 0;
+			for (size_t i = 0; i < target.size(); ++i) {
 				if(target[i] == replaced) {
 					target[i] = replacement;
 					iterations++;
@@ -105,7 +112,6 @@ namespace erebos {
 				if(iterations == n && n > 0)
 					break;
 			}
-			return target;
 		}
 
 		/*
@@ -113,9 +119,9 @@ namespace erebos {
 		* Ruby style string multiplication.
 		* Returns a string made of [times] times [s].
 		*/
-		inline std::string mul(std::string s, size_t times) {
+		inline std::string mul(const std::string& s, const size_t& times) {
 			std::string res;
-			for (int i = 0; i < times; ++i)
+			for (size_t i = 0; i < times; ++i)
 				res += s;
 			return res;
 		}
@@ -135,24 +141,22 @@ namespace erebos {
 		}
 
 		/*
-		* size_t string_index_of(const char array[], char element)
+		* size_t index_of(const char array[], char element)
 		* Return the index of the element into the array or -1 if doesn't exist
 		*/
-		inline size_t index_of(const char array[], char element) {
-
-			for(size_t i = 0; i < (std::string(array).size()); i++)
-				if(array[i] == element) return i;
+		inline ssize index_of(const char array[], const char& element) {
+			for(ssize i = 0; i < static_cast<ssize>(std::string(array).size()); i++)
+				if(array[i] == element) 
+					return i;
 
 			return -1;
 		}
 
-		inline std::string encode_base64(std::string str,
+		inline std::string encode_base64(const std::string& str,
 			const char* characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") {
 
 			std::string string_encoded = "";
-			size_t str_len = str.length();
-
-			int index = 0;
+			size_t str_len = str.length(), index = 0;
 
 			while(index < str_len) {
 
@@ -182,42 +186,44 @@ namespace erebos {
 				padding = 1;
 
 			string_encoded.erase(string_encoded.end() - padding, string_encoded.end());
-			while(padding--) string_encoded += "=";
+			while(padding--) 
+				string_encoded += "=";
 
 			return string_encoded;
 		}
 
-		inline std::string decode_base64(std::string str,
+		inline std::string decode_base64(const std::string& str,
 			const char* characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") {
 
-			uint8_t ch1_code, ch2_code, ch3_code;
+			ssize ch1_code, ch2_code, ch3_code;
 			std::string string_decoded = "";
 
-			size_t str_len = str.length();
-			int index = 0;
+			size_t str_len = str.length(), index = 0;
 
 			while(index < str_len) {
 
-				uint8_t index1_temp = index_of(characters, str[index+0]);
-				uint8_t index2_temp = index_of(characters, str[index+1]);
-				uint8_t index3_temp = index_of(characters, str[index+2]);
-				uint8_t index4_temp = index_of(characters, str[index+3]);
+				ssize index1_temp = index_of(characters, str[index+0]);
+				ssize index2_temp = index_of(characters, str[index+1]);
+				ssize index3_temp = index_of(characters, str[index+2]);
+				ssize index4_temp = index_of(characters, str[index+3]);
 
 				// First char code
 				ch1_code =  index1_temp << 0x02  |  index2_temp >> 0x04;
-				string_decoded += ch1_code;
+				string_decoded += static_cast<char>(ch1_code);
 
-				if(index3_temp & 0x80) break; // char not found (ie. '=', or not valid char)
+				if(index3_temp & 0x80) 
+					break; // char not found (ie. '=', or not valid char)
 
 				// Second char code
 				ch2_code = (index2_temp << 0x04) | (index3_temp >> 0x02);
-				string_decoded += ch2_code;
+				string_decoded += static_cast<char>(ch2_code);
 
-				if(index4_temp & 0x80) break;
+				if(index4_temp & 0x80) 
+					break;
 
 				// Third char code
 				ch3_code = (index3_temp & 0x03) << 0x06 | (index4_temp & 0x3F);
-				string_decoded += ch3_code;
+				string_decoded += static_cast<char>(ch3_code);
 
 				index += 4;
 			}
@@ -230,8 +236,7 @@ namespace erebos {
 		* std::string string_encode_base64_mime(std::string str)
 		* Converts the given ASCII string to Base64 MIME.
 		*/
-		inline std::string encode_base64_mime(std::string str) {
-
+		inline std::string encode_base64_mime(const std::string& str) {
 			return encode_base64(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
 		}
 
@@ -239,8 +244,7 @@ namespace erebos {
 		* std::string string_decode_base64_mime(std::string str)
 		* Converts the given Base64 MIME string to ASCII.
 		*/
-		inline std::string decode_base64_mime(std::string str) {
-
+		inline std::string decode_base64_mime(const std::string& str) {
 			return decode_base64(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
 		}
 
@@ -248,19 +252,17 @@ namespace erebos {
 		* std::string string_encode_base64_url(std::string str)
 		* Converts the given ASCII string to Base64 URL.
 		*/
-		inline std::string encode_base64_url(std::string str) {
-
+		inline std::string encode_base64_url(const std::string& str) {
 			return encode_base64(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_");
 		}
 
 		/*
 		* std::string string_decode_base64_url(std::string str)
 		* Converts the given Base64 URL string to ASCII.
-		*/
-		inline std::string decode_base64_url(std::string str) {
-
+		wtfit
+		inline std::string decode_base64_url(const std::string& str) {
 			return decode_base64_url("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_");
-		}
+		}*/
 	}
 }
 

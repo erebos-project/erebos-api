@@ -3,8 +3,8 @@
 
 #if defined(WINDOWS)
 #define WINDOWS_LEAN_AND_MEAN 1
-#include "windows.h"
-#include "wincrypt.h"
+#include <windows.h>
+#include <wincrypt.h>
 #include <tlhelp32.h>
 #elif defined(LINUX)
 #include <unistd.h>
@@ -20,18 +20,14 @@
 #endif
 
 std::string erebos::get_exe_path_()  {
-
 #ifdef WINDOWS
-
 	char buff[256];
 	int res = GetModuleFileName(NULL, buff, 256);
 	if(!res)
 		return "";
 
-	return std::string(buff);
-
+	return buff;
 #elif defined(LINUX)
-
 	char buff[512];
 	std::stringstream ss;
 	ss << "/proc/" << proc::get_pid() << "/exe";
@@ -42,34 +38,25 @@ std::string erebos::get_exe_path_()  {
 
 	buff[size] = '\0';
 
-
-	return std::string(buff);
-
+	return buff;
 #endif
 }
 
 
 int erebos::proc::get_pid() {
-
 #ifdef WINDOWS
-
 	return GetCurrentProcessId();
-
 #elif defined(LINUX)
-
 	return getpid();
-
 #endif
 }
 
 
-int erebos::proc::get_pid_by_name(std::string name) {
-
+int erebos::proc::get_pid_by_name(const std::string& name) {
+	int pid = -1;
 #ifdef WINDOWS
-
 	PROCESSENTRY32 processEntry;
 	HANDLE handle;
-	int pid = -1;
 
 	handle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
 
@@ -77,39 +64,25 @@ int erebos::proc::get_pid_by_name(std::string name) {
 	processEntry.dwSize = sizeof(PROCESSENTRY32);
 
 	if(Process32First(handle, &processEntry)) {
-
 		do {
-
 			if (!lstrcmp(processEntry.szExeFile, name.c_str())) {
 				pid = processEntry.th32ProcessID;
 				break;
 			}
-
 		} while (Process32Next(handle, &processEntry));
 	}
 
 	CloseHandle(handle);
-
 #elif defined(LINUX)
 
-	std::string target_output;
-
-	if(!cmd_get_output("pidof " + name, target_output))
-		return -1;
-
-	if(target_output == "" || target_output.empty())
-		return -1;
-
-	return std::stoi(target_output);
-
+	/* REPLACING */
 #endif
+	return pid;
 }
 
-int erebos::proc::get_pid_by_win_name_w(std::string win_name) {
-
+int erebos::proc::get_pid_by_win_name_w(const std::string& win_name) {
 #ifdef WINDOWS
-
-	HWND win_handle = FindWindow(nullptr, (LPCSTR) win_name.c_str());
+	HWND win_handle = FindWindow(nullptr, static_cast<LPCSTR>(win_name.c_str()));
 
 	if(!win_handle)
 		return -1;
@@ -118,47 +91,38 @@ int erebos::proc::get_pid_by_win_name_w(std::string win_name) {
 	GetWindowThreadProcessId(win_handle, &process_id);
 
 	return process_id;
-
 #else
 	return -1;
 #endif
 }
 
 
-bool erebos::proc::kill(int pid) {
-
+bool erebos::proc::kill(const int& pid) {
 #ifdef WINDOWS
-
-	HANDLE proc_handle = OpenProcess(PROCESS_TERMINATE, (BOOL) false, pid);
+	HANDLE proc_handle = OpenProcess(PROCESS_TERMINATE, false, pid);
 	return !TerminateProcess(proc_handle, 0);
-
 #elif defined(LINUX)
-
 	//return !kill(pid, SIGKILL);
-
 #endif
 }
 
 
-size_t erebos::proc::mem_read(unsigned int pid, size_t address, char* result, size_t size) {
-
+size_t erebos::proc::mem_read(const std::uint32_t pid, const size_t& address, char* result, const size_t& size ) {
 #ifdef WINDOWS
-
 	HANDLE process_handle;
 
 	process_handle = OpenProcess(PROCESS_VM_READ, FALSE, pid);
 	if(!process_handle)
 		return '\0';
 
+	//VC:C4700 WARNING
 	size_t bytecount = ReadProcessMemory(process_handle, (LPVOID) address,
-								 result, (SIZE_T) size, (PDWORD) &bytecount);
+								 result, size, (SIZE_T*) &bytecount);
 
 	CloseHandle(process_handle);
 
 	return bytecount;
-
 #elif defined(LINUX)
-
 	char* result = new char[size];
 
 	iovec local;
@@ -171,32 +135,27 @@ size_t erebos::proc::mem_read(unsigned int pid, size_t address, char* result, si
 	remote.iov_len = size;
 
 	return process_vm_readv(pid, &local, 1, &remote, 1, 0);
-
 #endif
 }
 
 
-size_t erebos::proc::mem_write(unsigned int pid, size_t address, char* value, size_t size) {
-
+size_t erebos::proc::mem_write(const std::uint32_t& pid, const size_t& address, char* data, const size_t& size) {
 #ifdef WINDOWS
-
 	HANDLE process_handle;
 	SIZE_T bytecount = 0;
-	LPCVOID value_ptr = (LPCVOID) &value;
+	LPCVOID value_ptr = static_cast<LPCVOID>(&data);
 
 	process_handle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
 	if(!process_handle)
 		return 0;
 
-	bool res = WriteProcessMemory(process_handle, (LPVOID) address,
-								  value_ptr, (SIZE_T) size, &bytecount);
+	WriteProcessMemory(process_handle, (LPVOID) address,
+					   value_ptr, static_cast<SIZE_T>(size), &bytecount);
 
 	CloseHandle(process_handle);
 
 	return bytecount;
-
 #elif defined(LINUX)
-
 	/*iovec local;
 	iovec remote;
 
@@ -214,29 +173,19 @@ size_t erebos::proc::mem_write(unsigned int pid, size_t address, char* value, si
 }
 
 
-bool erebos::proc::mem_lock(void* address, size_t size) {
-
+bool erebos::proc::mem_lock(void* address, const size_t& size) {
 #ifdef WINDOWS
-
 	return VirtualLock(address, size);
-
 #elif defined(LINUX)
-
 	//return !mlock(address, size);
-
 #endif
 }
 
-bool erebos::proc::mem_unlock(void* address, size_t size) {
-
+bool erebos::proc::mem_unlock(void* address, const size_t& size) {
 #ifdef WINDOWS
-
 	return VirtualUnlock(address, size);
-
 #elif defined(LINUX)
-
 	//return !munlock(address, size);
-
 #endif
 }
 
@@ -273,64 +222,53 @@ bool erebos::proc::mem_unlock(void* address, size_t size) {
 
 
 bool erebos::is_privileged() {
-
 #ifdef WINDOWS
-
 	return false; // TO-DO
-
 #elif defined(LINUX)
-
 	return geteuid() == 0;
-
 #endif
 }
 
 
 int erebos::get_random_secure() {
-
 #ifdef WINDOWS
-
 	HCRYPTPROV hProv;
 	BYTE dbData[4];
 
 	int res;
 
 	if(CryptAcquireContext(&hProv, NULL, NULL, PROV_RSA_FULL, 0)) {
-
 		if(CryptGenRandom(hProv, 4, dbData))
 			res = (dbData[0] << 24) | (dbData[1] << 16) | (dbData[2] << 8) | dbData[3];
 		else
 			return 0;
-	} else {
+	} else
 		return 0;
-	}
 
 	CryptReleaseContext(hProv, 0);
 
 	return res;
-
 #elif defined(LINUX)
-
 	// Read 4 bytes from /dev/random using getrandom().
 	//int res;
 	//syscall(SYS_getrandom, &res, 4, GRND_RANDOM); //RANDOMIZATION SYSCALL POTENTIALLY NOT SUPPORTED ON OLDER LINUX VERSION
 
 	//return res;
-
 #endif
 }
 
 
-bool erebos::file::get_dir_file_list(std::string dir, std::vector<std::string>& output) {
-
+bool erebos::file::get_dir_file_list(const std::string& dir, std::vector<std::string>& output) {
 #ifdef WINDOWS
-
 	HANDLE           hFile;
 	WIN32_FIND_DATA  wfd;
-	TCHAR            path_ch[dir.size() + 2];
+	TCHAR            path_ch[_MAX_PATH];
 
 	// Compatible with Unix and Windows string format
-	std::string path = (dir.find("/") == std::string::npos) ? dir : strutil::replace(dir, "/", "\\");
+	std::string path = dir;
+	if (path.find("/") != std::string::npos)
+		strutil::replace(path, '/', '\\');
+
 	path.append("\\*");
 
 	path_ch[path.size()] = '\0';
@@ -341,11 +279,8 @@ bool erebos::file::get_dir_file_list(std::string dir, std::vector<std::string>& 
 		return false;
 
 	do {
-
-		if(wfd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL);
-		else
-			output.push_back(std::string(wfd.cFileName));
-
+		if(!(wfd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL))
+			output.emplace_back(wfd.cFileName);
 	} while(FindNextFile(hFile, &wfd) != 0);
 
 	return true;
@@ -361,7 +296,7 @@ bool erebos::file::get_dir_file_list(std::string dir, std::vector<std::string>& 
 	while(dir_entry = readdir(handle))
 		// _DIRENT_HAVE_D_TYPE may be used to check for 'd_type' availability.
 		if(dir_entry->d_type == DT_REG)
-			output.push_back(std::string(dir_entry->d_name));
+			output.emplace_back(dir_entry->d_name);
 
 	if(closedir(handle))
 		return false;
@@ -372,30 +307,32 @@ bool erebos::file::get_dir_file_list(std::string dir, std::vector<std::string>& 
 }
 
 
-bool erebos::file::get_dir_folder_list(std::string dir, std::vector<std::string>& output) {
-
+bool erebos::file::get_dir_folder_list(const std::string& dir, std::vector<std::string>& output) {
 #ifdef WINDOWS
+	//const int npath = dir.size() + 2;
 
 	HANDLE           hFile;
 	WIN32_FIND_DATA  wfd;
-	TCHAR            path_ch[dir.size() + 2];
+	TCHAR            path_ch[_MAX_PATH];
 
 	// Compatible with Unix and Windows string format
-	std::string path = (dir.find("/") == std::string::npos) ? dir : strutil::replace(dir, "/", "\\");
+	std::string path = dir;
+
+	if (path.find("/") != std::string::npos)
+		strutil::replace(path, '/', '\\');
+
 	path.append("\\*");
 
-	path_ch[(size_t) path.size()] = '\0';
-	std::copy(path.begin(), path.end(), (char*) path_ch);
+	path_ch[path.size()] = '\0';
+	std::copy(path.begin(), path.end(), static_cast<char*>(path_ch));
 
 	hFile = FindFirstFile(path_ch, &wfd);
 	if(hFile == INVALID_HANDLE_VALUE)
 		return false;
 
 	do {
-
 		if(wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-			output.push_back(std::string(wfd.cFileName));
-
+			output.emplace_back(wfd.cFileName);
 	} while(FindNextFile(hFile, &wfd) != 0);
 
 #elif defined(LINUX)
@@ -409,66 +346,52 @@ bool erebos::file::get_dir_folder_list(std::string dir, std::vector<std::string>
 	while(dir_entry = readdir(handle))
 		// _DIRENT_HAVE_D_TYPE may be used to check for 'd_type' availability.
 		if(dir_entry->d_type == DT_DIR)
-			output.push_back(std::string(dir_entry->d_name));
+			output.emplace_back(dir_entry->d_name);
 
 	if(closedir(handle))
 		return false;
-
-	return true;
-
 #endif
+	return true;
 }
 
 
-bool erebos::file::get_folder_exists(std::string foldername) {
+bool erebos::file::get_folder_exists(const std::string& foldername) {
 #ifdef WINDOWS
-
 	DWORD dwAttributes = GetFileAttributes(foldername.c_str());
 
 	return dwAttributes != INVALID_FILE_ATTRIBUTES &&
 			(dwAttributes &  FILE_ATTRIBUTE_DIRECTORY);
-
 #elif defined(LINUX)
-
 	return !access(foldername.c_str(), F_OK);
-
 #endif
 }
 
 
-unsigned long int erebos::file::get_size(std::string filename) {
-
+unsigned long int erebos::file::get_size(const std::string& filename) {
 #ifdef WINDOWS
-
 	HANDLE fd = CreateFile(filename.c_str(), GENERIC_READ, 0, nullptr,
 							OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
-	unsigned long int size;
+	DWORD size;
 	GetFileSize(fd, &size);
 
 	CloseHandle(fd);
 
 	return size;
-
 #elif defined(LINUX)
-
 	struct stat st;
 	stat(filename.c_str(), &st);
 	return st.st_size;
-
 #endif
 }
 
+/*
 int erebos::cmd_get_output(const std::string& command, std::string& output) {
-
 	output = "";
-
 #ifdef WINDOWS
-
 	return 0; // TO-DO
-
 #elif defined(LINUX)
-
+	/* REPLACEMENT WITH fork() and exec*()
 	command += " 2>&1";
 	char long_buffer[8192];
 
@@ -485,18 +408,7 @@ int erebos::cmd_get_output(const std::string& command, std::string& output) {
 		return -2;
 
 	return 0;
-
+	
+	return -1;
 #endif
-}
-
-
-/*
-void erebos::cmd_get_fd(const std::string& command, FILE* cmd_fd, const bool& should_check_fd) {
-
-	FILE* fd = popen(command.c_str(), "r");
-
-	if(should_check_fd)
-		if(!fd)
-			pclose(fd);
-}
-*/
+}*/

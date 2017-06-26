@@ -7,11 +7,12 @@
 
 #ifndef _FRAMEWORK_H
 #define _FRAMEWORK_H
+
 #include <iostream>
+
+#if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
 #include <cstdlib>
-#include <fstream>
-#include <sstream>
-#include <ctime>
+#endif
 
 #include "native.h"
 #include "ftypes.h"
@@ -21,11 +22,13 @@
 * DEFVERSION(int MAJOR, int MINOR, int PATCH) macro for defining a program's version easily.
 * e.g. DEFVERSION(1, 0, 0)
 */
-#define DEFVERSION(MAJOR, MINOR, PATCH) constexpr int VERSION_MAJOR = MAJOR; \
-										constexpr int VERSION_MINOR = MINOR; \
-										constexpr int VERSION_PATCH = PATCH;
+#define DEFVERSION(MAJOR, MINOR, PATCH) \
+	constexpr int VERSION_MAJOR = MAJOR; \
+	constexpr int VERSION_MINOR = MINOR; \
+	constexpr int VERSION_PATCH = PATCH
 
-#define FUNCALIAS(NEWNAME, OLDNAME) constexpr auto NEWNAME = OLDNAME;
+#define FUNCALIAS(NEWNAME, OLDNAME) \
+	constexpr auto NEWNAME = OLDNAME
 
 /*
 * VERSIONFUNC(progname) macro for automatic version printing.
@@ -39,8 +42,9 @@
 * program v1.0.0
 *
 */
-#define VERSIONFUNC(progname) if(args.contains_s("-version")) { \
-_print_version_exit(progname, VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH);}
+#define VERSIONFUNC(progname) \
+	if(args.contains_s("-version")) \
+		_print_version_exit(progname, VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH)
 
 
 namespace erebos {
@@ -58,8 +62,8 @@ namespace erebos {
 	* _print_version_exit(const char* progname, int VERSION_MAJOR, int VERSION_MINOR, int VERSION_PATCH)
 	* Function used by VERSIONFUNC, not intended for other uses.
 	*/
-	inline void _print_version_exit(const char* progname, int VERSION_MAJOR,
-									int VERSION_MINOR, int VERSION_PATCH) {
+	inline void _print_version_exit(const char* progname, const int& VERSION_MAJOR,
+									const int& VERSION_MINOR, const int& VERSION_PATCH) {
 		std::stringstream ss;
 		ss << "\n" << progname << "\t" << "v" << VERSION_MAJOR << "."
 		<< VERSION_MINOR << "." << VERSION_PATCH;
@@ -71,7 +75,7 @@ namespace erebos {
 	* int hex_to_int(std::string str)
 	* Converts the specified hex-like string to int.
 	*/
-	inline int hex_to_int(std::string str) {
+	inline int hex_to_int(const std::string& str) {
 		int res;
 		std::stringstream ss(str);
 		ss >> std::hex >> res;
@@ -85,7 +89,7 @@ namespace erebos {
 	* This is a simple template to replace it.
 	*/
 	template<typename T>
-	inline std::string var_to_string(T var) {
+	inline std::string var_to_string(const T& var) {
 		std::stringstream ss;
 		ss << var;
 		return ss.str();
@@ -95,7 +99,7 @@ namespace erebos {
 	* enum SHELL_COLOR
 	* Enumeration used for specifying shell color for 'set_shell_solor'.
 	*/
-	typedef enum : int {
+	enum shell_color : int {
 		SHELL_GREY = 90,
 		SHELL_RED = 91,
 		SHELL_BLACK = 92,
@@ -133,32 +137,31 @@ namespace erebos {
 		SHELL_RESET = 0,
 		SHELL_UNDERLINE = 4,
 		SHELL_SELECTED = 7
-	} SHELL_COLOR;
+	};
 
 	/*
 	* set_shell_color(enum SHELL_COLOR color)
 	* Change the shell's character color using escape codes.
 	*/
-	inline void set_shell_color(SHELL_COLOR color) {
-
-#if defined(LINUX) | defined(_WINDOWS_SHELL_COLOR)
+	inline void set_shell_color(const shell_color& color) {
+#if defined(LINUX) || defined(_WINDOWS_SHELL_COLOR)
 		std::cout << std::string("\033[" + var_to_string((int) color) + "m");
 #endif
-
 	}
 
 	/*
 	* get_color_string(enum SHELL_COLOR color)
 	* Get a string to change shell color.
 	*/
-	inline std::string get_color_string(SHELL_COLOR color) {
-
-#if defined(LINUX) | defined(_WINDOWS_SHELL_COLOR)
+	inline std::string get_color_string(const shell_color& color) {
+#if defined(LINUX) || defined(_WINDOWS_SHELL_COLOR)
 		return std::string("\033[" + var_to_string((int) color) + "m");
+#else
+		return "";
 #endif
 	}
 
-	FUNCALIAS(colstr, get_color_string) // Function alias for easier usage
+	FUNCALIAS(colstr, get_color_string); // Function alias for easier usage
 	
 	/*
 	* std::string get_exe_path()
@@ -184,7 +187,7 @@ namespace erebos {
 	* e.g. to_unix_slash("\folder\folder\file.dat")
 	* returns: "/folder/folder/file.dat"
 	*/
-	std::string to_unix_slash(std::string s);
+	std::string to_unix_slash(const std::string& s);
 
 	namespace file {
 
@@ -207,7 +210,7 @@ namespace erebos {
 		* e.g. get_file_extension("file.tar.bz")
 		* returns: "bz"
 		*/
-		std::string get_extension(std::string filename);
+		std::string get_extension(const std::string& filename);
 
 		/*
 		* std::string get_file_name(std::string filename)
@@ -229,20 +232,20 @@ namespace erebos {
 		* bool get_exists(std::string filename)
 		* Checks wether the file exists or not.
 		*/
-		bool get_exists(std::string filename);
+		bool get_exists(const std::string& filename);
 
 		/*
 		* std::string read(std::string filename)
 		* Reads the whole content of a file into a string.
 		*/
-		std::string read(std::string filename);
+		std::string read(const std::string& filename);
 
 		/*
 		* data_t read_bin(std::string filename)
 		* Reads the whole file content into a string as binary data.
 		* Returns an empty data_t structure on fail.
 		*/
-		data_t read_bin(std::string filename, unsigned long long* bytecount = nullptr);
+		data_t read_bin(const std::string& filename, unsigned long long* bytecount = nullptr);
 
 
 		/*
@@ -250,20 +253,20 @@ namespace erebos {
 		* Writes the given string to the specified file.
 		* Returns 'true' if the file could be written, false otherwise.
 		*/
-		bool write(std::string filename, std::string data, bool truncate = true);
+		bool write(const std::string& filename, const std::string& data, bool truncate = true);
 
 		/*
 		* bool write_bin(std::string filename, data_t data, bool truncate)
 		* Writes the given data to the specified file as binary data.
 		* Returns 'true' if successful, 'false' otherwise.
 		*/
-		bool write_bin(std::string filename, data_t data, bool truncate = true);
+		bool write_bin(const std::string& filename,const data_t& data, bool truncate = true);
 		
 		/*
 		* remove(std::string filename)
 		* Deletes the specified file, cross-platform way.
 		*/
-		bool remove(std::string filename);
+		bool remove(const std::string& filename);
 
 	}
 
@@ -275,8 +278,8 @@ namespace erebos {
 		std::cout << std::endl;
 	}
 
-	template<typename first, typename ... many>
-	inline void println(first arg, const many&... rest) {
+	template<typename First, typename ... Many>
+	inline void println(const First& arg, const Many&... rest) {
 		std::cout << arg;
 		println(rest...);
 	}
@@ -289,8 +292,8 @@ namespace erebos {
 		// Template last expansion.
 	}
 
-	template<typename first, typename ... many>
-	inline void print(first arg, const many&... rest) {
+	template<typename First, typename ... Many>
+	inline void print(const First& arg, const Many&... rest) {
 		std::cout << arg;
 		print(rest...);
 	}
@@ -303,8 +306,8 @@ namespace erebos {
 		std::cerr << std::endl;
 	}
 
-	template<typename first, typename ... many>
-	inline void printerrln(first arg, const many&... rest) {
+	template<typename First, typename ... Many>
+	inline void printerrln(const First& arg, const Many&... rest) {
 		std::cerr << arg;
 		println(rest...);
 	}
@@ -317,8 +320,8 @@ namespace erebos {
 		// Template last expansion.
 	}
 	
-	template<typename first, typename ... many>
-	inline void printerr(first arg, const many&... rest) {
+	template<typename First, typename ... Many>
+	inline void printerr(const First& arg, const Many&... rest) {
 		std::cerr << arg;
 		print(rest...);
 	}
@@ -341,8 +344,8 @@ namespace erebos {
 		set_shell_color(SHELL_RESET);
 	}
 
-	template<typename first, typename ... many>
-	inline void log(first arg, const many&... rest) {
+	template<typename First, typename ... Many>
+	inline void log(const First& arg, const Many&... rest) {
 		set_shell_color(SHELL_YELLOW);
 		std::cout << arg;
 		log(rest...);
@@ -370,7 +373,7 @@ namespace erebos {
 	* > Are you ok? [Y/n]  Y
 	* returns: true
 	*/
-	bool get_prompt_answer(std::string message, std::string error_message = "", bool exit_on_error = true);
+	bool get_prompt_answer(const std::string& message, const std::string& error_message = "", bool exit_on_error = true);
 
 	/*
 	* std::string parse_quotes(std::string s)
@@ -378,13 +381,13 @@ namespace erebos {
 	* e.g. parse_quotes("'Hello man!'")
 	* returns: "Hello man!"
 	*/
-	std::string parse_quotes(std::string s);
+	std::string parse_quotes(const std::string& s);
 
 	/*
 	* parse_arg(std::string input, std::vector<std::string>& output)
 	* Splits the given string based on spaces and quotes and appends each string to 'output'.
 	*/
-	void parse_arg(std::string input, std::vector<std::string>& output);
+	void parse_arg(const std::string& input, std::vector<std::string>& output);
 
 	/*
 	 * cmd(const std::string& command)

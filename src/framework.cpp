@@ -1,5 +1,7 @@
-#include "framework.h"
+#include <ctime>
+#include <fstream>
 
+#include "framework.h"
 
 using namespace erebos;
 using namespace strutil;
@@ -23,7 +25,7 @@ std::string erebos::file::get_path(std::string s) {
 	}
 	std::string buff;
 	if(index) {
-		for(int i = 0; i < index; ++i)
+		for(size_t i = 0; i < index; ++i)
 			buff += s[i];
 		return buff;
 	}
@@ -31,10 +33,10 @@ std::string erebos::file::get_path(std::string s) {
 }
 
 
-std::string erebos::file::get_extension(std::string filename) {
+std::string erebos::file::get_extension(const std::string& filename) {
 	size_t index = 0;
 	
-	for (int i = 0; i < filename.size(); ++i)
+	for (size_t i = 0; i < filename.size(); ++i)
 		if(filename[i] == '.') index = i;
 
 	return strutil::cut(filename, index + 1, filename.size() - index - 1);
@@ -46,7 +48,7 @@ std::string erebos::file::get_name(std::string s) {
 
 	s = to_unix_slash(s);
 
-	for (int i = 0; i < s.size(); ++i)
+	for (size_t i = 0; i < s.size(); ++i)
 		if(s[i] == '/') index = i;
 
 	if(index)
@@ -59,8 +61,8 @@ std::string erebos::file::get_basename(std::string filename) {
 
 	filename = file::get_name(filename);
 
-	int index = 0;
-	for (int i = 0; i < filename.size(); ++i)
+	size_t index = 0;
+	for (size_t i = 0; i < filename.size(); ++i)
 		if(filename[i] == '.')
 			index = i;
 
@@ -71,8 +73,17 @@ std::string erebos::file::get_basename(std::string filename) {
 }
 
 
-bool erebos::file::get_exists(std::string filename) {
-	FILE* file = fopen(filename.c_str(), "r");
+bool erebos::file::get_exists(const std::string& filename) {
+	FILE* file = nullptr;
+
+#if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
+	fopen(filename.c_str(), "r");
+#elif defined(_COMPILER_MSVC)
+	errno_t err = fopen_s(&file, filename.c_str(), "r");
+	if (err != 0)
+		return false;
+#endif
+
 	if (file) {
 		fclose(file);
 		return true;
@@ -80,28 +91,41 @@ bool erebos::file::get_exists(std::string filename) {
 		return false;
 }
 
-std::string erebos::to_unix_slash(std::string s) {
-	return strutil::replace(s, '\\', '/');
+std::string erebos::to_unix_slash(const std::string& s) {
+	std::string from = s;
+	strutil::replace(from, '\\', '/');
+	return from;
 }
 
 
-std::string erebos::file::read(std::string filename) {
+std::string erebos::file::read(const std::string& filename) {
 	std::ifstream stream(filename);
-	if(!stream.is_open()) return "";
+
+	if(!stream.is_open()) 
+		return "";
+
 	std::stringstream ss;
 	ss << stream.rdbuf();
+
 	return ss.str();
 }
 
 
-data_t erebos::file::read_bin(std::string filename, unsigned long long* bytecount) {
-
+data_t erebos::file::read_bin(const std::string& filename, unsigned long long* bytecount) {
 	data_t data;
 
 	data.size = file::get_size(filename);
 	data.data = new char[data.size];
 
-	FILE* fd = fopen(filename.c_str(), "rb");
+	FILE* fd = nullptr;
+
+#if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
+	fopen(filename.c_str(), "rb");
+#elif defined(_COMPILER_MSVC)
+	errno_t err = fopen_s(&fd, filename.c_str(), "rb");
+	if (err != 0)
+		return data; //handle this situation
+#endif
 
 	if(!fd) {
 		delete[] data.data;
@@ -119,7 +143,7 @@ data_t erebos::file::read_bin(std::string filename, unsigned long long* bytecoun
 }
 
 
-bool erebos::file::write(std::string filename, std::string data, bool truncate) {
+bool erebos::file::write(const std::string& filename, const std::string& data, bool truncate) {
 	std::ofstream stream;
 	if(truncate) stream.open(filename, std::ofstream::trunc);
 	else stream.open(filename);
@@ -129,14 +153,23 @@ bool erebos::file::write(std::string filename, std::string data, bool truncate) 
 }
 
 
-bool erebos::file::write_bin(std::string filename, data_t data, bool truncate) {
+bool erebos::file::write_bin(const std::string& filename, const data_t& data, bool truncate) {
 
 	std::string flags = "wb";
 
 	if(truncate)
 		flags += "+";
 
-	FILE* fd = fopen(filename.c_str(), flags.c_str());
+	FILE* fd = nullptr;
+
+#if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
+	fopen(filename.c_str(), flags.c_str());
+#elif defined(_COMPILER_MSVC)
+	errno_t err = fopen_s(&fd, filename.c_str(), flags.c_str());
+	if (err != 0)
+		return false;
+#endif
+
 	if(!fd)
 		return false;
 
@@ -146,12 +179,12 @@ bool erebos::file::write_bin(std::string filename, data_t data, bool truncate) {
 	return true;
 }
 
-
+//replacement
 void erebos::cmd(const std::string& command) {
 	system(command.c_str());
 }
 
-
+//replacement
 void erebos::term_clear() {
 #ifdef LINUX
 	cmd("clear");
@@ -161,13 +194,13 @@ void erebos::term_clear() {
 }
 
 
-bool erebos::file::remove(std::string filename) {
+bool erebos::file::remove(const std::string& filename) {
 
 	return !std::remove(filename.c_str());
 }
 
 
-bool erebos::get_prompt_answer(std::string message, std::string error_message, bool exit_on_error) {
+bool erebos::get_prompt_answer(const std::string& message, const std::string& error_message, bool exit_on_error) {
 	print(message, " [Y/n]");
 	char res;
 	std::cin >> res;
@@ -177,29 +210,33 @@ bool erebos::get_prompt_answer(std::string message, std::string error_message, b
 		return false;
 	else {
 		println(error_message);
-		if(exit_on_error) exit(-10);
+		if(exit_on_error) 
+			exit(-10);
 		return false;
 	}
 }
 
 
-std::string erebos::parse_quotes(std::string s) {
+std::string erebos::parse_quotes(const std::string& s) {
 	if(s[0] != '\"' && s[0] != '\'') return s;
 	std::string res;
 	const size_t size = s.size();
-	for(int i = 1; i < size; ++i) {
-		if(s[i] != '\"' && s[i] != '\'') res += s[i];
-		else break;
+	for(size_t i = 1; i < size; ++i) {
+		if(s[i] != '\"' && s[i] != '\'') 
+			res += s[i];
+		else 
+			break;
 	}
 	return res;
 }
 
 
-void erebos::parse_arg(std::string input, std::vector<std::string>& output) {
-	for (int i = 0; i < input.size(); ++i) {
+void erebos::parse_arg(const std::string& input, std::vector<std::string>& output) {
+	for (size_t i = 0; i < input.size(); ++i) {
 		std::string curr;
 
-		if(input[i] == '\n' && input[i] == '\0') break;
+		if(input[i] == '\n' && input[i] == '\0') 
+			break;
 
 		if(is_quotes(input[i])) {
 			i++;
@@ -214,22 +251,19 @@ void erebos::parse_arg(std::string input, std::vector<std::string>& output) {
 			}
 		}
 
-		output.push_back(curr);
+		output.emplace_back(curr);
 	}
 }
 
 Time erebos::get_localtime() {
+	std::time_t time_now = std::time(nullptr);
+	std::tm* now = nullptr;
 
-	time_t time_now = time(0);
-	tm* now = nullptr;
-
-	#if defined(__GNUC__) & defined(LINUX)
-	localtime_r(&time_now, now);
-	#elif defined(_MSC_VER)
-	localtime_s(now, &time_now);
-	#else
+#if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
 	now = localtime(&time_now);
-	#endif
+#elif defined(_COMPILER_MSVC)
+	localtime_s(now, &time_now);
+#endif
 
 	Time t;
 	t.year = now->tm_year + 1900;

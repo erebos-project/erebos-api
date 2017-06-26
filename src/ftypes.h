@@ -1,12 +1,13 @@
 #ifndef _FTYPES_H
 #define _FTYPES_H
+
 #include <vector>
 #include <string>
-#include <string.h>
+#include <cstring>
 
 namespace erebos {
 
-	void parse_arg(std::string input, std::vector<std::string>& output);
+	void parse_arg(const std::string& input, std::vector<std::string>& output);
 
 	/*
 	* Args
@@ -15,39 +16,41 @@ namespace erebos {
 	* Commonly declared and used in Erebos as 'args'.
 	*/
 	class Args {
-
 		private:
-
 			std::vector<std::string> list;
+			size_t argsize;
 
 		public:
-
-			inline Args(int argc, char const *argv[]) {
-
+			inline Args(const int& argc, char const *argv[]) {
 				std::string s;
 				for (int i = 0; i < argc; ++i)
 					s += std::string(argv[i]) + ' ';
 
 				if(argc)
 					parse_arg(s, list);
+
+				argsize = list.size();
 			}
 
 			/*
 			* std::string operator[](size_t i)
 			* Get the nth argument.
 			*/
-			inline std::string operator[](size_t i) {
-				if(list.size() > i) return list[i];
+			inline std::string operator[](const size_t& i) {
+				if(list.size() > i) 
+					return list[i];
+
 				return "";
 			}
 
 			/*
 			* bool contains(std::string s)
-			* Checks wether the argument list contains the specified string.
+			* Checks whether the argument list contains the specified string.
 			*/
-			inline bool contains(std::string s) {
-				for (int i = 0; i < list.size(); ++i)
-					if(list[i] == s) return true;
+			inline bool contains(const std::string& s) {
+				for (size_t i = 0; i < argsize; ++i)
+					if(list[i] == s) 
+						return true;
 				return false;
 			}
 
@@ -55,22 +58,25 @@ namespace erebos {
 			* bool contains_s(std::string s)
 			* Checks wether the argument list contains the specified string or its first two characters.
 			*/
-			inline bool contains_s(std::string s) {
+			inline bool contains_s(const std::string& s) {
 
-				for (int i = 0; i < list.size(); ++i)
-					if(list[i] == s) return true;
+				for (size_t i = 0; i < argsize; ++i)
+					if(list[i] == s) 
+						return true;
 
 				std::string s2;
 				s2 += s[0];
 				s2 += s[1];
 
-				for (int i = 0; i < list.size(); ++i)
-					if(list[i] == s2) return true;
+				for (size_t i = 0; i < argsize; ++i)
+					if(list[i] == s2) 
+						return true;
 
 				std::string s3 = std::string("-") + s;
 
-				for (int i = 0; i < list.size(); ++i)
-					if(list[i] == s3) return true;
+				for (size_t i = 0; i < argsize; ++i)
+					if(list[i] == s3) 
+						return true;
 
 
 				return false;
@@ -81,31 +87,28 @@ namespace erebos {
 			* Get the argument list size.
 			*/
 			inline size_t size() {
-				return list.size();
+				return argsize;
 			}
-
 	};
 	
 	class data_t {
-
-		using data_size = unsigned long int;
+		using data_size = unsigned long;
 
 		public:
-
 			char* data;
 			data_size size;
 
-
 			inline data_t() : data(nullptr), size(0) {}
 
-			inline explicit data_t(std::string str) : data((char*) str.c_str()), size(str.size()) {
-
+			inline explicit data_t(const std::string& str) 
+					: data(const_cast<char*>(str.c_str())), 
+						size(static_cast<data_size>(str.size())) {
 				this->data = new char[size];
-				memcpy(this->data, (char*) &str, size);
+				memcpy(this->data, str.c_str(), size);
 			}
 
-			inline data_t(const char* data, data_size size) : size(size) {
-
+			inline data_t(const char* data, const data_size& size) 
+					: size(size) {
 				this->data = new char[size];
 				memcpy(this->data, data, size);
 			}
@@ -115,10 +118,9 @@ namespace erebos {
 				size = 0;
 			}
 
-			inline char operator[](data_size index) {
+			inline char operator[](const data_size& index) {
 				return data[index];
 			}
-
 	};
 
 }
