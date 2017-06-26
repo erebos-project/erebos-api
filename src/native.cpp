@@ -262,8 +262,6 @@ bool erebos::file::get_dir_file_list(const std::string& dir, std::vector<std::st
 
 bool erebos::file::get_dir_folder_list(const std::string& dir, std::vector<std::string>& output) {
 #ifdef WINDOWS
-	//const int npath = dir.size() + 2;
-
 	HANDLE           hFile;
 	WIN32_FIND_DATA  wfd;
 	TCHAR            path_ch[_MAX_PATH];
