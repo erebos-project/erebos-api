@@ -149,7 +149,7 @@ namespace erebos {
 	* Execute a command and get its output.
 	* Returns -1 on error, 0 otherwise.
 	*/
-	//int cmd(const std::string& command, std::string& output);
+	int cmd(const std::string& command, std::string* output);
 
 
 }

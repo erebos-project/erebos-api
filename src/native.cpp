@@ -335,3 +335,38 @@ off_t erebos::file::get_size(const std::string& filename) {
 	return st.st_size;
 #endif
 }
+
+#ifdef WINDOWS
+#define POPEN_F _popen
+#define PCLOSE_F _pclose
+
+#elif defined LINUX
+#define POPEN_F popen
+#define PCLOSE_F pclose
+#endif
+
+int cmd(const std::string& command, std::string* output) {
+
+
+	FILE* fd = POPEN_F(command.c_str(), "r");
+
+	if (!fd)
+		return -1;
+
+	size_t filesize;
+	fseek (fd, 0 , SEEK_END);
+	filesize = ftell (fd);
+	rewind(fd);
+
+	char* buffer = new char[filesize];
+
+	fread(buffer, 1, filesize, fd);
+
+	*output = std::string(buffer);
+
+	delete[] buffer;
+
+	PCLOSE_F(fd);
+
+	return 0;
+}
