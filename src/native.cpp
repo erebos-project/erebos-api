@@ -3,11 +3,17 @@
 
 #if defined(WINDOWS)
 #define WINDOWS_LEAN_AND_MEAN 1
-#define POPEN_F _popen
-#define PCLOSE_F _pclose
 #include <windows.h>
 #include <wincrypt.h>
 #include <tlhelp32.h>
+#if defined(_COMPILER_MSVC)
+#define POPEN_F _popen
+#define PCLOSE_F _pclose
+#elif defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
+#include <cstdio>
+#define POPEN_F popen
+#define PCLOSE_F pclose
+#endif
 #elif defined(LINUX)
 #define POPEN_F popen
 #define PCLOSE_F pclose
@@ -358,27 +364,18 @@ erebos::pipe_result erebos::cmd(const std::string &command, std::string &all, in
 	if(!open_pipe)
 		return pipe_result::PIPE_OPEN_FAILURE;
 
-	size_t len = 0;
-	erebos::strutil::ssize lineres;
-	char* buffer_in = nullptr;
-
 	std::stringstream outstream;
 
-	while((lineres=getline(&buffer_in,&len,open_pipe)) > 0) {
-		outstream << buffer_in;
-		free(buffer_in);
-	}
+	char each_line[BUFSIZ];
+	while (fgets(each_line, BUFSIZ, open_pipe))
+		outstream << each_line;
 
 	all = outstream.str();
 
-	pipe_result ret = pipe_result::PIPE_OK;
-	if(lineres == -1)
-		ret = pipe_result::PIPE_OK_WITH_GETLINE_FAILURE;
-
 	errno = 0;
 	retval = PCLOSE_F(open_pipe);
-	if(retval == -1 && errno != 0)
+	if (retval == -1 && errno != 0)
 		return pipe_result::PIPE_CLOSE_FAILURE;
 
-	return ret;
+	return pipe_result::PIPE_OK;
 }

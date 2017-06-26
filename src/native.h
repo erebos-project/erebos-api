@@ -123,7 +123,6 @@ namespace erebos {
 	 */
 	enum class pipe_result {
 		PIPE_OK,
-		PIPE_OK_WITH_GETLINE_FAILURE,
 		PIPE_OPEN_FAILURE,
 		PIPE_CLOSE_FAILURE
 	};
