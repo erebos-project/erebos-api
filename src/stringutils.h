@@ -82,8 +82,9 @@ namespace erebos {
 		*/
 		inline void replace(std::string& target, const std::string& replaced,
 										  const std::string& replacement, const size_t& n = 0) {
-			size_t replaced_length  = replaced.length(), 
-				position = 0, iterations = 0;
+			const size_t replaced_length = replaced.length();
+			size_t position = 0;
+			size_t iterations = 0;
 
 			while ((position = target.find(replaced, position) + 1) != std::string::npos) {
 				target.replace(position, replaced_length, replacement);
@@ -156,7 +157,9 @@ namespace erebos {
 			const char* characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") {
 
 			std::string string_encoded = "";
-			size_t str_len = str.length(), index = 0;
+
+			const size_t str_len = str.length();
+			size_t index = 0;
 
 			while(index < str_len) {
 
@@ -195,7 +198,10 @@ namespace erebos {
 		inline std::string decode_base64(const std::string& str,
 			const char* characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") {
 
-			ssize ch1_code, ch2_code, ch3_code;
+			ssize ch1_code;
+			ssize ch2_code;
+			ssize ch3_code;
+
 			std::string string_decoded = "";
 
 			size_t str_len = str.length(), index = 0;
@@ -211,15 +217,12 @@ namespace erebos {
 				ch1_code =  index1_temp << 0x02  |  index2_temp >> 0x04;
 				string_decoded += static_cast<char>(ch1_code);
 
-				if(index3_temp & 0x80) 
+				if(index3_temp & 0x80 || index4_temp & 0x80) 
 					break; // char not found (ie. '=', or not valid char)
 
 				// Second char code
 				ch2_code = (index2_temp << 0x04) | (index3_temp >> 0x02);
 				string_decoded += static_cast<char>(ch2_code);
-
-				if(index4_temp & 0x80) 
-					break;
 
 				// Third char code
 				ch3_code = (index3_temp & 0x03) << 0x06 | (index4_temp & 0x3F);

@@ -107,6 +107,11 @@ namespace erebos {
 				memcpy(this->data, str.c_str(), size);
 			}
 
+
+			inline ~data_t() {
+				free();
+			}
+
 			inline data_t(const char* data, const data_size& size) 
 					: size(size) {
 				this->data = new char[size];
@@ -114,8 +119,10 @@ namespace erebos {
 			}
 
 			inline void free() {
-				delete[] data;
-				size = 0;
+				if (data) {
+					delete data;
+					size = 0;
+				}
 			}
 
 			inline char operator[](const data_size& index) {

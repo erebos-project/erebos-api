@@ -115,7 +115,6 @@ size_t erebos::proc::mem_read(const std::uint32_t pid, const size_t& address, ch
 	if(!process_handle)
 		return '\0';
 
-	//VC:C4700 WARNING
 	size_t bytecount = ReadProcessMemory(process_handle, (LPVOID) address,
 								 result, size, (SIZE_T*) &bytecount);
 
@@ -343,7 +342,7 @@ bool erebos::file::get_dir_folder_list(const std::string& dir, std::vector<std::
 		return false;
 
 	dirent *dir_entry;
-	while(dir_entry = readdir(handle))
+	while((dir_entry = readdir(handle)))
 		// _DIRENT_HAVE_D_TYPE may be used to check for 'd_type' availability.
 		if(dir_entry->d_type == DT_DIR)
 			output.emplace_back(dir_entry->d_name);
