@@ -239,9 +239,9 @@ bool erebos::file::get_dir_file_list(const std::string& dir, std::vector<std::st
 		if(!(wfd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL))
 			output.emplace_back(wfd.cFileName);
 	} while(FindNextFile(hFile, &wfd) != 0);
-	
+
 	CloseHandle(hFile);
-	
+
 	return true;
 
 #elif defined(LINUX)
@@ -285,7 +285,7 @@ bool erebos::file::get_dir_folder_list(const std::string& dir, std::vector<std::
 		if(wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 			output.emplace_back(wfd.cFileName);
 	} while(FindNextFile(hFile, &wfd) != 0);
-	
+
 	CloseHandle(hFile);
 #elif defined(LINUX)
 
@@ -333,14 +333,5 @@ off_t erebos::file::get_size(const std::string& filename) {
 	struct stat st;
 	stat(filename.c_str(), &st);
 	return st.st_size;
-#endif
-}
-
-int erebos::cmd_get_output(const std::string& command, std::string& output) {
-	output = "";
-#ifdef WINDOWS
-	return 0; // TO-DO
-#elif defined(LINUX)
-	return 0;
 #endif
 }
