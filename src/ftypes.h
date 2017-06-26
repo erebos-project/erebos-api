@@ -36,7 +36,7 @@ namespace erebos {
 			* std::string operator[](size_t i)
 			* Get the nth argument.
 			*/
-			inline std::string operator[](const size_t& i) {
+			inline std::string operator[](const size_t& i) const {
 				if(list.size() > i) 
 					return list[i];
 
@@ -47,7 +47,7 @@ namespace erebos {
 			* bool contains(std::string s)
 			* Checks whether the argument list contains the specified string.
 			*/
-			inline bool contains(const std::string& s) {
+			inline bool contains(const std::string& s) const {
 				for (size_t i = 0; i < argsize; ++i)
 					if(list[i] == s) 
 						return true;
@@ -58,7 +58,7 @@ namespace erebos {
 			* bool contains_s(std::string s)
 			* Checks wether the argument list contains the specified string or its first two characters.
 			*/
-			inline bool contains_s(const std::string& s) {
+			inline bool contains_s(const std::string& s) const {
 
 				for (size_t i = 0; i < argsize; ++i)
 					if(list[i] == s) 
@@ -86,7 +86,7 @@ namespace erebos {
 			* size_t size()
 			* Get the argument list size.
 			*/
-			inline size_t size() {
+			inline size_t size() const {
 				return argsize;
 			}
 	};
@@ -107,7 +107,6 @@ namespace erebos {
 				memcpy(this->data, str.c_str(), size);
 			}
 
-
 			inline ~data_t() {
 				free();
 			}
@@ -117,15 +116,21 @@ namespace erebos {
 				this->data = new char[size];
 				memcpy(this->data, data, size);
 			}
+			
+			inline data_t(const data_t& prev) {
+				this->data = new char[prev.size];
+				this->size = prev.size;
+				memcpy(this->data, prev.data, this->size);
+			}
 
 			inline void free() {
 				if (data) {
-					delete data;
+					delete[] data;
 					size = 0;
 				}
 			}
 
-			inline char operator[](const data_size& index) {
+			inline char operator[](const data_size& index) const {
 				return data[index];
 			}
 	};

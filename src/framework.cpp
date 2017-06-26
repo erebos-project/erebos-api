@@ -74,14 +74,16 @@ std::string erebos::file::get_basename(std::string filename) {
 
 
 bool erebos::file::get_exists(const std::string& filename) {
-	FILE* file = nullptr;
-
+	FILE* file;
+	
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
 	file = fopen(filename.c_str(), "r");
 #elif defined(_COMPILER_MSVC)
 	errno_t err = fopen_s(&file, filename.c_str(), "r");
 	if (err != 0)
 		return false;
+#else
+#error NO GCC/CLANG/MSVC compiler defined, CMake issue, please open issue
 #endif
 
 	if (file) {
@@ -117,7 +119,7 @@ data_t erebos::file::read_bin(const std::string& filename, unsigned long long* b
 	data.size = file::get_size(filename);
 	data.data = new char[data.size];
 
-	FILE* fd = nullptr;
+	FILE* fd;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
 	fd = fopen(filename.c_str(), "rb");
@@ -125,6 +127,8 @@ data_t erebos::file::read_bin(const std::string& filename, unsigned long long* b
 	errno_t err = fopen_s(&fd, filename.c_str(), "rb");
 	if (err != 0)
 		return data; //handle this situation
+#else
+#error NO GCC/CLANG/MSVC compiler defined, CMake issue, please open issue
 #endif
 
 	if(!fd) {
@@ -160,7 +164,7 @@ bool erebos::file::write_bin(const std::string& filename, const data_t& data, bo
 	if(truncate)
 		flags += "+";
 
-	FILE* fd = nullptr;
+	FILE* fd;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
 	fd = fopen(filename.c_str(), flags.c_str());
@@ -168,6 +172,8 @@ bool erebos::file::write_bin(const std::string& filename, const data_t& data, bo
 	errno_t err = fopen_s(&fd, filename.c_str(), flags.c_str());
 	if (err != 0)
 		return false;
+#else
+#error NO GCC/CLANG/MSVC compiler defined, CMake issue, please open issue
 #endif
 
 	if(!fd)
@@ -257,15 +263,21 @@ void erebos::parse_arg(const std::string& input, std::vector<std::string>& outpu
 
 Time erebos::get_localtime() {
 	std::time_t time_now = std::time(nullptr);
-	std::tm* now = nullptr;
+	std::tm* now;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
 	now = localtime(&time_now);
 #elif defined(_COMPILER_MSVC)
+	now = nullptr;
 	localtime_s(now, &time_now);
+#else
+#error NO GCC/CLANG/MSVC compiler defined, CMake issue, please open issue
 #endif
-
+	
 	Time t;
+	if(now == nullptr)
+		return t;
+	
 	t.year = now->tm_year + 1900;
 	t.month = now->tm_mon + 1;
 	t.day = now->tm_mday;

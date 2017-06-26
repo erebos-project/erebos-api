@@ -232,11 +232,11 @@ bool erebos::is_privileged() {
 int erebos::get_random_secure() {
 #ifdef WINDOWS
 	HCRYPTPROV hProv;
-	BYTE dbData[4];
 
 	int res;
 
 	if(CryptAcquireContext(&hProv, NULL, NULL, PROV_RSA_FULL, 0)) {
+		BYTE dbData[4];
 		if(CryptGenRandom(hProv, 4, dbData))
 			res = (dbData[0] << 24) | (dbData[1] << 16) | (dbData[2] << 8) | dbData[3];
 		else
@@ -281,7 +281,9 @@ bool erebos::file::get_dir_file_list(const std::string& dir, std::vector<std::st
 		if(!(wfd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL))
 			output.emplace_back(wfd.cFileName);
 	} while(FindNextFile(hFile, &wfd) != 0);
-
+	
+	CloseHandle(hFile);
+	
 	return true;
 
 #elif defined(LINUX)
@@ -333,7 +335,8 @@ bool erebos::file::get_dir_folder_list(const std::string& dir, std::vector<std::
 		if(wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 			output.emplace_back(wfd.cFileName);
 	} while(FindNextFile(hFile, &wfd) != 0);
-
+	
+	CloseHandle(hFile);
 #elif defined(LINUX)
 
 	DIR* handle = opendir(dir.c_str());

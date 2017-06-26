@@ -138,7 +138,7 @@ namespace erebos {
 			std::string item;
 
 			while (getline(ss, item, splchr))
-				output.push_back(item);
+				output.emplace_back(item);
 		}
 
 		/*
@@ -204,7 +204,8 @@ namespace erebos {
 
 			std::string string_decoded = "";
 
-			size_t str_len = str.length(), index = 0;
+			const size_t str_len = str.length();
+			size_t index = 0;
 
 			while(index < str_len) {
 
