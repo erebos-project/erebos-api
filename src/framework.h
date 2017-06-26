@@ -9,6 +9,7 @@
 #define _FRAMEWORK_H
 
 #include <iostream>
+#include <ctime>
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
 #include <cstdlib>
@@ -41,11 +42,10 @@
 *
 * program v1.0.0
 *
-*/
 #define VERSIONFUNC(progname) \
 	if(args.contains_s("-version")) \
 		_print_version_exit(progname, VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH)
-
+*/
 
 namespace erebos {
 	/*
@@ -155,13 +155,13 @@ namespace erebos {
 	*/
 	inline std::string get_color_string(const shell_color& color) {
 #if defined(LINUX) || defined(_WINDOWS_SHELL_COLOR)
-		return std::string("\033[" + var_to_string(static_cast<int>(color)) + "m");
+		return "\033[" + var_to_string(static_cast<int>(color)) + "m";
 #else
 		return "";
 #endif
 	}
 
-	FUNCALIAS(colstr, get_color_string); // Function alias for easier usage
+	FUNCALIAS(color, get_color_string); // Function alias for easier usage
 	
 	/*
 	* std::string get_exe_path()
@@ -331,7 +331,7 @@ namespace erebos {
 	* Fatal error: Output an error message (colored in red) and exit with <code> exit value.
 	*/
 	inline void ferror(std::string message, int code) {
-		println(colstr(SHELL_RED), message, colstr(SHELL_RESET));
+		println(color(SHELL_RED), message, color(SHELL_RESET));
 		exit(code);
 	}
 
@@ -360,12 +360,6 @@ namespace erebos {
 	}
 
 	/*
-	* term_clear()
-	* Clears the console, cross-platform way.
-	*/
-	void term_clear();
-
-	/*
 	* bool get_prompt_answer(std::string message, std::string error_message = "", std::string yes_or_no_str = " [Y/n] ", bool exit_on_error = true)
 	* Prompt the user [message] and [yes_or_not], returns 'true' if the user answers 'Y' or 'y', 'false' if the user answers 'N' or 'n',
 	* returns 'false' or exits (based on [exit_on_error]) if given malformed input.
@@ -389,14 +383,9 @@ namespace erebos {
 	*/
 	void parse_arg(const std::string& input, std::vector<std::string>& output);
 
-	/*
-	 * cmd(const std::string& command)
-	 * Temporary solution for executing a shell command,
-	 * Not getting output, see cmd_get_output
-	 */
-	void cmd(const std::string& command);
-
 	struct Time {
+	public:
+		explicit Time(std::tm* right_now);
 
 		size_t year;
 		size_t month;
@@ -404,7 +393,6 @@ namespace erebos {
 		size_t hour;
 		size_t min;
 		size_t sec;
-
 	};
 
 	/*

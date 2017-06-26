@@ -23,7 +23,6 @@ namespace erebos {
 	*/
 	std::string get_exe_path_();
 
-
 	namespace proc {
 
 		/*
@@ -45,8 +44,9 @@ namespace erebos {
 		* If the process couldn't be found it returns -1.
 		* Windows only.
 		*/
+#if defined(WINDOWS)
 		int get_pid_by_win_name_w(const std::string& win_name);
-
+#endif
 		/*
 		* bool kill(int pid)
 		* Kill the specified process.
@@ -59,15 +59,22 @@ namespace erebos {
 		* Reads [size] bytes from the specified address from the specified process and writes to result.
 		* Returns the amount of bytes read.
 		*/
+#if defined(WINDOWS)
 		size_t mem_read(const std::uint32_t pid, const size_t& address, char* result, const size_t& size = 1);
+#elif defined(LINUX)
+		ssize_t mem_read(const std::uint32_t pid, const size_t& address, char* result, const size_t& size = 1);
+#endif
 
 		/*
 		* size_t mem_write(unsigned int pid, size_t address, char* data, size_t size = 1)
 		* This function writes [size] bytes to the specified address from the specified process.
 		* Returns the count of written bytes.
 		*/
+#if defined(WINDOWS)
 		size_t mem_write(const std::uint32_t& pid, const size_t& address, char* data, const size_t& size = 1);
-
+#elif defined(LINUX)
+		ssize_t mem_write(const std::uint32_t& pid, const size_t& address, char* data, const size_t& size = 1);
+#endif
 		/*
 		* bool mem_lock(void* address, size_t size)
 		* Locks the specified memory area.
@@ -81,12 +88,6 @@ namespace erebos {
 		* Returns 'true' if successful, 'false' otherwise.
 		*/
 		bool mem_unlock(void* address, const size_t& size);
-
-		/*
-		* int fork_bg()
-		*/
-		// int fork_bg()
-
 	}
 
 	/*
@@ -129,7 +130,11 @@ namespace erebos {
 		* unsigned long int get_size(std::string filename)
 		* Returns the file's size.
 		*/
-		unsigned long int get_size(const std::string& filename);
+#if defined(WINDOWS)
+		std::uint32_t get_size(const std::string& filename);
+#elif defined(LINUX)
+        off_t get_size(const std::string& filename);
+#endif
 
 	}
 
@@ -138,13 +143,6 @@ namespace erebos {
 	* Puts into output the entire command output result.
 	*/
 	int cmd_get_output(const std::string& command, std::string& output);
-
-	/*
-	#ifdef LINUX
-	void cmd_get_fd(const std::string& command, FILE* rc_fd, const bool &should_check_fd = true);
-	#endif
-	*/
-
 }
 
 #endif

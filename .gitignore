@@ -1,20 +1,12 @@
 *.exe
-
 *.pyc
-
 *.m4a
-
 *.so
-
 *.dll
-
 *.dll.manifest
 *.o
-
 *.a
-
 *.lib
-
 *.ilk
 doc/
 lib/
@@ -29,4 +21,4 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 version.h
-src/version.h
+.idea/

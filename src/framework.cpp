@@ -1,4 +1,3 @@
-#include <ctime>
 #include <fstream>
 
 #include "framework.h"
@@ -185,23 +184,7 @@ bool erebos::file::write_bin(const std::string& filename, const data_t& data, bo
 	return true;
 }
 
-//replacement
-void erebos::cmd(const std::string& command) {
-	system(command.c_str());
-}
-
-//replacement
-void erebos::term_clear() {
-#ifdef LINUX
-	cmd("clear");
-#else
-	cmd("cls");
-#endif
-}
-
-
 bool erebos::file::remove(const std::string& filename) {
-
 	return !std::remove(filename.c_str());
 }
 
@@ -261,6 +244,24 @@ void erebos::parse_arg(const std::string& input, std::vector<std::string>& outpu
 	}
 }
 
+erebos::Time::Time(std::tm *right_now) {
+	if (right_now == nullptr) {
+		year = 0;
+		month = 0;
+		day = 0;
+		hour = 0;
+		min = 0;
+		sec = 0;
+	} else {
+		year = right_now->tm_year + 1900;
+		month = right_now->tm_mon + 1;
+		day = right_now->tm_mday;
+		hour = right_now->tm_hour;
+		min = right_now->tm_min;
+		sec = right_now->tm_sec;
+	}
+}
+
 Time erebos::get_localtime() {
 	std::time_t time_now = std::time(nullptr);
 	std::tm* now;
@@ -273,18 +274,7 @@ Time erebos::get_localtime() {
 #else
 #error NO GCC/CLANG/MSVC compiler defined, CMake issue, please open issue
 #endif
-	
-	Time t;
-	if(now == nullptr)
-		return t;
-	
-	t.year = now->tm_year + 1900;
-	t.month = now->tm_mon + 1;
-	t.day = now->tm_mday;
-	t.hour = now->tm_hour;
-	t.min = now->tm_min;
-	t.sec = now->tm_sec;
 
-	return t;
+    return Time(now);
 }
 
