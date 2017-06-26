@@ -12,30 +12,31 @@
 namespace erebos {
 
 	namespace strutil {
+
 		using ssize = long long;
 
 		/*
 		* bool is_literal(char c)
 		* Checks wether the given character is a letter.
 		*/
-		inline bool is_literal(const char& c) { 
-			return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z'); 
+		inline bool is_literal(const char& c) {
+			return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 		}
 
 		/*
 		* bool is_numeral(char c)
 		* Checks wether the given character is a number.
 		*/
-		inline bool is_numeral(const char& c) { 
-			return (c >= '0') && (c <= '9'); 
+		inline bool is_numeral(const char& c) {
+			return (c >= '0') && (c <= '9');
 		}
 
 		/*
 		* bool is_quotes(char c)
 		* Checks wether the given character is a quote (" or ')
 		*/
-		inline bool is_quotes(const char& c) { 
-			return c == '\'' || c == '\"'; 
+		inline bool is_quotes(const char& c) {
+			return c == '\'' || c == '\"';
 		}
 
 		/*
@@ -44,7 +45,7 @@ namespace erebos {
 		*/
 		inline bool is_literal(const std::string& s) {
 			for (size_t i = 0; i < s.size(); ++i) {
-				if(!is_literal(s[i])) 
+				if(!is_literal(s[i]))
 					return false;
 			}
 			return true;
@@ -56,7 +57,7 @@ namespace erebos {
 		*/
 		inline bool is_numeral(const std::string& s) {
 			for (size_t i = 0; i < s.size(); ++i) {
-				if(!is_numeral(s[i])) 
+				if(!is_numeral(s[i]))
 					return false;
 			}
 			return true;
@@ -68,7 +69,7 @@ namespace erebos {
 		*/
 		inline std::string cut(const std::string& s, const size_t& offset, size_t size = 0) {
 			std::string res;
-			if(!size) 
+			if(!size)
 				size = s.size() - offset;
 			res.reserve(size);
 			for (size_t i = offset; i < offset + size; ++i)
@@ -101,7 +102,7 @@ namespace erebos {
 		* std::string string_replace(std::string target, std::string replaced, std::string replacement, size_t n = 0)
 		* Replace 'n' occurrences of 'replaced' with 'replacement'.
 		*/
-		inline void replace(std::string& target, const char& replaced, 
+		inline void replace(std::string& target, const char& replaced,
 							const char& replacement, const size_t& n = 0) {
 			size_t iterations = 0;
 			for (size_t i = 0; i < target.size(); ++i) {
@@ -147,7 +148,7 @@ namespace erebos {
 		*/
 		inline ssize index_of(const char array[], const char& element) {
 			for(ssize i = 0; i < static_cast<ssize>(std::string(array).size()); i++)
-				if(array[i] == element) 
+				if(array[i] == element)
 					return i;
 
 			return -1;
@@ -189,7 +190,7 @@ namespace erebos {
 				padding = 1;
 
 			string_encoded.erase(string_encoded.end() - padding, string_encoded.end());
-			while(padding--) 
+			while(padding--)
 				string_encoded += "=";
 
 			return string_encoded;
@@ -218,7 +219,7 @@ namespace erebos {
 				ch1_code =  index1_temp << 0x02  |  index2_temp >> 0x04;
 				string_decoded += static_cast<char>(ch1_code);
 
-				if(index3_temp & 0x80 || index4_temp & 0x80) 
+				if(index3_temp & 0x80 || index4_temp & 0x80)
 					break; // char not found (ie. '=', or not valid char)
 
 				// Second char code

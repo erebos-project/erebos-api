@@ -18,6 +18,7 @@ namespace erebos {
 	class Args {
 		private:
 			std::vector<std::string> list;
+			size_t argsize;
 
 		public:
 			inline Args(const int& argc, char const *argv[]) {
@@ -27,6 +28,8 @@ namespace erebos {
 
 				if(argc)
 					parse_arg(s, list);
+
+				argsize = list.size();
 			}
 
 			/*
@@ -34,10 +37,7 @@ namespace erebos {
 			* Get the nth argument.
 			*/
 			inline std::string operator[](const size_t& i) const {
-				if(list.size() > i)
-					return list[i];
-
-				return "";
+				return list[i];
 			}
 
 			/*
@@ -45,7 +45,7 @@ namespace erebos {
 			* Checks whether the argument list contains the specified string.
 			*/
 			inline bool contains(const std::string& s) const {
-				for (size_t i = 0; i < list.size(); ++i)
+				for (size_t i = 0; i < argsize; ++i)
 					if(list[i] == s)
 						return true;
 				return false;
@@ -57,7 +57,7 @@ namespace erebos {
 			*/
 			inline bool contains_s(const std::string& s) const {
 
-				for (size_t i = 0; i < list.size(); ++i)
+				for (size_t i = 0; i < argsize; ++i)
 					if(list[i] == s)
 						return true;
 
@@ -65,13 +65,13 @@ namespace erebos {
 				s2 += s[0];
 				s2 += s[1];
 
-				for (size_t i = 0; i < list.size(); ++i)
+				for (size_t i = 0; i < argsize; ++i)
 					if(list[i] == s2)
 						return true;
 
 				std::string s3 = std::string("-") + s;
 
-				for (size_t i = 0; i < list.size(); ++i)
+				for (size_t i = 0; i < argsize; ++i)
 					if(list[i] == s3)
 						return true;
 
@@ -84,7 +84,7 @@ namespace erebos {
 			* Get the argument list size.
 			*/
 			inline size_t size() const {
-				return list.size();
+				return argsize;
 			}
 	};
 

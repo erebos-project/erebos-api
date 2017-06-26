@@ -45,10 +45,15 @@
 *
 * program v1.0.0
 *
-#define VERSIONFUNC(progname) \
-	if(args.contains_s("-version")) \
-		_print_version_exit(progname, VERSION_MAJOR, VERSION_MINOR, VERSION_PATCH)
 */
+#define VERSIONFUNC(progname) \
+	if(args.contains_s("-version") { \
+		std::stringstream ss; \
+		ss << "\n" << progname << "\t" << "v" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH; \
+		std::cout << ss.str() << std::endl; \
+		exit(0); \
+	}
+
 
 namespace erebos {
 	/*
@@ -59,19 +64,6 @@ namespace erebos {
 		std::stringstream ss;
 		ss << API_VERSION_MAJOR << "." << API_VERSION_MINOR << "." << API_VERSION_PATCH;
 		return ss.str();
-	}
-
-	/*
-	* _print_version_exit(const char* progname, int VERSION_MAJOR, int VERSION_MINOR, int VERSION_PATCH)
-	* Function used by VERSIONFUNC, not intended for other uses.
-	*/
-	inline void _print_version_exit(const char* progname, const int& VERSION_MAJOR,
-									const int& VERSION_MINOR, const int& VERSION_PATCH) {
-		std::stringstream ss;
-		ss << "\n" << progname << "\t" << "v" << VERSION_MAJOR << "."
-		<< VERSION_MINOR << "." << VERSION_PATCH;
-		std::cout << ss.str() << std::endl;
-		exit(0);
 	}
 
 	/*
