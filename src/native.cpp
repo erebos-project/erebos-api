@@ -400,14 +400,15 @@ int erebos::cmd(const std::string& command, int& retval) {
 }
 
 #ifdef LINUX
-std::string readlink(std::string filename, int& result) {
+std::string readlink(std::string filename, int* result) {
 
 	struct stat link_stat;
 	int res;
 	res = lstat(filename.c_str(), &link_stat);
 
 	if(res == -1) {
-		*(result) = -1;
+		if(result)
+			*result = -1;
 		return "";
 	}
 
@@ -415,7 +416,7 @@ std::string readlink(std::string filename, int& result) {
 
 	if(!buff) {
 		if(result)
-			*(result) = -2;
+			*result = -2;
 		return "";
 	}
 
@@ -423,11 +424,11 @@ std::string readlink(std::string filename, int& result) {
 
 	if(res < 0) {
 		if(result)
-			*(result) = -1;
+			*result = -1;
 		return "";
 	} else if(res > link_stat.st_size) {
 		if(result)
-			*(result) = -1;
+			*result = -1;
 		return "";
 	}
 
