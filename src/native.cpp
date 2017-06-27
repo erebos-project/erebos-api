@@ -420,7 +420,7 @@ std::string erebos::file::readlink(std::string filename, int* result) {
 		return "";
 	}
 
-	res = readlink(filename.c_str(), buff, link_stat.st_size + 1);
+	res = ::readlink(filename.c_str(), buff, link_stat.st_size + 1);
 
 	if(res < 0) {
 		if(result)
