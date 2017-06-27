@@ -400,7 +400,7 @@ int erebos::cmd(const std::string& command, int& retval) {
 }
 
 #ifdef LINUX
-std::string readlink(std::string filename, int* result) {
+std::string erebos::file::readlink(std::string filename, int* result) {
 
 	struct stat link_stat;
 	int res;
