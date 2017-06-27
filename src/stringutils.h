@@ -6,6 +6,8 @@
 #ifndef _STRINGUTILS_H
 #define _STRINGUTILS_H
 
+#include "platform_defs.h"
+
 #include <string>
 #include <sstream>
 
@@ -237,9 +239,9 @@ namespace erebos {
 		}
 
 #if defined(LINUX)
-        inline std::string& stderr_to_stdout(const std::string& command) {
-            return std::string(command).append("2>&1");
-        }
+		inline std::string& stderr_to_stdout(const std::string& command) {
+			return std::string(command).append("2>&1");
+		}
 #endif
 
 		/*

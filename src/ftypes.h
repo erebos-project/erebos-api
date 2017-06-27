@@ -37,7 +37,7 @@ namespace erebos {
 			* Get the nth argument.
 			*/
 			inline std::string operator[](const size_t& i) const {
-				return list[i];
+				return list.at(i);
 			}
 
 			/*
