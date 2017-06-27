@@ -236,6 +236,12 @@ namespace erebos {
 			return string_decoded;
 		}
 
+#if defined(LINUX)
+        inline std::string& stderr_to_stdout(const std::string& command) {
+            return std::string(command).append("2>&1");
+        }
+#endif
+
 		/*
 		* std::string convert_base64_mime(std::string str)
 		* std::string string_encode_base64_mime(std::string str)

@@ -16,13 +16,6 @@
 
 namespace erebos {
 
-	/*
-	* std::string get_exe_path_()
-	* Get the binary file path, including the filename.
-	* Used by 'get_exe_path'.
-	*/
-	std::string get_exe_path_();
-
 	namespace proc {
 
 		/*
@@ -90,20 +83,6 @@ namespace erebos {
 		bool mem_unlock(void* address, const size_t& size);
 	}
 
-	/*
-	* bool is_privileged()
-	* Check if the current process has root access.
-	* Returns 'true' if so, 'false' otherwise.
-	*/
-	bool is_privileged();
-
-	/*
-	* int get_random_secure()
-	* Returns a cryptographically secure random number.
-	*/
-	int get_random_secure();
-
-
 	namespace file {
 
 		/*
@@ -138,20 +117,52 @@ namespace erebos {
 
 	}
 
-	/*
-	* int cmd(const std::string& command)
-	* Execute a command and get its exit code.
-	*/
-	//int cmd(const std::string& command);
+	/*!
+	 * @enum erebos::pipe_result
+	 * @brief The result of the pipe
+	 */
+	enum class pipe_result {
+		PIPE_OK,
+		PIPE_OK_WITH_GETLINE_FAILURE,
+		PIPE_OPEN_FAILURE,
+		PIPE_CLOSE_FAILURE
+	};
 
-	/*
-	* int cmd(const std::string& command, std::string& output)
-	* Execute a command and get its output.
-	* Returns -1 on error, 0 otherwise.
-	*/
-	int cmd(const std::string& command, std::string* output);
+	/*!
+	 * @fn erebos::cmd
+	 * @param command
+	 * @param [out] retval
+	 * @return Result of the pipe
+	 * @brief Runs command via an opened pipe
+	 */
+	pipe_result cmd(const std::string& command, int& retval);
 
+	/*!
+	 * @fn erebos::cmd
+	 * @param command
+	 * @param [out] all
+	 * @param [out] retval
+	 * @return Result of the pipe
+	 * @brief Runs command via an opened pipe
+	 */
+	pipe_result cmd(const std::string& command, std::string& all, int& retval);
 
+	/*!
+	 * @fn erebos::is_privileged
+	 * @return If user is privileged (Checks for EUID in UNIX/Unix-like environments)
+	 * @brief Has user special permissions?
+	 */
+	bool is_privileged();
+
+	/*!
+	 * @fn erebos::get_random_secure
+	 * @return Crypto-secure randomized number
+	 * @brief Number randomization
+	 */
+	int get_random_secure();
+
+	//undoc
+	std::string get_exe_path_();
 }
 
 #endif

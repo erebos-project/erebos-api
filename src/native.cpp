@@ -3,10 +3,14 @@
 
 #if defined(WINDOWS)
 #define WINDOWS_LEAN_AND_MEAN 1
+#define POPEN_F _popen
+#define PCLOSE_F _pclose
 #include <windows.h>
 #include <wincrypt.h>
 #include <tlhelp32.h>
 #elif defined(LINUX)
+#define POPEN_F popen
+#define PCLOSE_F pclose
 #include <unistd.h>
 #include <sys/uio.h>
 #include <linux/random.h>
@@ -336,37 +340,45 @@ off_t erebos::file::get_size(const std::string& filename) {
 #endif
 }
 
-#ifdef WINDOWS
-#define POPEN_F _popen
-#define PCLOSE_F _pclose
+erebos::pipe_result erebos::cmd(const std::string &command, int &retval) {
+	FILE* open_pipe = POPEN_F(command.c_str(),"r");
+	if(!open_pipe)
+		return pipe_result::PIPE_OPEN_FAILURE;
 
-#elif defined LINUX
-#define POPEN_F popen
-#define PCLOSE_F pclose
-#endif
+	errno = 0;
+	retval = PCLOSE_F(open_pipe);
+	if(retval == -1 && errno != 0)
+		return pipe_result::PIPE_CLOSE_FAILURE;
 
-int cmd(const std::string& command, std::string* output) {
+	return pipe_result::PIPE_OK;
+}
 
+erebos::pipe_result erebos::cmd(const std::string &command, std::string &all, int &retval) {
+	FILE* open_pipe = POPEN_F(command.c_str(),"r");
+	if(!open_pipe)
+		return pipe_result::PIPE_OPEN_FAILURE;
 
-	FILE* fd = POPEN_F(command.c_str(), "r");
+	size_t len = 0;
+	erebos::strutil::ssize lineres;
+	char* buffer_in = nullptr;
 
-	if (!fd)
-		return -1;
+	std::stringstream outstream;
 
-	size_t filesize;
-	fseek (fd, 0 , SEEK_END);
-	filesize = ftell (fd);
-	rewind(fd);
+	while((lineres=getline(&buffer_in,&len,open_pipe)) > 0) {
+		outstream << buffer_in;
+		free(buffer_in);
+	}
 
-	char* buffer = new char[filesize];
+	all = outstream.str();
 
-	fread(buffer, 1, filesize, fd);
+	pipe_result ret = pipe_result::PIPE_OK;
+	if(lineres == -1)
+		ret = pipe_result::PIPE_OK_WITH_GETLINE_FAILURE;
 
-	*output = std::string(buffer);
+	errno = 0;
+	retval = PCLOSE_F(open_pipe);
+	if(retval == -1 && errno != 0)
+		return pipe_result::PIPE_CLOSE_FAILURE;
 
-	delete[] buffer;
-
-	PCLOSE_F(fd);
-
-	return 0;
+	return ret;
 }
