@@ -4,7 +4,9 @@
 #include <ctime>
 
 namespace erebos {
+
 	namespace time {
+
 		struct Time {
 		public:
 			explicit Time(std::tm* right_now);

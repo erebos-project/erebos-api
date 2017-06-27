@@ -101,7 +101,7 @@ std::string erebos::file::read(const std::string& filename) {
 erebos::data_t erebos::file::read_bin(const std::string& filename, unsigned long long* bytecount) {
 	data_t data;
 
-	data.size = native::file::get_size(filename);
+	data.size = file::get_size(filename);
 	data.data = new char[data.size];
 
 	FILE* fd;
@@ -111,7 +111,7 @@ erebos::data_t erebos::file::read_bin(const std::string& filename, unsigned long
 #elif defined(_COMPILER_MSVC)
 	errno_t err = fopen_s(&fd, filename.c_str(), "rb");
 	if (err != 0)
-		return data; //handle this situation
+		return data_t(); //handle this situation
 #endif
 
 	if (!fd) {
@@ -164,8 +164,4 @@ bool erebos::file::write_bin(const std::string& filename, const data_t& data, bo
 	fclose(fd);
 
 	return true;
-}
-
-bool erebos::file::remove(const std::string& filename) {
-	return !std::remove(filename.c_str());
 }

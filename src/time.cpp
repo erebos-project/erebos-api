@@ -21,14 +21,17 @@ erebos::time::Time::Time(std::tm *right_now) {
 }
 
 erebos::time::Time erebos::time::get_localtime() {
+
 	std::time_t time_now = std::time(nullptr);
 	std::tm* now;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
 	now = std::localtime(&time_now);
+
 #elif defined(_COMPILER_MSVC)
 	now = nullptr;
 	localtime_s(now, &time_now);
+
 #endif
 
 	return Time(now);

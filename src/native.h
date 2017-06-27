@@ -16,8 +16,6 @@
 
 namespace erebos {
 
-	namespace native {
-
 		namespace proc {
 
 			/*
@@ -54,14 +52,14 @@ namespace erebos {
 			* Reads [size] bytes from the specified address from the specified process and writes to result.
 			* Returns the amount of bytes read.
 			*/
-			size_t mem_read(const std::uint32_t pid, const size_t& address, char* result, const size_t& size = 1);
+			size_t mem_read(int pid, const size_t& address, char* result, const size_t& size = 1);
 
 			/*
 			* size_t mem_write(unsigned int pid, size_t address, char* data, size_t size = 1)
 			* This function writes [size] bytes to the specified address from the specified process.
 			* Returns the count of written bytes.
 			*/
-			size_t mem_write(const std::uint32_t& pid, const size_t& address, char* data, const size_t& size = 1);
+			size_t mem_write(int pid, const size_t& address, char* data, const size_t& size = 1);
 
 			/*
 			* bool mem_lock(void* address, size_t size)
@@ -77,6 +75,7 @@ namespace erebos {
 			*/
 			bool mem_unlock(void* address, const size_t& size);
 		}
+
 
 		namespace file {
 
@@ -103,8 +102,19 @@ namespace erebos {
 			/*
 			* unsigned long int get_size(std::string filename)
 			* Returns the file's size.
+			* Returns -1 on error.
 			*/
-			std::uint32_t get_size(const std::string& filename);
+			int get_size(const std::string& filename);
+
+#ifdef Linux
+			std::string readlink(std::string filename, int& result);
+#endif
+
+			/*
+			* bool remove(std::string filename)
+			* Delete the specified file, returns true on success, false otherwise.
+			*/
+			bool remove(std::string filename);
 
 		}
 
@@ -112,20 +122,20 @@ namespace erebos {
 		 * @fn erebos::cmd
 		 * @param command
 		 * @param [out] retval
-		 * @return An integer meaning pipe result: 0 OK, -1 Popen failure, -2 Pclose failure
-		 * @brief Runs command via an opened pipe
+		 * @return The result of the pipe usage: 0 if successful, -1 if popen failed, -2 if pclose failed
+		 * @brief Executes a command and writes the exit code to [retval]
 		 */
 		int cmd(const std::string& command, int& retval);
 
 		/*!
 		 * @fn erebos::cmd
 		 * @param command
-		 * @param [out] all
+		 * @param [out] output
 		 * @param [out] retval
-		 * @return An integer meaning pipe result: 0 OK, -1 Popen failure, -2 Pclose failure
-		 * @brief Runs command via an opened pipe
+		 * @return The result of the pipe usage: 0 if successful, -1 if popen failed, -2 if pclose failed
+		 * @brief Executes a command and writes the output to [output] and the exit code to [retval]
 		 */
-		int cmd(const std::string& command, std::string& all, int& retval);
+		int cmd(const std::string& command, std::string& output, int& retval);
 
 		/*!
 		 * @fn erebos::is_privileged
@@ -143,7 +153,7 @@ namespace erebos {
 
 		//undoc
 		std::string get_exe_path_();
-	}
+
 }
 
 #endif

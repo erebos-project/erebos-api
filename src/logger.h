@@ -19,12 +19,15 @@ namespace erebos {
 				current_stream = &stream;
 			}
 
-			static void error(const std::string& message, 
+			static void error(const std::string& message,
 				const log_type& ty_log = log_type::LOG_TYPE_ERROR_STRNUM);
-			static void warn(const std::string& message, 
+
+			static void warn(const std::string& message,
 				const log_type& ty_log = log_type::LOG_TYPE_NORMAL);
+
 			static void info(const std::string& message,
 				const log_type& ty_log = log_type::LOG_TYPE_NORMAL);
+
 		private:
 			static std::ostream* current_stream;
 		};

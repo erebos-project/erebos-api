@@ -7,7 +7,7 @@ using namespace erebos;
 using namespace strutil;
 
 std::string erebos::get_exe_path() {
-	return file::get_path(native::get_exe_path_());
+	return file::get_path(get_exe_path_());
 }
 
 std::string erebos::to_unix_slash(const std::string& s) {
@@ -27,7 +27,7 @@ bool erebos::get_prompt_answer(const std::string& message, const std::string& er
 		return false;
 	else {
 		println(error_message);
-		if(exit_on_error) 
+		if(exit_on_error)
 			exit(-10);
 		return false;
 	}
@@ -39,9 +39,9 @@ std::string erebos::parse_quotes(const std::string& s) {
 	std::string res;
 	const size_t size = s.size();
 	for(size_t i = 1; i < size; ++i) {
-		if(s[i] != '\"' && s[i] != '\'') 
+		if(s[i] != '\"' && s[i] != '\'')
 			res += s[i];
-		else 
+		else
 			break;
 	}
 	return res;
@@ -52,7 +52,7 @@ void erebos::parse_arg(const std::string& input, std::vector<std::string>& outpu
 	for (size_t i = 0; i < input.size(); ++i) {
 		std::string curr;
 
-		if(input[i] == '\n' && input[i] == '\0') 
+		if(input[i] == '\n' && input[i] == '\0')
 			break;
 
 		if(is_quotes(input[i])) {

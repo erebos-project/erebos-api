@@ -77,12 +77,6 @@ namespace erebos {
 		*/
 		bool write_bin(const std::string& filename, const data_t& data, bool truncate = true);
 
-		/*
-		* remove(std::string filename)
-		* Deletes the specified file, cross-platform way.
-		*/
-		bool remove(const std::string& filename);
-
 	}
 }
 
