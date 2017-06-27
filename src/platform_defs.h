@@ -4,7 +4,6 @@
 
 #if defined(_WIN32)
 #define WINDOWS
-#endif
 #elif defined(__linux__)
 #define LINUX
 #endif
@@ -17,5 +16,6 @@
 #define _COMPILER_MSVC
 #else
 #error Unsupported compiler
+#endif
 
 #endif
