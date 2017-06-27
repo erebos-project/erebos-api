@@ -29,8 +29,6 @@ erebos::time::Time erebos::time::get_localtime() {
 #elif defined(_COMPILER_MSVC)
 	now = nullptr;
 	localtime_s(now, &time_now);
-#else
-#error NO GCC/CLANG/MSVC compiler defined, CMake issue, please open issue
 #endif
 
 	return Time(now);

@@ -75,8 +75,6 @@ bool erebos::file::get_exists(const std::string& filename) {
 	errno_t err = fopen_s(&file, filename.c_str(), "r");
 	if (err != 0)
 		return false;
-#else
-#error NO GCC/CLANG/MSVC compiler defined, CMake issue, please open issue
 #endif
 
 	if (file) {
@@ -114,8 +112,6 @@ erebos::data_t erebos::file::read_bin(const std::string& filename, unsigned long
 	errno_t err = fopen_s(&fd, filename.c_str(), "rb");
 	if (err != 0)
 		return data; //handle this situation
-#else
-#error NO GCC/CLANG/MSVC compiler defined, CMake issue, please open issue
 #endif
 
 	if (!fd) {
@@ -159,8 +155,6 @@ bool erebos::file::write_bin(const std::string& filename, const data_t& data, bo
 	errno_t err = fopen_s(&fd, filename.c_str(), flags.c_str());
 	if (err != 0)
 		return false;
-#else
-#error NO GCC/CLANG/MSVC compiler defined, CMake issue, please open issue
 #endif
 
 	if (!fd)
