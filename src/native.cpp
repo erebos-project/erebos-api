@@ -170,7 +170,7 @@ size_t mem_write(const std::uint32_t& pid, const size_t& address, char* data, co
 	remote.iov_base = (void*) address;
 	remote.iov_len = size;
 
-	ssize_t bytes = = process_vm_writev(pid, &local, 1, &remote, 1, 0);
+	ssize_t bytes = process_vm_writev(pid, &local, 1, &remote, 1, 0);
 	if (bytes < 0)
 		return 0;
 	
