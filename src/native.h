@@ -106,7 +106,7 @@ namespace erebos {
 			*/
 			int get_size(const std::string& filename);
 
-#ifdef Linux
+#ifdef LINUX
 			std::string readlink(std::string filename, int* result = nullptr);
 #endif
 
