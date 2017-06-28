@@ -29,7 +29,7 @@ namespace erebos {
 			* Returns the pid of the process with the specified name.
 			* If the process couldn't be found it returns -1.
 			*/
-			int get_pid_by_name(const std::string& name);
+			std::vector<int> get_pid_by_name(const std::string& name);
 
 			/*
 			* int get_pid_by_win_name(std::string win_name)
@@ -106,15 +106,15 @@ namespace erebos {
 			*/
 			int get_size(const std::string& filename);
 
-#ifdef LINUX
-			std::string readlink(std::string filename, int* result = nullptr);
+#if defined(LINUX)
+			int readlink(const std::string& filename, std::string& link);
 #endif
 
 			/*
 			* bool remove(std::string filename)
 			* Delete the specified file, returns true on success, false otherwise.
 			*/
-			bool remove(std::string filename);
+			//bool remove(const std::string& filename);
 
 		}
 

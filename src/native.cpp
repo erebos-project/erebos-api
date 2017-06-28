@@ -21,6 +21,7 @@
 #include <unistd.h>
 #include <sys/uio.h>
 #include <linux/random.h>
+#include <linux/limits.h>
 #include <signal.h>
 #include <dirent.h>
 #include <syscall.h>
@@ -30,7 +31,7 @@
 
 std::string erebos::get_exe_path_()  {
 
-#ifdef WINDOWS
+#if defined(WINDOWS)
 	char buff[256];
 	int res = GetModuleFileName(NULL, buff, 256);
 	if(!res)
@@ -56,7 +57,7 @@ std::string erebos::get_exe_path_()  {
 
 
 int erebos::proc::get_pid() {
-#ifdef WINDOWS
+#if defined(WINDOWS)
 	return GetCurrentProcessId();
 #elif defined(LINUX)
 	return getpid();
@@ -64,11 +65,11 @@ int erebos::proc::get_pid() {
 }
 
 
-int erebos::proc::get_pid_by_name(const std::string& name) {
+std::vector<int> erebos::proc::get_pid_by_name(const std::string& name) {
 
-	int pid = -1;
+	std::vector<int> pids{};
 
-#ifdef WINDOWS
+#if defined(WINDOWS)
 	PROCESSENTRY32 processEntry;
 	HANDLE handle;
 
@@ -79,10 +80,8 @@ int erebos::proc::get_pid_by_name(const std::string& name) {
 
 	if(Process32First(handle, &processEntry)) {
 		do {
-			if (!lstrcmp(processEntry.szExeFile, name.c_str())) {
-				pid = processEntry.th32ProcessID;
-				break;
-			}
+			if (!lstrcmp(processEntry.szExeFile, name.c_str()))
+				pids.push_back(processEntry.th32ProcessID);
 		} while (Process32Next(handle, &processEntry));
 	}
 
@@ -90,10 +89,11 @@ int erebos::proc::get_pid_by_name(const std::string& name) {
 #elif defined(LINUX)
 
 #endif
-	return pid;
+
+	return pids;
 }
 
-#ifdef WINDOWS
+#if defined(WINDOWS)
 int erebos::proc::get_pid_by_win_name_w(const std::string& win_name) {
 
 	HWND win_handle = FindWindow(nullptr, static_cast<LPCSTR>(win_name.c_str()));
@@ -110,7 +110,7 @@ int erebos::proc::get_pid_by_win_name_w(const std::string& win_name) {
 
 
 bool erebos::proc::kill(const int& pid) {
-#ifdef WINDOWS
+#if defined(WINDOWS)
 	HANDLE proc_handle = OpenProcess(PROCESS_TERMINATE, false, pid);
 	return !TerminateProcess(proc_handle, 0);
 #elif defined(LINUX)
@@ -190,7 +190,7 @@ size_t erebos::proc::mem_write(int pid, const size_t& address, char* data, const
 
 
 bool erebos::proc::mem_lock(void* address, const size_t& size) {
-#ifdef WINDOWS
+#if defined(WINDOWS)
 	return VirtualLock(address, size);
 #elif defined(LINUX)
 	return !mlock(address, size);
@@ -198,7 +198,7 @@ bool erebos::proc::mem_lock(void* address, const size_t& size) {
 }
 
 bool erebos::proc::mem_unlock(void* address, const size_t& size) {
-#ifdef WINDOWS
+#if defined(WINDOWS)
 	return VirtualUnlock(address, size);
 #elif defined(LINUX)
 	return !munlock(address, size);
@@ -206,7 +206,7 @@ bool erebos::proc::mem_unlock(void* address, const size_t& size) {
 }
 
 bool erebos::is_privileged() {
-#ifdef WINDOWS
+#if defined(WINDOWS)
 	return false; // TO-DO
 #elif defined(LINUX)
 	return geteuid() == 0;
@@ -215,7 +215,7 @@ bool erebos::is_privileged() {
 
 int erebos::get_random_secure() {
 
-#ifdef WINDOWS
+#if defined(WINDOWS)
 	HCRYPTPROV hProv;
 
 	int res;
@@ -246,7 +246,7 @@ int erebos::get_random_secure() {
 
 bool erebos::file::get_dir_file_list(const std::string& dir, std::vector<std::string>& output) {
 
-#ifdef WINDOWS
+#if defined(WINDOWS)
 	HANDLE           hFile;
 	WIN32_FIND_DATA  wfd;
 	TCHAR            path_ch[_MAX_PATH];
@@ -292,7 +292,7 @@ bool erebos::file::get_dir_file_list(const std::string& dir, std::vector<std::st
 
 bool erebos::file::get_dir_folder_list(const std::string& dir, std::vector<std::string>& output) {
 
-#ifdef WINDOWS
+#if defined(WINDOWS)
 	HANDLE           hFile;
 	WIN32_FIND_DATA  wfd;
 	TCHAR            path_ch[_MAX_PATH];
@@ -340,7 +340,7 @@ bool erebos::file::get_dir_folder_list(const std::string& dir, std::vector<std::
 
 bool erebos::file::get_folder_exists(const std::string& foldername) {
 
-#ifdef WINDOWS
+#if defined(WINDOWS)
 	DWORD dwAttributes = GetFileAttributes(foldername.c_str());
 
 	return dwAttributes != INVALID_FILE_ATTRIBUTES &&
@@ -375,9 +375,9 @@ int erebos::file::get_size(const std::string& filename) {
 }
 
 /*
-bool erebos::file::remove(std::string filename) {
+bool erebos::file::remove(const std::string& filename) {
 
-#ifdef WINDOWS
+#if defined(WINDOWS)
 
 #elif defined(LINUX)
 
@@ -400,41 +400,23 @@ int erebos::cmd(const std::string& command, int& retval) {
 	return 0;
 }
 
-#ifdef LINUX
-std::string erebos::file::readlink(std::string filename, int* result) {
+#if defined(LINUX)
+int erebos::file::readlink(const std::string& filename, std::string& link) {
 
-	struct stat link_stat;
-	int res;
-	res = lstat(filename.c_str(), &link_stat);
+	stat link_stat;
 
-	if(res == -1) {
-		if(result)
-			*result = -1;
-		return "";
-	}
+	int res = lstat(filename.c_str(), &link_stat);
+	if (res == -1)
+		return -1;
 
-	char* buff = new char[link_stat.st_size + 1];
+	char buff[PATH_MAX];
+	if ((res = ::readlink(filename.c_str(), buff, PATH_MAX)) == -1)
+		return -2;
 
-	if(!buff) {
-		if(result)
-			*result = -2;
-		return "";
-	}
+	buff[res] = '\0';
+	link = buff;
 
-	res = ::readlink(filename.c_str(), buff, link_stat.st_size + 1);
-
-	if(res < 0 || res > link_stat.st_size) {
-		if(result)
-			*result = -1;
-		return "";
-	}
-
-	buff[link_stat.st_size] = '\0';
-
-	std::string link_result = buff;
-	delete[] buff;
-
-	return link_result;
+	return 0;
 }
 #endif
 
