@@ -4,7 +4,9 @@
 #include <ostream>
 
 namespace erebos {
+
 	namespace logger {
+
 		enum class log_type {
 			LOG_TYPE_NORMAL,
 			LOG_TYPE_ERROR_STRING,
@@ -19,11 +21,15 @@ namespace erebos {
 		};
 
 		void set_stream(std::ostream& stream);
-		void set_stream(const char* fname);
-		void set_stream();
+		void set_stream(std::string filename);
+		void reset_stream();
 
-		bool logev(const std::string& message,
-			const log_level level, const log_type& type = log_type::LOG_TYPE_NORMAL);
+		bool log(const std::string& message,
+				 const log_level level,
+				 const log_type& type = log_type::LOG_TYPE_NORMAL);
+
+		void set_format(std::string format);
+
 	}
 }
 #endif //LOGGER_H
