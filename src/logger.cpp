@@ -19,7 +19,7 @@ void erebos::logger::set_stream(std::ostream& new_stream) {
 	if (ost) {
 		ost->flush();
 		if (is_file) {
-			std::ofstream* filestream = dynamic_cast<std::ofstream*>(stream.get());
+			std::ofstream* filestream = dynamic_cast<std::ofstream*>(ost);
 			if (filestream->is_open())
 				filestream->close();
 		}
@@ -36,7 +36,7 @@ void erebos::logger::set_stream(const std::string& filename) {
 	if (ost) {
 		ost->flush();
 		if (is_file) {
-			std::ofstream* filestream = dynamic_cast<std::ofstream*>(stream.get());
+			std::ofstream* filestream = dynamic_cast<std::ofstream*>(ost);
 			if (filestream->is_open())
 				filestream->close();
 		}
@@ -45,6 +45,7 @@ void erebos::logger::set_stream(const std::string& filename) {
 
 	is_file = true;
 	stream = std::unique_ptr<std::ostream>(new std::ofstream);
+	//gets NEW std::ofstream*, do not replace with ost
 	dynamic_cast<std::ofstream*>(stream.get())->open(filename, std::ofstream::out | std::ofstream::app);
 }
 
@@ -55,7 +56,7 @@ void erebos::logger::reset_stream() {
 	if (ost) {
 		ost->flush();
 		if (is_file) {
-			std::ofstream* filestream = dynamic_cast<std::ofstream*>(stream.get());
+			std::ofstream* filestream = dynamic_cast<std::ofstream*>(ost);
 			if (filestream->is_open())
 				filestream->close();
 		}
