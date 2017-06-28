@@ -97,11 +97,10 @@ bool erebos::logger::log(const std::string& message, const log_level level, cons
 	const std::string log_string = full_log.str();
 
 	if (!is_file)
-		stream.get()->write(log_string.c_str(), log_string.size());
+		local_stream->write(log_string.c_str(), log_string.size());
 	else {
-		std::ofstream* file_stream = dynamic_cast<std::ofstream*>(stream.get());
-		file_stream->write(log_string.c_str(), log_string.size());
-		file_stream->flush();
+		local_stream->write(log_string.c_str(), log_string.size());
+		local_stream->flush();
 	}
 
 	return true;
