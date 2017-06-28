@@ -381,6 +381,17 @@ bool erebos::file::remove(const std::string& filename) {
 }
 
 
+bool erebos::file::remove_dir(const std::string& filename) {
+
+#if defined(WINDOWS)
+	return RemoveDirectory(filename.c_str()) != 0;
+#elif defined(LINUX)
+	return rmdir(filename.c_str()) == 0;
+#endif
+
+}
+
+
 int erebos::cmd(const std::string& command, int* retval) {
 
 	FILE* open_pipe = POPEN_F(command.c_str(),"r");

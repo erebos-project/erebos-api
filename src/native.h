@@ -114,9 +114,18 @@ namespace erebos {
 
 			/*
 			* bool remove(std::string filename)
-			* Delete the specified file, returns true on success, false otherwise.
+			* Delete the specified file.
+			* Returns true on success, false otherwise.
 			*/
 			bool remove(const std::string& filename);
+
+			/*
+			* bool remove_dir(std::string filename)
+			* Delete the specified folder.
+			* The folder should be empty.
+			* Returns true on success, false otherwise.
+			*/
+			bool remove_dir(const std::string& filename);
 
 		}
 
