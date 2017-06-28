@@ -1,8 +1,17 @@
 #include "platform_defs.h"
 #include "time.h"
 
-erebos::time::Time::Time(std::tm *right_now) {
-	if (right_now == nullptr) {
+
+erebos::Time::Time(std::tm *right_now) {
+
+	if (right_now) {
+		year = right_now->tm_year + 1900;
+		month = right_now->tm_mon + 1;
+		day = right_now->tm_mday;
+		hour = right_now->tm_hour;
+		min = right_now->tm_min;
+		sec = right_now->tm_sec;
+	} else {
 		year = 0;
 		month = 0;
 		day = 0;
@@ -10,17 +19,9 @@ erebos::time::Time::Time(std::tm *right_now) {
 		min = 0;
 		sec = 0;
 	}
-	else {
-		year = right_now->tm_year + 1900;
-		month = right_now->tm_mon + 1;
-		day = right_now->tm_mday;
-		hour = right_now->tm_hour;
-		min = right_now->tm_min;
-		sec = right_now->tm_sec;
-	}
 }
 
-erebos::time::Time erebos::time::get_localtime() {
+erebos::Time erebos::get_localtime() {
 
 	std::time_t time_now = std::time(nullptr);
 	std::tm* now;
@@ -34,5 +35,5 @@ erebos::time::Time erebos::time::get_localtime() {
 
 #endif
 
-	return Time(now);
+	return erebos::Time(now);
 }

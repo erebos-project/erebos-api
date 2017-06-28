@@ -387,6 +387,7 @@ bool erebos::file::remove(std::string filename) {
 */
 
 int erebos::cmd(const std::string& command, int& retval) {
+
 	FILE* open_pipe = POPEN_F(command.c_str(),"r");
 	if (!open_pipe)
 		return -1;
@@ -422,11 +423,7 @@ std::string erebos::file::readlink(std::string filename, int* result) {
 
 	res = ::readlink(filename.c_str(), buff, link_stat.st_size + 1);
 
-	if(res < 0) {
-		if(result)
-			*result = -1;
-		return "";
-	} else if(res > link_stat.st_size) {
+	if(res < 0 || res > link_stat.st_size) {
 		if(result)
 			*result = -1;
 		return "";
@@ -443,6 +440,7 @@ std::string erebos::file::readlink(std::string filename, int* result) {
 
 
 int erebos::cmd(const std::string& command, std::string& output, int& retval) {
+
 	FILE* open_pipe = POPEN_F(command.c_str(),"r");
 	if (!open_pipe)
 		return -1;
@@ -464,8 +462,10 @@ int erebos::cmd(const std::string& command, std::string& output, int& retval) {
 }
 
 std::string erebos::string_from_errno(int errn) {
+
 #if defined(LINUX)
 	return strerror(errn);
+
 #elif defined(WINDOWS)
 
 	LPSTR target;
@@ -473,8 +473,8 @@ std::string erebos::string_from_errno(int errn) {
 		FORMAT_MESSAGE_FROM_SYSTEM |
 		FORMAT_MESSAGE_IGNORE_INSERTS,
 		NULL, errn, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
-		(LPSTR)&target, 0, NULL);
-	
+		(LPSTR) &target, 0, NULL);
+
 	std::string target_stds = static_cast<char*>(target);
 	target_stds.erase(target_stds.end() - 2, target_stds.end()); // erase:\r\n
 

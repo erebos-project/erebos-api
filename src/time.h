@@ -5,8 +5,6 @@
 
 namespace erebos {
 
-	namespace time {
-
 		struct Time {
 		public:
 			explicit Time(std::tm* right_now);
@@ -20,7 +18,7 @@ namespace erebos {
 		};
 
 		Time get_localtime();
-	}
+
 }
 
 #endif
