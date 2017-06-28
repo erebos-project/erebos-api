@@ -63,13 +63,14 @@ namespace erebos {
 
 				std::string s2;
 				s2 += s[0];
-				s2 += s[1];
+				s2 += s.at(1);
 
 				for (size_t i = 0; i < argsize; ++i)
 					if(list[i] == s2)
 						return true;
 
-				std::string s3 = std::string("-") + s;
+				std::string s3 = "-";
+				s3 += s;
 
 				for (size_t i = 0; i < argsize; ++i)
 					if(list[i] == s3)
@@ -129,7 +130,7 @@ namespace erebos {
 			}
 
 			inline char operator[](const data_size& index) const {
-				return data[index];
+				return data.at(index);
 			}
 	};
 

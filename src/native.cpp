@@ -435,7 +435,7 @@ std::string erebos::file::readlink(const std::string& filename) {
 		return "";
 
 	char buff[PATH_MAX];
-	res = ::readlink(filename.c_str(), buff, PATH_MAX)
+	res = ::readlink(filename.c_str(), buff, PATH_MAX);
 
 	if (res == -1)
 		return "";
