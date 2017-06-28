@@ -18,7 +18,7 @@ You can setup by command line with the following commands:
 #### GCC
 
 ~~~
-erebos-build> cmake ../erebos-api "Unix Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_COMPILER="g++"
+erebos-build> cmake ../erebos-api -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_COMPILER="g++"
 erebos-build> make
 ~~~
 
