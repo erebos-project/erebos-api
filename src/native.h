@@ -151,6 +151,13 @@ namespace erebos {
 		 */
 		int get_random_secure();
 
+		/*!
+		 * @fn erebos::string_from_errno
+		 * @return String error from errno integer
+		 * @param errn : the errno integer
+		 */
+		std::string string_from_errno(int errn);
+
 		//undoc
 		std::string get_exe_path_();
 

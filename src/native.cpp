@@ -370,7 +370,7 @@ int erebos::file::get_size(const std::string& filename) {
 	if (stat(filename.c_str(), &st) == -1)
 		return -1;
 
-	return static_cast<std::uint32_t>(st.st_size);
+	return static_cast<int>(st.st_size);
 #endif
 }
 
@@ -461,4 +461,25 @@ int erebos::cmd(const std::string& command, std::string& output, int& retval) {
 		return -2;
 
 	return 0;
+}
+
+std::string erebos::string_from_errno(int errn) {
+#if defined(LINUX)
+	return strerror(errn);
+#elif defined(WINDOWS)
+
+	LPSTR target;
+	FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+		FORMAT_MESSAGE_FROM_SYSTEM |
+		FORMAT_MESSAGE_IGNORE_INSERTS,
+		NULL, errn, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+		(LPSTR)&target, 0, NULL);
+	
+	std::string target_stds = static_cast<char*>(target);
+	target_stds.erase(target_stds.end() - 2, target_stds.end()); // erase:\r\n
+
+	LocalFree(target);
+
+	return target_stds;
+#endif
 }

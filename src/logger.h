@@ -12,25 +12,18 @@ namespace erebos {
 			LOG_TYPE_ERROR_STRNUM
 		};
 
-		class Logger {
-		public:
-			static inline void set_stream(std::ostream& stream) {
-				current_stream->flush();
-				current_stream = &stream;
-			}
-
-			static void error(const std::string& message,
-				const log_type& ty_log = log_type::LOG_TYPE_ERROR_STRNUM);
-
-			static void warn(const std::string& message,
-				const log_type& ty_log = log_type::LOG_TYPE_NORMAL);
-
-			static void info(const std::string& message,
-				const log_type& ty_log = log_type::LOG_TYPE_NORMAL);
-
-		private:
-			static std::ostream* current_stream;
+		enum class log_level {
+			LOG_INFO,
+			LOG_ERROR,
+			LOG_WARNING
 		};
+
+		void set_stream(std::ostream& stream);
+		void set_stream(const char* fname);
+		void set_stream();
+
+		bool logev(const std::string& message,
+			const log_level level, const log_type& type = log_type::LOG_TYPE_NORMAL);
 	}
 }
 #endif //LOGGER_H
