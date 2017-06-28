@@ -44,11 +44,11 @@ std::string erebos::get_exe_path_()  {
 	std::stringstream ss;
 	ss << "/proc/" << getpid() << "/exe";
 
-	int res;
-	std::string exe_path = file::readlink(ss.str(), &res);
+	std::string exe_link;
+	int res = file::readlink(ss.str(), exe_link);
 
 	if(!res)
-		return exe_path;
+		return exe_link;
 	else
 		return "";
 
@@ -403,7 +403,7 @@ int erebos::cmd(const std::string& command, int& retval) {
 #if defined(LINUX)
 int erebos::file::readlink(const std::string& filename, std::string& link) {
 
-	stat link_stat;
+	struct stat link_stat;
 
 	int res = lstat(filename.c_str(), &link_stat);
 	if (res == -1)
