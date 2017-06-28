@@ -22,12 +22,15 @@ erebos-build> cmake ../erebos-api -DCMAKE_BUILD_TYPE="Release"
 erebos-build> make
 ~~~
 
-#### Windows/MinGW32
+#### Windows/MinGW
 
 ~~~
-erebos-build> cmake ../erebos-api -G "Unix Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_COMPILER="g++" -DCMAKE_MAKE_PROGRAM="mingw32-make"
-erebos-build> mingw32-make
+erebos-build> cmake ../erebos-api -G "Unix Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_COMPILER="g++"
+erebos-build> make
 ~~~
+
+On some MinGW installations you might have to add the `-DCMAKE_MAKE_PROGRAM="mingw32-make"` argument to CMake and use `mingw32-make` instead of `make`.
+
 
 #### Windows/MSVC
 ~~~
