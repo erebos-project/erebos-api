@@ -15,21 +15,21 @@ You can setup by command line with the following commands:
 * `cd` into the new directory
 * Run the following commands based on your compiler
 
-#### GCC
+#### Linux/GCC
 
 ~~~
-erebos-build> cmake ../erebos-api -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_COMPILER="g++"
+erebos-build> cmake ../erebos-api -DCMAKE_BUILD_TYPE="Release"
 erebos-build> make
 ~~~
 
-#### MinGW
+#### Windows/MinGW32
 
 ~~~
-erebos-build> cmake ../erebos-api -G "Unix Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_COMPILER="g++"
-erebos-build> make
+erebos-build> cmake ../erebos-api -G "Unix Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_COMPILER="g++" -DCMAKE_MAKE_PROGRAM="mingw32-make"
+erebos-build> mingw32-make
 ~~~
 
-#### NMake
+#### Windows/MSVC
 ~~~
 erebos-build> cmake ../erebos-api -G "NMake Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="/EHsc"
 erebos-build> nmake
