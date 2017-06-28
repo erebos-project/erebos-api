@@ -28,12 +28,13 @@ std::string erebos::file::get_path(std::string s) {
 
 std::string erebos::file::get_extension(const std::string& filename) {
 	size_t index = 0;
+	const size_t filename_len = filename.size();
 
-	for (size_t i = 0; i < filename.size(); ++i)
+	for (size_t i = 0; i < filename_len; ++i)
 		if (filename[i] == '.') 
 			index = i;
 
-	return strutil::cut(filename, index + 1, filename.size() - index - 1);
+	return strutil::cut(filename, index + 1, filename_len - index - 1);
 }
 
 
@@ -41,13 +42,14 @@ std::string erebos::file::get_name(std::string s) {
 	size_t index = 0;
 
 	s = to_unix_slash(s);
+	const size_t s_len = s.size();
 
-	for (size_t i = 0; i < s.size(); ++i)
+	for (size_t i = 0; i < s_len; ++i)
 		if (s[i] == '/') 
 			index = i;
 
 	if (index)
-		return strutil::cut(s, index + 1, s.size() - index);
+		return strutil::cut(s, index + 1, s_len - index);
 
 	return s;
 }
@@ -134,8 +136,8 @@ erebos::data_t erebos::file::read_bin(const std::string& filename, std::uint64_t
 
 bool erebos::file::write(const std::string& filename, const std::string& data, bool truncate) {
 	std::ofstream stream;
-	if (truncate) 
-		stream.open(filename, std::ofstream::trunc);
+	if (truncate)
+		stream.open(filename, std::ofstream::out | std::ofstream::trunc);
 	else 
 		stream.open(filename);
 
@@ -149,17 +151,21 @@ bool erebos::file::write(const std::string& filename, const std::string& data, b
 
 bool erebos::file::write_bin(const std::string& filename, const data_t& data, bool truncate) {
 
-	char* flags = "wb";
-
-	if (truncate)
-		strncat(flags, "+", 1);
-
 	FILE* fd;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
-	fd = fopen(filename.c_str(), flags);
+	if (truncate)
+		fd = fopen(filename.c_str(), "wb+");
+	else
+		fd = fopen(filename.c_str(), "wb");
+
 #elif defined(_COMPILER_MSVC)
-	errno_t err = fopen_s(&fd, filename.c_str(), flags);
+	errno_t err;
+	if (truncate)
+		err = fopen_s(&fd, filename.c_str(), "wb+");
+	else
+		err = fopen_s(&fd, filename.c_str(), "wb");
+
 	if (err != 0)
 		return false;
 #endif

@@ -26,7 +26,7 @@ namespace erebos {
 		void set_data_format(const std::string& format);
 
 		bool log(const std::string& message,
-				 const log_level level,
+				 const log_level& level,
 				 const log_type& type = log_type::LOG_TYPE_NORMAL);
 
 	}

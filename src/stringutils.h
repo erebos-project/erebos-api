@@ -100,8 +100,6 @@ namespace erebos {
 				if (iterations == n)
 					break;
 			}
-
-		  //return target;
 		}
 
 		/*

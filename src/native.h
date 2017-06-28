@@ -49,14 +49,14 @@ namespace erebos {
 			* Reads [size] bytes from the specified address from the specified process and writes to result.
 			* Returns the amount of bytes read.
 			*/
-			size_t mem_read(int pid, const size_t& address, char* result, const size_t& size = 1);
+			size_t mem_read(const int& pid, const size_t& address, char* result, const size_t& size = 1);
 
 			/*
 			* size_t mem_write(unsigned int pid, size_t address, char* data, size_t size = 1)
 			* This function writes [size] bytes to the specified address from the specified process.
 			* Returns the count of written bytes.
 			*/
-			size_t mem_write(int pid, const size_t& address, char* data, const size_t& size = 1);
+			size_t mem_write(const int& pid, const size_t& address, char* data, const size_t& size = 1);
 
 			/*
 			* bool mem_lock(void* address, size_t size)
@@ -167,7 +167,7 @@ namespace erebos {
 		 * @return String error from errno integer
 		 * @param errn : the errno integer
 		 */
-		std::string string_from_errno(int errn);
+		std::string string_from_errno(const int& errn);
 
 		//undoc
 		std::string get_exe_path_();

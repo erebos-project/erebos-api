@@ -71,7 +71,7 @@ void erebos::logger::set_data_format(const std::string& format) {
 	format_string = format;
 }
 
-bool erebos::logger::log(const std::string& message, const log_level level, const log_type& type) {
+bool erebos::logger::log(const std::string& message, const log_level& level, const log_type& type) {
 
 	std::ostream* local_stream = stream.get();
 	if (!local_stream)

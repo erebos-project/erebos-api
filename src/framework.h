@@ -13,6 +13,7 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include <memory>
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
 #include <cstdlib>
@@ -159,6 +160,22 @@ namespace erebos {
 
 	FUNCALIAS(color, get_color_string); // Function alias for easier usage
 
+	//if using C++11
+	template<typename UniqueType, typename ... TypeArgs>
+	inline std::unique_ptr<UniqueType> make_unique(TypeArgs&& ... args_fwd) {
+		return std::unique_ptr<UniqueType>(new UniqueType(args_fwd...));
+	}
+
+	template<typename SharedType, typename ... TypeArgs>
+	inline std::shared_ptr<SharedType> make_shared(TypeArgs&& ... args_fwd) {
+		return std::shared_ptr<SharedType>(new SharedType(args_fwd...));
+	}
+
+	template<typename WeakType, typename ... TypeArgs>
+	inline std::weak_ptr<WeakType> make_weak(TypeArgs&& ... args_fwd) {
+		return std::weak_ptr<WeakType>(new WeakType(args_fwd...));
+	}
+
 	/*
 	* std::string get_exe_path()
 	* Returns the path to the program's binary.
@@ -172,6 +189,7 @@ namespace erebos {
 	* Used for unified help information.
 	*/
 	inline const std::string get_help_string() {
+
 		return "-help Get help for this program.";
 	}
 
@@ -280,7 +298,7 @@ namespace erebos {
 	* > Are you ok? [Y/n]  Y
 	* returns: true
 	*/
-	bool get_prompt_answer(const std::string& message, const std::string& error_message = "", bool exit_on_error = true);
+	bool get_prompt_answer(const std::string& message, const std::string& error_message = "", const bool& exit_on_error = true);
 
 	/*
 	* std::string parse_quotes(std::string s)

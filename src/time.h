@@ -9,7 +9,7 @@ namespace erebos {
 		struct Time {
 		public:
 			explicit Time(std::tm* right_now);
-			std::string to_string(std::string format);
+			std::string to_string(std::string format) const;
 
 			int year;
 			int month;

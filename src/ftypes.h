@@ -38,7 +38,7 @@ namespace erebos {
 			* std::string operator[](size_t i)
 			* Get the nth argument.
 			*/
-			inline std::string operator[](const size_t& i) const {
+			inline const std::string& operator[](const size_t& i) const {
 				return list.at(i);
 			}
 
@@ -86,7 +86,7 @@ namespace erebos {
 			* size_t size()
 			* Get the argument list size.
 			*/
-			inline size_t size() const {
+			inline const size_t& size() const noexcept {
 				return argsize;
 			}
 	};
@@ -131,7 +131,7 @@ namespace erebos {
 				}
 			}
 
-			inline char operator[](const data_size& index) const {
+			inline const char& operator[](const data_size& index) const noexcept {
 				return data[index];
 			}
 	};

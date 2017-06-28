@@ -18,7 +18,7 @@ erebos::Time::Time(std::tm *right_now) :
 	}
 }
 
-std::string erebos::Time::to_string(std::string format) {
+std::string erebos::Time::to_string(std::string format) const {
 	strutil::replace(format, "YY", var_to_string(year));
 	strutil::replace(format, "MM", var_to_string(month));
 	strutil::replace(format, "DD", var_to_string(day));

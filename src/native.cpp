@@ -123,7 +123,7 @@ bool erebos::proc::kill(const int& pid) {
 #endif
 }
 
-size_t erebos::proc::mem_read(int pid, const size_t& address, char* result, const size_t& size ) {
+size_t erebos::proc::mem_read(const int& pid, const size_t& address, char* result, const size_t& size ) {
 
 #if defined(WINDOWS)
 	HANDLE process_handle;
@@ -160,7 +160,7 @@ size_t erebos::proc::mem_read(int pid, const size_t& address, char* result, cons
 #endif
 }
 
-size_t erebos::proc::mem_write(int pid, const size_t& address, char* data, const size_t& size) {
+size_t erebos::proc::mem_write(const int& pid, const size_t& address, char* data, const size_t& size) {
 
 #if defined(WINDOWS)
 	HANDLE process_handle;
@@ -487,7 +487,7 @@ std::string erebos::file::readlink(const std::string& filename) {
 #endif
 
 
-std::string erebos::string_from_errno(int errn) {
+std::string erebos::string_from_errno(const int& errn) {
 
 #if defined(LINUX)
 	return strerror(errn);
