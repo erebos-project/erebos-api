@@ -130,7 +130,7 @@ namespace erebos {
 			}
 
 			inline char operator[](const data_size& index) const {
-				return data.at(index);
+				return data[index];
 			}
 	};
 
