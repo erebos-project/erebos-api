@@ -44,10 +44,9 @@ std::string erebos::get_exe_path_()  {
 	std::stringstream ss;
 	ss << "/proc/" << getpid() << "/exe";
 
-	std::string exe_link;
-	int res = file::readlink(ss.str(), exe_link);
+	std::string exe_link = file::readlink(ss.str());
 
-	if(!res)
+	if(exe_link != "")
 		return exe_link;
 	else
 		return "";
@@ -65,9 +64,7 @@ int erebos::proc::get_pid() {
 }
 
 
-std::vector<int> erebos::proc::get_pid_by_name(const std::string& name) {
-
-	std::vector<int> pids{};
+void erebos::proc::get_pid_by_name(const std::string& name, std::vector<int>& output) {
 
 #if defined(WINDOWS)
 	PROCESSENTRY32 processEntry;
@@ -81,7 +78,7 @@ std::vector<int> erebos::proc::get_pid_by_name(const std::string& name) {
 	if(Process32First(handle, &processEntry)) {
 		do {
 			if (!lstrcmp(processEntry.szExeFile, name.c_str()))
-				pids.push_back(processEntry.th32ProcessID);
+				output.push_back(processEntry.th32ProcessID);
 		} while (Process32Next(handle, &processEntry));
 	}
 
@@ -89,12 +86,10 @@ std::vector<int> erebos::proc::get_pid_by_name(const std::string& name) {
 #elif defined(LINUX)
 
 #endif
-
-	return pids;
 }
 
 #if defined(WINDOWS)
-int erebos::proc::get_pid_by_win_name_w(const std::string& win_name) {
+int erebos::proc::get_pid_by_win_name(const std::string& win_name) {
 
 	HWND win_handle = FindWindow(nullptr, static_cast<LPCSTR>(win_name.c_str()));
 
@@ -386,42 +381,25 @@ bool erebos::file::remove(const std::string& filename) {
 }
 */
 
-int erebos::cmd(const std::string& command, int& retval) {
+int erebos::cmd(const std::string& command, int* retval) {
 
 	FILE* open_pipe = POPEN_F(command.c_str(),"r");
 	if (!open_pipe)
 		return -1;
 
 	errno = 0;
-	retval = PCLOSE_F(open_pipe);
-	if (retval == -1 && errno != 0)
+	int res = PCLOSE_F(open_pipe);
+	if(retval)
+		*retval = res;
+
+	if (res == -1 && errno != 0)
 		return -2;
 
 	return 0;
 }
 
-#if defined(LINUX)
-int erebos::file::readlink(const std::string& filename, std::string& link) {
 
-	struct stat link_stat;
-
-	int res = lstat(filename.c_str(), &link_stat);
-	if (res == -1)
-		return -1;
-
-	char buff[PATH_MAX];
-	if ((res = ::readlink(filename.c_str(), buff, PATH_MAX)) == -1)
-		return -2;
-
-	buff[res] = '\0';
-	link = buff;
-
-	return 0;
-}
-#endif
-
-
-int erebos::cmd(const std::string& command, std::string& output, int& retval) {
+int erebos::cmd(const std::string& command, std::string& output, int* retval) {
 
 	FILE* open_pipe = POPEN_F(command.c_str(),"r");
 	if (!open_pipe)
@@ -436,12 +414,37 @@ int erebos::cmd(const std::string& command, std::string& output, int& retval) {
 	output = outstream.str();
 
 	errno = 0;
-	retval = PCLOSE_F(open_pipe);
-	if (retval == -1 && errno != 0)
+	int res = PCLOSE_F(open_pipe);
+
+	if(retval)
+		*retval = res;
+
+	if (res == -1 && errno != 0)
 		return -2;
 
 	return 0;
 }
+
+
+#if defined(LINUX)
+std::string erebos::file::readlink(const std::string& filename) {
+
+	struct stat link_stat;
+	int res = lstat(filename.c_str(), &link_stat);
+	if (res == -1)
+		return "";
+
+	char buff[PATH_MAX];
+	res = ::readlink(filename.c_str(), buff, PATH_MAX)
+
+	if (res == -1)
+		return "";
+
+	buff[res] = '\0';
+	return buff;
+}
+#endif
+
 
 std::string erebos::string_from_errno(int errn) {
 

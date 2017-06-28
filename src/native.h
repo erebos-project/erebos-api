@@ -1,9 +1,6 @@
 /*
 * native.h
 * Functions interfacing with the operative system.
-* Includes operative system's API.
-* All functions are cross-platform, using #ifdefs
-* OS-specific functions are followed by '_x' for Linux and '_w' for Windows.
 */
 
 #ifndef _NATIVE_H
@@ -29,7 +26,7 @@ namespace erebos {
 			* Returns the pid of the process with the specified name.
 			* If the process couldn't be found it returns -1.
 			*/
-			std::vector<int> get_pid_by_name(const std::string& name);
+			void get_pid_by_name(const std::string& name, std::vector<int>& output);
 
 			/*
 			* int get_pid_by_win_name(std::string win_name)
@@ -38,7 +35,7 @@ namespace erebos {
 			* Windows only.
 			*/
 #if defined(WINDOWS)
-			int get_pid_by_win_name_w(const std::string& win_name);
+			int get_pid_by_win_name(const std::string& win_name);
 #endif
 			/*
 			* bool kill(int pid)
@@ -107,7 +104,12 @@ namespace erebos {
 			int get_size(const std::string& filename);
 
 #if defined(LINUX)
-			int readlink(const std::string& filename, std::string& link);
+			/*
+			* std::string readlink(const std::string& filename)
+			* Reads the specified link and returns the file pointer by.
+			* Returns an empty string on error.
+			*/
+			std::string readlink(const std::string& filename);
 #endif
 
 			/*
@@ -125,7 +127,7 @@ namespace erebos {
 		 * @return The result of the pipe usage: 0 if successful, -1 if popen failed, -2 if pclose failed
 		 * @brief Executes a command and writes the exit code to [retval]
 		 */
-		int cmd(const std::string& command, int& retval);
+		int cmd(const std::string& command, int* retval = nullptr);
 
 		/*!
 		 * @fn erebos::cmd
@@ -135,7 +137,7 @@ namespace erebos {
 		 * @return The result of the pipe usage: 0 if successful, -1 if popen failed, -2 if pclose failed
 		 * @brief Executes a command and writes the output to [output] and the exit code to [retval]
 		 */
-		int cmd(const std::string& command, std::string& output, int& retval);
+		int cmd(const std::string& command, std::string& output, int* retval = nullptr);
 
 		/*!
 		 * @fn erebos::is_privileged
