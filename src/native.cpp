@@ -369,17 +369,17 @@ int erebos::file::get_size(const std::string& filename) {
 #endif
 }
 
-/*
+
 bool erebos::file::remove(const std::string& filename) {
 
 #if defined(WINDOWS)
-
+	return DeleteFile(filename.c_str()) != 0;
 #elif defined(LINUX)
-
+	return unlink(filename.c_str()) == 0;
 #endif
 
 }
-*/
+
 
 int erebos::cmd(const std::string& command, int* retval) {
 

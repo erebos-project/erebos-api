@@ -116,7 +116,7 @@ namespace erebos {
 			* bool remove(std::string filename)
 			* Delete the specified file, returns true on success, false otherwise.
 			*/
-			//bool remove(const std::string& filename);
+			bool remove(const std::string& filename);
 
 		}
 
