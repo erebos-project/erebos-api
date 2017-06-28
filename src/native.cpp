@@ -114,7 +114,7 @@ bool erebos::proc::kill(const int& pid) {
 	HANDLE proc_handle = OpenProcess(PROCESS_TERMINATE, false, pid);
 	return !TerminateProcess(proc_handle, 0);
 #elif defined(LINUX)
-	return !::kill(pid, SIGKILL);
+	return !::kill(pid, SIGTERM);
 #endif
 }
 
