@@ -30,7 +30,8 @@ std::string erebos::file::get_extension(const std::string& filename) {
 	size_t index = 0;
 
 	for (size_t i = 0; i < filename.size(); ++i)
-		if (filename[i] == '.') index = i;
+		if (filename[i] == '.') 
+			index = i;
 
 	return strutil::cut(filename, index + 1, filename.size() - index - 1);
 }
@@ -42,7 +43,8 @@ std::string erebos::file::get_name(std::string s) {
 	s = to_unix_slash(s);
 
 	for (size_t i = 0; i < s.size(); ++i)
-		if (s[i] == '/') index = i;
+		if (s[i] == '/') 
+			index = i;
 
 	if (index)
 		return strutil::cut(s, index + 1, s.size() - index);
@@ -98,7 +100,7 @@ std::string erebos::file::read(const std::string& filename) {
 }
 
 
-erebos::data_t erebos::file::read_bin(const std::string& filename, unsigned long long* bytecount) {
+erebos::data_t erebos::file::read_bin(const std::string& filename, std::uint64_t* bytecount) {
 	data_t data;
 
 	data.size = file::get_size(filename);
@@ -111,7 +113,7 @@ erebos::data_t erebos::file::read_bin(const std::string& filename, unsigned long
 #elif defined(_COMPILER_MSVC)
 	errno_t err = fopen_s(&fd, filename.c_str(), "rb");
 	if (err != 0)
-		return data_t(); //handle this situation
+		return data_t(nullptr, 0);
 #endif
 
 	if (!fd) {
@@ -132,9 +134,14 @@ erebos::data_t erebos::file::read_bin(const std::string& filename, unsigned long
 
 bool erebos::file::write(const std::string& filename, const std::string& data, bool truncate) {
 	std::ofstream stream;
-	if (truncate) stream.open(filename, std::ofstream::trunc);
-	else stream.open(filename);
-	if (!stream.is_open()) return false;
+	if (truncate) 
+		stream.open(filename, std::ofstream::trunc);
+	else 
+		stream.open(filename);
+
+	if (!stream.is_open()) 
+		return false;
+
 	stream << data;
 	return true;
 }
@@ -142,17 +149,17 @@ bool erebos::file::write(const std::string& filename, const std::string& data, b
 
 bool erebos::file::write_bin(const std::string& filename, const data_t& data, bool truncate) {
 
-	std::string flags = "wb";
+	char* flags = "wb";
 
 	if (truncate)
-		flags += "+";
+		strncat(flags, "+", 1);
 
 	FILE* fd;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
-	fd = fopen(filename.c_str(), flags.c_str());
+	fd = fopen(filename.c_str(), flags);
 #elif defined(_COMPILER_MSVC)
-	errno_t err = fopen_s(&fd, filename.c_str(), flags.c_str());
+	errno_t err = fopen_s(&fd, filename.c_str(), flags);
 	if (err != 0)
 		return false;
 #endif

@@ -26,15 +26,15 @@ namespace erebos {
 			* Returns the pid of the process with the specified name.
 			* If the process couldn't be found it returns -1.
 			*/
-			void get_pid_by_name(const std::string& name, std::vector<int>& output);
+			int get_pid_by_name(const std::string& name, std::vector<int>& output);
 
+#if defined(WINDOWS)
 			/*
 			* int get_pid_by_win_name(std::string win_name)
 			* Returns the pid of the process with the specified window name.
 			* If the process couldn't be found it returns -1.
 			* Windows only.
 			*/
-#if defined(WINDOWS)
 			int get_pid_by_win_name(const std::string& win_name);
 #endif
 			/*

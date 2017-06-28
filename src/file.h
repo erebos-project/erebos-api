@@ -60,7 +60,7 @@ namespace erebos {
 		* Reads the whole file content into a string as binary data.
 		* Returns an empty data_t structure on fail.
 		*/
-		data_t read_bin(const std::string& filename, unsigned long long* bytecount = nullptr);
+		data_t read_bin(const std::string& filename, std::uint64_t* bytecount = nullptr);
 
 
 		/*

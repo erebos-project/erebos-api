@@ -31,4 +31,5 @@ namespace erebos {
 
 	}
 }
+
 #endif //LOGGER_H

@@ -74,9 +74,12 @@ namespace erebos {
 			std::string res;
 			if(!size)
 				size = s.size() - offset;
+
 			res.reserve(size);
+
 			for (size_t i = offset; i < offset + size; ++i)
 				res += s[i];
+
 			return res;
 		}
 
@@ -240,7 +243,7 @@ namespace erebos {
 		}
 
 #if defined(LINUX)
-		inline std::string& stderr_to_stdout(const std::string& command) {
+		inline std::string stderr_to_stdout(const std::string& command) {
 			return std::string(command).append("2>&1");
 		}
 #endif

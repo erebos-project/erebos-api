@@ -34,6 +34,7 @@ std::string erebos::get_exe_path_()  {
 #if defined(WINDOWS)
 	char buff[256];
 	int res = GetModuleFileName(NULL, buff, 256);
+
 	if(!res)
 		return "";
 
@@ -46,11 +47,10 @@ std::string erebos::get_exe_path_()  {
 
 	std::string exe_link = file::readlink(ss.str());
 
-	if(exe_link != "")
-		return exe_link;
-	else
+	if (exe_link == "")
 		return "";
 
+	return exe_link;
 #endif
 }
 
@@ -64,27 +64,38 @@ int erebos::proc::get_pid() {
 }
 
 
-void erebos::proc::get_pid_by_name(const std::string& name, std::vector<int>& output) {
+int erebos::proc::get_pid_by_name(const std::string& name, std::vector<int>& output) {
 
 #if defined(WINDOWS)
 	PROCESSENTRY32 processEntry;
 	HANDLE handle;
 
-	handle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+	if (!(handle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)))
+		return -1;
 
 	// We must initialize this word, otherwise Process32First fails.
 	processEntry.dwSize = sizeof(PROCESSENTRY32);
 
-	if(Process32First(handle, &processEntry)) {
+	int retval = 0;
+
+	if (Process32First(handle, &processEntry)) {
 		do {
 			if (!lstrcmp(processEntry.szExeFile, name.c_str()))
 				output.push_back(processEntry.th32ProcessID);
 		} while (Process32Next(handle, &processEntry));
+
+		if (GetLastError() != 0)
+			retval = -3;
 	}
+	else if (GetLastError() != 0)
+		retval = -2;
 
-	CloseHandle(handle);
+	if (!CloseHandle(handle))
+		retval = -4;
+
+	return retval;
 #elif defined(LINUX)
-
+	//todo
 #endif
 }
 
@@ -92,7 +103,6 @@ void erebos::proc::get_pid_by_name(const std::string& name, std::vector<int>& ou
 int erebos::proc::get_pid_by_win_name(const std::string& win_name) {
 
 	HWND win_handle = FindWindow(nullptr, static_cast<LPCSTR>(win_name.c_str()));
-
 	if(!win_handle)
 		return -1;
 
@@ -122,10 +132,13 @@ size_t erebos::proc::mem_read(int pid, const size_t& address, char* result, cons
 	if(!process_handle)
 		return '\0';
 
-	size_t bytecount = ReadProcessMemory(process_handle, (LPVOID) address,
-								 result, size, (SIZE_T*) &bytecount);
+	size_t bytecount;
+	if (!ReadProcessMemory(process_handle, (LPVOID)address,
+			result, size, (SIZE_T*)&bytecount))
+		return 0;
 
-	CloseHandle(process_handle);
+	if (!CloseHandle(process_handle))
+		return 0;
 
 	return bytecount;
 
@@ -158,10 +171,12 @@ size_t erebos::proc::mem_write(int pid, const size_t& address, char* data, const
 	if(!process_handle)
 		return 0;
 
-	WriteProcessMemory(process_handle, (LPVOID) address,
-					   value_ptr, static_cast<SIZE_T>(size), &bytecount);
+	if (!WriteProcessMemory(process_handle, (LPVOID)address,
+			value_ptr, static_cast<SIZE_T>(size), &bytecount))
+		return 0;
 
-	CloseHandle(process_handle);
+	if (!CloseHandle(process_handle))
+		return 0;
 
 	return bytecount;
 
@@ -233,8 +248,6 @@ int erebos::get_random_secure() {
 	syscall(SYS_getrandom, &res, 4, GRND_RANDOM);
 
 	return res;
-#else
-    return 0;
 #endif
 }
 
@@ -260,18 +273,22 @@ bool erebos::file::get_dir_file_list(const std::string& dir, std::vector<std::st
 	if(hFile == INVALID_HANDLE_VALUE)
 		return false;
 
+	bool retval = true;
+
 	do {
 		if(!(wfd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL))
 			output.emplace_back(wfd.cFileName);
 	} while(FindNextFile(hFile, &wfd) != 0);
 
-	CloseHandle(hFile);
+	if (GetLastError() != 0)
+		retval = false;
 
-	return true;
+	if (!CloseHandle(hFile) && retval)
+		retval = false;
 
+	return retval;
 #elif defined(LINUX)
 	DIR* handle = opendir(dir.c_str());
-
 	if(!handle)
 		return false;
 
@@ -280,8 +297,11 @@ bool erebos::file::get_dir_file_list(const std::string& dir, std::vector<std::st
 		if(dir_entry->d_type == DT_REG)
 			output.emplace_back(dir_entry->d_name);
 
-	return closedir(handle) == 0;
+	if (closedir(handle))
+		return false;
 #endif
+
+	return true;
 }
 
 
@@ -307,17 +327,24 @@ bool erebos::file::get_dir_folder_list(const std::string& dir, std::vector<std::
 	if(hFile == INVALID_HANDLE_VALUE)
 		return false;
 
+	bool retval = true;
+
 	do {
 		if(wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 			output.emplace_back(wfd.cFileName);
 	} while(FindNextFile(hFile, &wfd) != 0);
 
-	CloseHandle(hFile);
+	if (GetLastError() != 0)
+		retval = false;
+
+	if (!CloseHandle(hFile) && retval)
+		retval = false;
+
+	return retval;
 
 #elif defined(LINUX)
 
 	DIR* handle = opendir(dir.c_str());
-
 	if(!handle)
 		return false;
 
@@ -352,11 +379,14 @@ int erebos::file::get_size(const std::string& filename) {
 #if defined(WINDOWS)
 	HANDLE fd = CreateFile(filename.c_str(), GENERIC_READ, 0, nullptr,
 							OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+	if (!fd)
+		return -1;
 
 	DWORD size;
 	GetFileSize(fd, &size);
 
-	CloseHandle(fd);
+	if (!CloseHandle(fd))
+		return -2;
 
 	return size;
 
@@ -441,13 +471,13 @@ int erebos::cmd(const std::string& command, std::string& output, int* retval) {
 std::string erebos::file::readlink(const std::string& filename) {
 
 	struct stat link_stat;
+
 	int res = lstat(filename.c_str(), &link_stat);
 	if (res == -1)
 		return "";
 
 	char buff[PATH_MAX];
 	res = ::readlink(filename.c_str(), buff, PATH_MAX);
-
 	if (res == -1)
 		return "";
 

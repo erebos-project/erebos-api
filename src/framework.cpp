@@ -16,11 +16,11 @@ std::string erebos::to_unix_slash(const std::string& s) {
 	return from;
 }
 
-
 bool erebos::get_prompt_answer(const std::string& message, const std::string& error_message, bool exit_on_error) {
 	print(message, " [Y/n]");
 	char res;
 	std::cin >> res;
+
 	if(res == 'y' || res == 'Y')
 		return true;
 	else if(res == 'n' || res == 'N')
@@ -35,15 +35,21 @@ bool erebos::get_prompt_answer(const std::string& message, const std::string& er
 
 
 std::string erebos::parse_quotes(const std::string& s) {
-	if(s[0] != '\"' && s[0] != '\'') return s;
+	const char& target = s.at(0);
+	if(target != '\"' && target != '\'') 
+		return s;
+
 	std::string res;
+
 	const size_t size = s.size();
 	for(size_t i = 1; i < size; ++i) {
-		if(s[i] != '\"' && s[i] != '\'')
-			res += s[i];
+		const char& target = s[i];
+		if (target != '\"' && target != '\'')
+			res += target;
 		else
 			break;
 	}
+
 	return res;
 }
 
@@ -57,12 +63,12 @@ void erebos::parse_arg(const std::string& input, std::vector<std::string>& outpu
 
 		if(is_quotes(input[i])) {
 			i++;
-			while(!is_quotes(input[i]) && input[i] != '\n' && input[i] != '\0') {
+			while(!is_quotes(input[i]) && input[i] != '\n' && input[i]) {
 				curr += input[i];
 				i++;
 			}
 		} else {
-			while(!is_quotes(input[i]) && input[i] != ' ' && input[i] != '\n' && input[i] != '\0') {
+			while(!is_quotes(input[i]) && input[i] != ' ' && input[i] != '\n' && input[i]) {
 				curr += input[i];
 				i++;
 			}

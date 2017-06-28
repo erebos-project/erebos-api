@@ -6,6 +6,8 @@
 #define WINDOWS
 #elif defined(__linux__)
 #define LINUX
+#else
+#error Unsupported operating system
 #endif
 
 #if defined(__clang__)

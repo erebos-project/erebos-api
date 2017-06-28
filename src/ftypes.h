@@ -21,7 +21,9 @@ namespace erebos {
 			size_t argsize;
 
 		public:
-			inline Args(const int& argc, char const *argv[]) {
+			inline Args(const int& argc, char const *argv[]) : 
+					list({}), argsize(0) {
+
 				std::string s;
 				for (int i = 0; i < argc; ++i)
 					s += std::string(argv[i]) + ' ';
