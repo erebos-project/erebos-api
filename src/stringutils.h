@@ -10,6 +10,7 @@
 
 #include <string>
 #include <sstream>
+#include <vector>
 
 namespace erebos {
 
@@ -86,10 +87,10 @@ namespace erebos {
 		inline void replace(std::string& target, const std::string& replaced,
 										  const std::string& replacement, const size_t& n = 0) {
 			const size_t replaced_length = replaced.length();
-			size_t position = 0;
+			int position = -1;
 			size_t iterations = 0;
 
-			while ((position = target.find(replaced, position) + 1) != std::string::npos) {
+			while ((position = target.find(replaced, position + 1)) != std::string::npos) {
 				target.replace(position, replaced_length, replacement);
 				iterations++;
 

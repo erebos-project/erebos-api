@@ -1,55 +1,79 @@
 #include <fstream>
 #include <sstream>
 #include <cstring>
+#include <memory>
 #include <errno.h>
 
 #include "logger.h"
 #include "time.h"
 #include "native.h"
-#include "framework.h"
-#include "stringutils.h"
 
 static bool is_file = false;
-static std::ostream* stream = nullptr;
-static std::ofstream* file_stream = nullptr;
+static std::unique_ptr<std::ostream> stream;
 static std::string format_string = "hh:mm:ss";
 
 void erebos::logger::set_stream(std::ostream& new_stream) {
-	if (stream)
-		stream->flush();
 
-	stream = &new_stream;
+	std::ostream* ost = stream.get();
+
+	if (ost) {
+		ost->flush();
+		if (is_file) {
+			std::ofstream* filestream = dynamic_cast<std::ofstream*>(stream.get());
+			if (filestream->is_open())
+				filestream->close();
+		}
+		stream.release();
+	}
+
 	is_file = false;
-	if(file_stream)
-		file_stream->close();
+	stream = std::unique_ptr<std::ostream>(&new_stream);
 }
 
-void erebos::logger::set_stream(std::string filename) {
+void erebos::logger::set_stream(const std::string& filename) {
 
-	if (stream)
-		stream->flush();
-	stream = nullptr;
+	std::ostream* ost = stream.get();
+	if (ost) {
+		ost->flush();
+		if (is_file) {
+			std::ofstream* filestream = dynamic_cast<std::ofstream*>(stream.get());
+			if (filestream->is_open())
+				filestream->close();
+		}
+		stream.release();
+	}
+
 	is_file = true;
-
-	file_stream = new std::ofstream();
-	file_stream->open(filename, std::ofstream::out | std::ofstream::app);
+	stream = std::unique_ptr<std::ostream>(new std::ofstream);
+	dynamic_cast<std::ofstream*>(stream.get())->open(filename, std::ofstream::out | std::ofstream::app);
 }
 
 void erebos::logger::reset_stream() {
 
-	if (stream)
-		stream->flush();
-	if(file_stream)
-		file_stream->close();
+	std::ostream* ost = stream.get();
 
-	stream = nullptr;
-	file_stream = nullptr;
+	if (ost) {
+		ost->flush();
+		if (is_file) {
+			std::ofstream* filestream = dynamic_cast<std::ofstream*>(stream.get());
+			if (filestream->is_open())
+				filestream->close();
+		}
+		stream.release();
+	}
+
 	is_file = false;
+}
+
+void erebos::logger::set_data_format(const std::string& format) {
+
+	format_string = format;
 }
 
 bool erebos::logger::log(const std::string& message, const log_level level, const log_type& type) {
 
-	if(!stream && !file_stream)
+	std::ostream* local_stream = stream.get();
+	if (!local_stream)
 		return false;
 
 	std::stringstream full_log;
@@ -66,36 +90,20 @@ bool erebos::logger::log(const std::string& message, const log_level level, cons
 	else if (type == log_type::LOG_TYPE_ERROR_STRING)
 		full_log << " - Error: " << string_from_errno(errno);
 	else if (type == log_type::LOG_TYPE_ERROR_STRNUM)
-		full_log << " - Error: " << string_from_errno(errno) << " (errno:" << errno <<  ")";
+		full_log << " - Error: " << string_from_errno(errno) << " (errno:" << errno << ")";
 
-	Time now = get_localtime();
-	std::string time_string = format_string;
-
-	strutil::replace(time_string, "yy", var_to_string(now.year));
-	strutil::replace(time_string, "mm", var_to_string(now.month));
-	strutil::replace(time_string, "dd", var_to_string(now.day));
-	strutil::replace(time_string, "hh", var_to_string(now.hour));
-	strutil::replace(time_string, "mm", var_to_string(now.min));
-	strutil::replace(time_string, "ss", var_to_string(now.sec));
-
-	full_log << time_string << " " << message << '\n';
+	full_log << get_localtime().to_string(format_string) << " " << message << '\n';
 
 	const std::string log_string = full_log.str();
 
-	if(!is_file)
-		stream->write(log_string.c_str(), log_string.size());
+	if (!is_file)
+		stream.get()->write(log_string.c_str(), log_string.size());
 	else {
+		std::ofstream* file_stream = dynamic_cast<std::ofstream*>(stream.get());
 		file_stream->write(log_string.c_str(), log_string.size());
 		file_stream->flush();
 	}
 
 	return true;
 }
-
-
-void erebos::logger::set_format(std::string format) {
-
-	format_string = format;
-}
-
 
