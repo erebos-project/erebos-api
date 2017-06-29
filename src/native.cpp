@@ -213,8 +213,9 @@ bool erebos::proc::mem_unlock(void* address, const size_t& size) {
 #endif
 }
 
-
+#ifdef WINDOWS
 typedef BOOL (WINAPI* CheckTokenMembership_ptr)(HANDLE TokenHandle, PSID SidToCheck, PBOOL IsMember);
+#endif
 
 
 bool erebos::is_privileged() {
