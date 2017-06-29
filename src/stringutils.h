@@ -17,6 +17,7 @@ namespace erebos {
 	namespace strutil {
 
 		using ssize = long long;
+		using ssize32 = long;
 
 		/*
 		* bool is_literal(char c)
@@ -90,7 +91,13 @@ namespace erebos {
 		inline void replace(std::string& target, const std::string& replaced,
 										  const std::string& replacement, const size_t& n = 0) {
 			const size_t replaced_length = replaced.length();
+
+#if defined(WINDOWS)
+			ssize32 position = -1;
+#elif defined(LINUX)
 			ssize position = -1;
+#endif
+
 			size_t iterations = 0;
             size_t new_position;
 

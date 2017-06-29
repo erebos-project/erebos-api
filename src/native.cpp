@@ -3,10 +3,13 @@
 
 #if defined(WINDOWS)
 #define WINDOWS_LEAN_AND_MEAN 1
+
 #include <windows.h>
 #include <wincrypt.h>
 #include <tlhelp32.h>
 #include <functional>
+#include "stringutils.h"
+
 #if defined(_COMPILER_MSVC)
 #define POPEN_F _popen
 #define PCLOSE_F _pclose
@@ -15,10 +18,13 @@
 #define POPEN_F popen
 #define PCLOSE_F pclose
 #endif
-using CheckTokenMembership_f = std::function<BOOL(HANDLE TokenHandle, PSID SidToCheck, PBOOL IsMember);
+
+// __stdcall ignored here
+using CheckTokenMembership_rawfp = BOOL(*)(HANDLE TokenHandle, PSID SidToCheck, PBOOL IsMember);
 #elif defined(LINUX)
 #define POPEN_F popen
 #define PCLOSE_F pclose
+
 #include <unistd.h>
 #include <sys/uio.h>
 #include <linux/random.h>
@@ -233,17 +239,16 @@ bool erebos::is_privileged() {
 	if(!lib)
 		return false;
 
-	CheckTokenMembership_f CheckTokenMembership;
-	CheckTokenMembership = static_cast<CheckTokenMembership_f>(GetProcAddress(lib, "CheckTokenMembership"));
+	CheckTokenMembership_rawfp checkTokenMembership;
+	checkTokenMembership = reinterpret_cast<CheckTokenMembership_rawfp>(GetProcAddress(lib, "CheckTokenMembership"));
 
 	FreeLibrary(lib);
 
 	if(!lib)
 		return false;
 
-
 	if(b) {
-		if (!CheckTokenMembership(0, AdministratorsGroup, &b))
+		if (!checkTokenMembership(0, AdministratorsGroup, &b))
 			b = FALSE;
 
 		FreeSid(AdministratorsGroup);
@@ -459,10 +464,8 @@ bool erebos::file::remove_dir(const std::string& dirname) {
 
 #if defined(WINDOWS)
 
-	char* buffer = new char[dirname.size() + 1];
-	strncpy(buffer, dirname.c_str(), dirname.size());
-	buffer[dirname.size() - 1] = '\0';
-	buffer[dirname.size()] = '\0';
+	char buffer[_MAX_DIR];
+	snprintf(buffer, _MAX_DIR, "%s\0\0", dirname.c_str());
 
 
 	// This function needs paths to be double null terminated
