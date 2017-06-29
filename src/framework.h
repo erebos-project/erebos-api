@@ -161,6 +161,7 @@ namespace erebos {
 
 	FUNCALIAS(color, get_color_string); // Function alias for easier usage
 
+
 	//if using C++11
 	template<typename UniqueType, typename ... TypeArgs>
 	inline std::unique_ptr<UniqueType> make_unique(TypeArgs&& ... args_fwd) {

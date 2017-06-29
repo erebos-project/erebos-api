@@ -27,6 +27,7 @@
 #include <syscall.h>
 #include <sys/stat.h>
 #include <sys/mman.h>
+#include <ftw.h>
 #endif
 
 std::string erebos::get_exe_path_()  {
@@ -46,9 +47,6 @@ std::string erebos::get_exe_path_()  {
 	ss << "/proc/" << getpid() << "/exe";
 
 	std::string exe_link = file::readlink(ss.str());
-
-	if (exe_link == "")
-		return "";
 
 	return exe_link;
 #endif
@@ -411,12 +409,46 @@ bool erebos::file::remove(const std::string& filename) {
 }
 
 
-bool erebos::file::remove_dir(const std::string& filename) {
+#ifdef LINUX
+int remove_callback(const char *filepath, const struct stat *st, int flag, struct FTW *buffer) {
+
+	return ::remove(filepath);
+}
+#endif
+
+
+
+bool erebos::file::remove_dir(const std::string& dirname) {
 
 #if defined(WINDOWS)
-	return RemoveDirectory(filename.c_str()) != 0;
+
+	char* buffer = new char[dirname.size() + 1];
+	strncpy(buffer, dirname.c_str(), dirname.size());
+	buffer[dirname.size() - 1] = '\0';
+	buffer[dirname.size()] = '\0';
+
+
+	// This function needs paths to be double null terminated
+
+	SHFILEOPSTRUCT opstruct = {
+		nullptr,
+		FO_DELETE,
+		buffer,
+		nullptr,
+		FOF_NOCONFIRMATION |
+		FOF_NOERRORUI |
+		FOF_SILENT,
+		false,
+		0,
+		nullptr
+	};
+
+    return SHFileOperation(&opstruct) == 0;
+
 #elif defined(LINUX)
-	return rmdir(filename.c_str()) == 0;
+
+	return nftw(dirname.c_str(), remove_callback, 64, FTW_DEPTH | FTW_PHYS) == 0;
+
 #endif
 
 }
