@@ -213,11 +213,50 @@ bool erebos::proc::mem_unlock(void* address, const size_t& size) {
 #endif
 }
 
+
+typedef BOOL (WINAPI* CheckTokenMembership_ptr)(HANDLE TokenHandle, PSID SidToCheck, PBOOL IsMember);
+
+
 bool erebos::is_privileged() {
+
 #if defined(WINDOWS)
-	return false; // TO-DO
+
+	BOOL b;
+	SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
+	PSID AdministratorsGroup;
+	b = AllocateAndInitializeSid(&NtAuthority,
+								 2,
+								 SECURITY_BUILTIN_DOMAIN_RID,
+								 DOMAIN_ALIAS_RID_ADMINS,
+								 0, 0, 0, 0, 0, 0,
+								 &AdministratorsGroup);
+
+	HINSTANCE lib = LoadLibrary("Advapi32.dll");
+
+	if(!lib)
+		return false;
+
+	CheckTokenMembership_ptr CheckTokenMembership = (CheckTokenMembership_ptr) GetProcAddress(lib, "CheckTokenMembership");
+
+	FreeLibrary(lib);
+
+	if(!lib)
+		return false;
+
+
+	if(b) {
+		if (!CheckTokenMembership(0, AdministratorsGroup, &b))
+			b = FALSE;
+
+		FreeSid(AdministratorsGroup);
+	}
+
+	return b != 0;
+
 #elif defined(LINUX)
+
 	return geteuid() == 0;
+
 #endif
 }
 
