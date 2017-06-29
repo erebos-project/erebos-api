@@ -99,16 +99,13 @@ namespace erebos {
 #endif
 
 			size_t iterations = 0;
-            size_t new_position;
 
-			while ((new_position = target.find(replaced, position + 1)) != std::string::npos) {
+			while ((position = target.find(replaced, position + 1)) != std::string::npos) {
 				target.replace(position, replaced_length, replacement);
 				iterations++;
 
 				if (iterations == n)
 					break;
-
-                position = new_position;
 			}
 		}
 
