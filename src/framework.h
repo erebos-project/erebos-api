@@ -14,6 +14,7 @@
 #include <vector>
 #include <sstream>
 #include <memory>
+#include <utility>
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
 #include <cstdlib>
@@ -163,17 +164,17 @@ namespace erebos {
 	//if using C++11
 	template<typename UniqueType, typename ... TypeArgs>
 	inline std::unique_ptr<UniqueType> make_unique(TypeArgs&& ... args_fwd) {
-		return std::unique_ptr<UniqueType>(new UniqueType(args_fwd...));
+		return std::unique_ptr<UniqueType>(new UniqueType(std::forward<TypeArgs>(args_fwd)...));
 	}
 
 	template<typename SharedType, typename ... TypeArgs>
 	inline std::shared_ptr<SharedType> make_shared(TypeArgs&& ... args_fwd) {
-		return std::shared_ptr<SharedType>(new SharedType(args_fwd...));
+		return std::shared_ptr<SharedType>(new SharedType(std::forward<TypeArgs>(args_fwd)...));
 	}
 
 	template<typename WeakType, typename ... TypeArgs>
 	inline std::weak_ptr<WeakType> make_weak(TypeArgs&& ... args_fwd) {
-		return std::weak_ptr<WeakType>(new WeakType(args_fwd...));
+		return std::weak_ptr<WeakType>(new WeakType(std::forward<TypeArgs>(args_fwd)...));
 	}
 
 	/*

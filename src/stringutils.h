@@ -90,15 +90,18 @@ namespace erebos {
 		inline void replace(std::string& target, const std::string& replaced,
 										  const std::string& replacement, const size_t& n = 0) {
 			const size_t replaced_length = replaced.length();
-			int position = -1;
+			ssize position = -1;
 			size_t iterations = 0;
+            size_t new_position;
 
-			while ((position = target.find(replaced, position + 1)) != std::string::npos) {
+			while ((new_position = target.find(replaced, position + 1)) != std::string::npos) {
 				target.replace(position, replaced_length, replacement);
 				iterations++;
 
 				if (iterations == n)
 					break;
+
+                position = new_position;
 			}
 		}
 

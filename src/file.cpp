@@ -154,17 +154,10 @@ bool erebos::file::write_bin(const std::string& filename, const data_t& data, bo
 	FILE* fd;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
-	if (truncate)
-		fd = fopen(filename.c_str(), "wb+");
-	else
-		fd = fopen(filename.c_str(), "wb");
-
+    fd = fopen(filename.c_str(), (truncate) ? "wb+" : "wb");
 #elif defined(_COMPILER_MSVC)
 	errno_t err;
-	if (truncate)
-		err = fopen_s(&fd, filename.c_str(), "wb+");
-	else
-		err = fopen_s(&fd, filename.c_str(), "wb");
+	err = fopen_s(&fd, filename.c_str(), (truncate) ? "wb+" : "wb");
 
 	if (err != 0)
 		return false;
