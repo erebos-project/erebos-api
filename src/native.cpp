@@ -1,12 +1,12 @@
 #include "native.h"
 #include "framework.h"
-#include "stringutils.h"
 
 #if defined(WINDOWS)
 #define WINDOWS_LEAN_AND_MEAN 1
 #include <windows.h>
 #include <wincrypt.h>
 #include <tlhelp32.h>
+#include <functional>
 #if defined(_COMPILER_MSVC)
 #define POPEN_F _popen
 #define PCLOSE_F _pclose
@@ -15,6 +15,7 @@
 #define POPEN_F popen
 #define PCLOSE_F pclose
 #endif
+using CheckTokenMembership_f = std::function<BOOL(HANDLE TokenHandle, PSID SidToCheck, PBOOL IsMember);
 #elif defined(LINUX)
 #define POPEN_F popen
 #define PCLOSE_F pclose
@@ -213,11 +214,6 @@ bool erebos::proc::mem_unlock(void* address, const size_t& size) {
 #endif
 }
 
-#ifdef WINDOWS
-typedef BOOL (WINAPI* CheckTokenMembership_ptr)(HANDLE TokenHandle, PSID SidToCheck, PBOOL IsMember);
-#endif
-
-
 bool erebos::is_privileged() {
 
 #if defined(WINDOWS)
@@ -237,7 +233,8 @@ bool erebos::is_privileged() {
 	if(!lib)
 		return false;
 
-	CheckTokenMembership_ptr CheckTokenMembership = (CheckTokenMembership_ptr) GetProcAddress(lib, "CheckTokenMembership");
+	CheckTokenMembership_f CheckTokenMembership;
+	CheckTokenMembership = static_cast<CheckTokenMembership_f>(GetProcAddress(lib, "CheckTokenMembership"));
 
 	FreeLibrary(lib);
 
@@ -544,7 +541,7 @@ std::string erebos::file::readlink(const std::string& filename) {
 
 	struct stat link_stat;
 
-	int res = lstat(filename.c_str(), &link_stat);
+	ssize_t res = lstat(filename.c_str(), &link_stat);
 	if (res == -1)
 		return "";
 
