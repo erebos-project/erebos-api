@@ -7,7 +7,6 @@
 #include <windows.h>
 #include <wincrypt.h>
 #include <tlhelp32.h>
-#include <functional>
 #include "stringutils.h"
 
 #if defined(_COMPILER_MSVC)
