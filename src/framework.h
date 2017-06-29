@@ -143,7 +143,7 @@ namespace erebos {
 	*/
 	inline void set_shell_color(const shell_color& color) {
 #if defined(LINUX) || defined(_WINDOWS_SHELL_COLOR)
-		std::cout << std::string("\033[" + var_to_string(static_cast<int>(color)) + "m");
+		std::cout << std::string("\033[" + var_to_string(color) + "m");
 #endif
 	}
 
@@ -153,7 +153,7 @@ namespace erebos {
 	*/
 	inline std::string get_color_string(const shell_color& color) {
 #if defined(LINUX) || defined(_WINDOWS_SHELL_COLOR)
-		return "\033[" + var_to_string(static_cast<int>(color)) + "m";
+		return "\033[" + var_to_string(color) + "m";
 #else
 		return "";
 #endif
