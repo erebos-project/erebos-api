@@ -19,6 +19,17 @@ namespace erebos {
 		using ssize = long long;
 		using ssize32 = long;
 
+        inline bool chomp(std::string& target) {
+			const size_t end_pos = target.size() - 1;
+
+            if(target.at(end_pos) == '\n') {
+                target.erase(end_pos);
+                return true;
+            }
+
+            return false;
+        }
+
 		/*
 		* bool is_literal(char c)
 		* Checks wether the given character is a letter.

@@ -6,6 +6,7 @@
 #ifndef _NATIVE_H
 #define _NATIVE_H
 
+#include "framework.h"
 #include "platform_defs.h"
 
 #include <vector>
@@ -27,6 +28,10 @@ namespace erebos {
 			* If the process couldn't be found it returns -1.
 			*/
 			int get_pid_by_name(const std::string& name, std::vector<int>& output);
+
+#if defined(LINUX)
+            FUNCALIAS(pidof,get_pid_by_name);
+#endif
 
 #if defined(WINDOWS)
 			/*

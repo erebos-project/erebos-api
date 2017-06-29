@@ -1,5 +1,4 @@
 #include "native.h"
-#include "framework.h"
 
 #if defined(WINDOWS)
 #define WINDOWS_LEAN_AND_MEAN 1
@@ -23,6 +22,9 @@ using CheckTokenMembership_rawfp = BOOL(*)(HANDLE TokenHandle, PSID SidToCheck, 
 #elif defined(LINUX)
 #define POPEN_F popen
 #define PCLOSE_F pclose
+
+#include "stringutils.h"
+#include "file.h"
 
 #include <unistd.h>
 #include <sys/uio.h>
@@ -99,7 +101,22 @@ int erebos::proc::get_pid_by_name(const std::string& name, std::vector<int>& out
 
 	return retval;
 #elif defined(LINUX)
-	//todo
+    std::vector<std::string> running_procs;
+    if(!file::get_dir_folder_list("/proc",running_procs))
+		return -1;
+
+	char comm_path[PATH_MAX];
+	for(const auto& proc_dir : running_procs) {
+		if(strutil::is_numeral(proc_dir)) {
+			snprintf(comm_path,PATH_MAX,"/proc/%s/comm",proc_dir.c_str());
+			std::string content = file::read(comm_path);
+			strutil::chomp(content);
+			if(content == name)
+				output.push_back(std::stoi(proc_dir));
+		}
+	}
+
+	return 0;
 #endif
 }
 
