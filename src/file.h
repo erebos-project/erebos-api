@@ -4,6 +4,11 @@
 #include "ftypes.h"
 
 namespace erebos {
+
+    /*!
+     * @namespace erebos::file
+     * @brief file utilities
+     */
 	namespace file {
 
 		/*

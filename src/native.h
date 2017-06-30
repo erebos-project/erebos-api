@@ -14,6 +14,10 @@
 
 namespace erebos {
 
+        /*!
+         * @namespace erebos::proc
+         * @brief process utilities namespace
+         */
 		namespace proc {
 
 			/*

@@ -23,56 +23,74 @@
 #include "ftypes.h"
 #include "version.h"
 
-/*
-* DEFVERSION(int MAJOR, int MINOR, int PATCH) macro for defining a program's version easily.
-* e.g. DEFVERSION(1, 0, 0)
-*/
+/*!
+ * @def DEFVERSION(MAJOR,MINOR,PATCH)
+ * @brief define your own program version
+ * (expands to 3 constexpr integers)
+ * @param MAJOR (constexpr int VERSION_MAJOR)
+ * @param MINOR (constexpr int VERSION_MINOR)
+ * @param PATCH (constexpr int VERSION_PATCH)
+ * @example DEFVERSION(0,0,1);
+ */
 #define DEFVERSION(MAJOR, MINOR, PATCH) \
 	constexpr int VERSION_MAJOR = MAJOR; \
 	constexpr int VERSION_MINOR = MINOR; \
 	constexpr int VERSION_PATCH = PATCH
 
-/*
-* FUNCALIAS(NEWNAME, OLDNAME) macro for defining an alias for a function.
-*/
+/*!
+ * @def FUNCALIAS(NEWNAME,OLDNAME)
+ * @brief this macro allows you to define a new name
+ * for your subroutines, no more overhead.
+ * Widely used within the framework itself
+ * (expands to a constexpr runtime-type-deducted symbol)
+ * @param NEWNAME
+ * @param OLDNAME
+ * @example FUNCALIAS(new_subr,old_subr);
+ */
 #define FUNCALIAS(NEWNAME, OLDNAME) \
 	constexpr auto NEWNAME = OLDNAME
 
-/*
-* VERSIONFUNC(progname) macro for automatic version printing.
-* Prints the program's version (defined with DEFVERSION) if the '-version' or '-v' argument is passed.
-* The caller should have the "args" variable defined (as a Args).
-* e.g.
-* DEFVERSION(1, 0, 0)
-* VERSIONFUNC(program)
-* prints:
-*
-* program v1.0.0
-*
-*/
-#define VERSIONFUNC(progname) \
-	if(args.contains_s("-version") { \
+/*!
+ * @def VERSIONFUNC(_args,progname)
+ * @brief checks if program cmdline contains -version
+ * then prints out the following:
+ *   ${PROGAM_NAME} ${PROGRAM_VERSION}
+ * At the end, exits resulting in success.
+ * WARNING: DEFVERSION() should expand first
+ * @param _args: erebos::Args class instance
+ * @param progname: program name
+ * @example VERSIONFUNC(my_args,"MyProgram");
+ */
+#define VERSIONFUNC(_args,progname) \
+	if(_args.contains_s("-version") { \
 		std::stringstream ss; \
 		ss << "\n" << progname << "\t" << "v" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH; \
 		std::cout << ss.str() << std::endl; \
 		exit(0); \
 	}
 
+/*!
+ * @namespace erebos
+ * @brief main erebos namespace, contains core
+ * functions,classes,enums,templates...
+ */
 namespace erebos {
-	/*
-	* std::string get_api_version()
-	* Returns Erebos' API version as a string in the format MAJOR.MINOR.PATCH .
-	*/
+    /*!
+     * @fn erebos::get_api_version()
+     * @return Erebos API version in the form:
+     * ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
+     */
 	inline std::string get_api_version() {
 		std::stringstream ss;
 		ss << API_VERSION_MAJOR << "." << API_VERSION_MINOR << "." << API_VERSION_PATCH;
 		return ss.str();
 	}
 
-	/*
-	* int hex_to_int(std::string str)
-	* Converts the specified hex-like string to int.
-	*/
+    /*!
+     * @fn erebos::hex_to_int(const std::string&)
+     * @param str: a string containing hex value
+     * @return the hex value as integer
+     */
 	inline int hex_to_int(const std::string& str) {
 		int res;
 		std::stringstream ss(str);
@@ -80,12 +98,13 @@ namespace erebos {
 		return res;
 	}
 
-	/*
-	* std::string var_to_string(T var)
-	* Converts the given variable into a string.
-	* Some implementations don't provide 'to_string'.
-	* This is a simple template to replace it.
-	*/
+	/*!
+	 * @fn erebos::var_to_string(const T&)
+	 * @brief converts whatever type to string
+	 * @tparam T
+	 * @param var: parameter to be converted
+	 * @return new string with converted var
+	 */
 	template<typename T>
 	inline std::string var_to_string(const T& var) {
 		std::stringstream ss;
@@ -93,10 +112,10 @@ namespace erebos {
 		return ss.str();
 	}
 
-	/*
-	* enum SHELL_COLOR
-	* Enumeration used for specifying shell color for 'set_shell_solor'.
-	*/
+	/*!
+	 * @enum erebos::shell_color
+	 * @brief contains colors integer constants
+	 */
 	enum shell_color : int {
 		SHELL_GREY = 90,
 		SHELL_RED = 91,
@@ -137,20 +156,23 @@ namespace erebos {
 		SHELL_SELECTED = 7
 	};
 
-	/*
-	* set_shell_color(enum SHELL_COLOR color)
-	* Change the shell's character color using escape codes.
-	*/
+	/*!
+	 * @fn erebos::set_shell_color(const shell_color&)
+	 * @param color
+	 * @brief changes color by printing out the escape sequence
+	 * Note: only if LINUX or _WINDOWS_SHELL_COLOR are actually defined
+	 */
 	inline void set_shell_color(const shell_color& color) {
 #if defined(LINUX) || defined(_WINDOWS_SHELL_COLOR)
 		std::cout << std::string("\033[" + var_to_string(color) + "m");
 #endif
 	}
 
-	/*
-	* get_color_string(enum SHELL_COLOR color)
-	* Get a string to change shell color.
-	*/
+    /*!
+     * @fn erebos::get_color_string(const shell_color&)
+     * @param color
+     * @return escape sequence with color code (erebos::color() is an alias)
+     */
 	inline std::string get_color_string(const shell_color& color) {
 #if defined(LINUX) || defined(_WINDOWS_SHELL_COLOR)
 		return "\033[" + var_to_string(color) + "m";
@@ -162,158 +184,197 @@ namespace erebos {
 	FUNCALIAS(color, get_color_string); // Function alias for easier usage
 
 
-	//if using C++11
+	/*!
+	 * @fn erebos::make_unique(TypeArgs&&...)
+	 * @tparam UniqueType : the type for unique_ptr
+	 * @tparam TypeArgs : type for passed parameter to the pointer which unique_ptr will hold
+	 * @param args_fwd : parameter to be passed to the pointer which unique_ptr will hold
+	 * @return new std::unique_ptr<UniqueType> instance
+	 * @brief simple implementation if you're not using C++14 or later
+	 */
 	template<typename UniqueType, typename ... TypeArgs>
 	inline std::unique_ptr<UniqueType> make_unique(TypeArgs&& ... args_fwd) {
 		return std::unique_ptr<UniqueType>(new UniqueType(std::forward<TypeArgs>(args_fwd)...));
 	}
 
+	/*!
+	 * @fn erebos::make_shared(TypeArgs&&...)
+	 * @tparam SharedType : the type for shared_ptr
+	 * @tparam TypeArgs : type for passed parameter to the pointer which shared_ptr will hold
+	 * @param args_fwd : parameter to be passed to the pointer which shared_ptr will hold
+	 * @return new std::unique_ptr<SharedType> instance
+	 * @brief simple implementation if you're not using C++14 or later
+	 */
 	template<typename SharedType, typename ... TypeArgs>
 	inline std::shared_ptr<SharedType> make_shared(TypeArgs&& ... args_fwd) {
 		return std::shared_ptr<SharedType>(new SharedType(std::forward<TypeArgs>(args_fwd)...));
 	}
 
+	/*!
+	 * @fn erebos::make_weak(TypeArgs&&...)
+	 * @tparam WeakType : the type for weak_ptr
+	 * @tparam TypeArgs : type for passed parameter to the pointer which weak_ptr will hold
+	 * @param args_fwd : parameter to be passed to the pointer which weak_ptr will hold
+	 * @return new std::weak_ptr<WeakType> instance
+	 * @brief simple implementation if you're not using C++14 or later
+	 */
 	template<typename WeakType, typename ... TypeArgs>
 	inline std::weak_ptr<WeakType> make_weak(TypeArgs&& ... args_fwd) {
 		return std::weak_ptr<WeakType>(new WeakType(std::forward<TypeArgs>(args_fwd)...));
 	}
 
-	/*
-	* std::string get_exe_path()
-	* Returns the path to the program's binary.
-	* Uses the lower level 'get_exe_path_' from 'native.h'.
-	*/
+	/*!
+	 * @fn erebos::get_exe_path()
+	 * @return program executable
+	 */
 	std::string get_exe_path();
 
-	/*
-	* std::string get_help_string()
-	* Returns "-help Get help for this program."
-	* Used for unified help information.
-	*/
+	/*!
+	 * @fn erebos::get_help_string()
+	 * @return "-help Get help for this program."
+	 */
 	inline const std::string get_help_string() {
 
 		return "-help Get help for this program.";
 	}
 
-	/*
-	* std::string to_unix_slash(std::string s)
-	* Turns Windows slashes into Unix-style slashes and returns the string.
-	* e.g. to_unix_slash("\folder\folder\file.dat")
-	* returns: "/folder/folder/file.dat"
-	*/
+	/*!
+	 * @fn erebos::to_unix_slash(const std::string&)
+	 * @param s : windows-like path
+	 * @return new string containing unix-like path
+	 * @example to_unix_slash("C:\Windows\System32") => C:/Windows/System32
+	 */
 	std::string to_unix_slash(const std::string& s);
 
-	/*
-	* println(...)
-	* Prints the data followed by a newline.
-	*/
+	/*!
+	 * @fn erebos::println()
+	 * @brief prints newline
+	 */
 	inline void println() {
-		std::cout << std::endl;
+		std::cout << '\n';
 	}
 
+	/*!
+	 * @fn erebos::println(const First&, const Many&...)
+	 * @tparam First
+	 * @tparam Many
+	 * @param arg
+	 * @param rest
+	 * @brief Prints as many argument as specified, then newline
+	 */
 	template<typename First, typename ... Many>
 	inline void println(const First& arg, const Many&... rest) {
 		std::cout << arg;
 		println(rest...);
 	}
 
-	/*
-	* print(...)
-	* Prints the data.
-	*/
+	/*!
+	 * @fn erebos::print()
+	 * @brief Does nothing. Literally
+	 */
 	inline void print() {
 		// Template last expansion.
 	}
 
+	/*!
+	 * @fn erebos::print(const First&, const Many&...)
+	 * @tparam First
+	 * @tparam Many
+	 * @param arg
+	 * @param rest
+	 * @brief Prints as many arguments as specified, no newline at the end
+	 */
 	template<typename First, typename ... Many>
 	inline void print(const First& arg, const Many&... rest) {
 		std::cout << arg;
 		print(rest...);
 	}
 
-	/*
-	* printerrln(...)
-	* Prints the data to err followed by a newline.
-	*/
+    /*!
+     * @fn erebos::printerrln()
+     * @brief prints a newline to stderr
+     */
 	inline void printerrln() {
-		std::cerr << std::endl;
+		std::cerr << '\n';
 	}
 
+	/*!
+	 * @fn erebos::printerrln(const First&, const Many&...)
+	 * @tparam First
+	 * @tparam Many
+	 * @param arg
+	 * @param rest
+	 * @brief prints to stderr as many argument as specified, newline at the end
+	 */
 	template<typename First, typename ... Many>
 	inline void printerrln(const First& arg, const Many&... rest) {
 		std::cerr << arg;
 		println(rest...);
 	}
 
-	/*
-	* printerr(...)
-	* Prints the data to err.
-	*/
+	/*!
+	 * @fn erebos::printerr()
+	 * @brief Does nothing. Literally
+	 */
 	inline void printerr() {
 		// Template last expansion.
 	}
 
+	/*!
+	 * @fn erebos::printerr(const First&, const Many&...)
+	 * @tparam First
+	 * @tparam Many
+	 * @param arg
+	 * @param rest
+	 * @brief prints to stderr as many argument as specified, no newline at the end
+	 */
 	template<typename First, typename ... Many>
 	inline void printerr(const First& arg, const Many&... rest) {
 		std::cerr << arg;
 		print(rest...);
 	}
 
-	/*
-	* ferror(std::string message, int code)
-	* Fatal error: Output an error message (colored in red) and exit with <code> exit value.
-	*/
-	inline void ferror(std::string message, int code) {
-		println(color(SHELL_RED), message, color(SHELL_RESET));
+    /*!
+     * @fn erebos::ferror(const std::string&, const int&)
+     * @param message : message to be printed out
+     * @param code : exit code, -1 by default
+     * @brief prints out to stderr your message, then exits with 'code'
+     */
+	inline void ferror(const std::string& message, const int& code = -1) {
+		printerrln(color(SHELL_RED), message, color(SHELL_RESET));
 		exit(code);
 	}
 
-	/*
-	* log(std::string message)
-	* Output a log message colored in yellow.
-	*/
-	inline void log() {
-		std::cout << std::endl;
-		set_shell_color(SHELL_RESET);
-	}
-
-	template<typename First, typename ... Many>
-	inline void log(const First& arg, const Many&... rest) {
-		set_shell_color(SHELL_YELLOW);
-		std::cout << arg;
-		log(rest...);
-	}
-
-	/*
-	* print_logo()
-	* Prints Erebos' logo.
-	*/
+	/*!
+	 * @fn erebos::print_logo()
+	 * @brief Prints erebos logo :)
+	 */
 	inline void print_logo() {
 		println(""); // TO-DO
 	}
 
-	/*
-	* bool get_prompt_answer(std::string message, std::string error_message = "", std::string yes_or_no_str = " [Y/n] ", bool exit_on_error = true)
-	* Prompt the user [message] and [yes_or_not], returns 'true' if the user answers 'Y' or 'y', 'false' if the user answers 'N' or 'n',
-	* returns 'false' or exits (based on [exit_on_error]) if given malformed input.
-	* e.g. get_prompt_answer("Are you ok?")
-	* > Are you ok? [Y/n]  Y
-	* returns: true
-	*/
-	bool get_prompt_answer(const std::string& message, const std::string& error_message = "", const bool& exit_on_error = true);
+	/*!
+	 * @fn erebos::get_prompt_answer(const std::string&, const std::string&, const bool&)
+	 * @param message : your question
+	 * @param error_message : error message if user answers wrong (default = "")
+	 * @param exit_on_error : should exit on wrong input by user? (default = true)
+	 * @return user chosen Y or N ?
+	 */
+	bool get_prompt_answer(const std::string& message, const std::string& error_message = "",
+						   const bool& exit_on_error = true);
 
-	/*
-	* std::string parse_quotes(std::string s)
-	* Reads and returns a quoted string.
-	* e.g. parse_quotes("'Hello man!'")
-	* returns: "Hello man!"
-	*/
+	/*!
+	 * @fn erebos::parse_quotes(const std::string&)
+	 * @param s : string to be quoted
+	 * @return new quoted string
+	 */
 	std::string parse_quotes(const std::string& s);
 
-	/*
-	* parse_arg(std::string input, std::vector<std::string>& output)
-	* Splits the given string based on spaces and quotes and appends each string to 'output'.
-	*/
+	/*!
+	 * @fn erebos::parse_arg(const std::string&, std::vector<std::string>&)
+	 * @param input : input string to be parsed (based on spaces and quotes)
+	 * @param output : parsed string
+	 */
 	void parse_arg(const std::string& input, std::vector<std::string>& output);
 }
 

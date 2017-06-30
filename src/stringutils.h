@@ -13,7 +13,10 @@
 #include <vector>
 
 namespace erebos {
-
+    /*!
+     * @namespace erebos::strutil
+     * @brief contains string manip utils
+     */
 	namespace strutil {
 
 		using ssize = long long;

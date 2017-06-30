@@ -1,6 +1,25 @@
+/*!
+ * @headerfile version.h
+ * @brief include this if you want to get API version
+ * (Note, this is already included in framework.h)
+ */
 #ifndef VERSION_H
 #define VERSION_H
 
+/*!
+ * @var API_VERSION_MAJOR
+ * @brief Major Erebos version
+ */
+
+/*!
+ * @var API_VERSION_MINOR
+ * @brief Minor Erebos version
+ */
+
+/*!
+ * @var API_VERSION_PATCH
+ * @brief Patch version
+ */
 constexpr int API_VERSION_MAJOR = @API_VERSION_MAJOR@;
 constexpr int API_VERSION_MINOR = @API_VERSION_MINOR@;
 constexpr int API_VERSION_PATCH = @API_VERSION_PATCH@;
