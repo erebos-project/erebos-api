@@ -1,8 +1,7 @@
-/*
-* stringutils.h
-* Character and string handling utilities.
-*/
-
+/*!
+ * @headerfile stringutils.h
+ * @brief string utilities
+ */
 #ifndef _STRINGUTILS_H
 #define _STRINGUTILS_H
 
@@ -19,9 +18,23 @@ namespace erebos {
      */
 	namespace strutil {
 
+		/*!
+		 * @typedef erebos::strutil::ssize
+		 * @brief defines a 64 bit signed integer
+		 */
 		using ssize = long long;
+
+		/*!
+		 * @typedef erebos::strutil::ssize32
+		 * @brief defines a 32 bit signed integer
+		 */
 		using ssize32 = long;
 
+		/*!
+		 * @fn erebos::strutil::chomp(std::string&)
+		 * @param [out]target : string to be chomp-ed
+		 * @return true if newline was found and erased, false otherwise
+		 */
         inline bool chomp(std::string& target) {
 			const size_t end_pos = target.size() - 1;
 

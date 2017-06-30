@@ -1,3 +1,7 @@
+/*!
+ * @headerfile ftypes.h
+ * @brief framework core data types
+ */
 #ifndef _FTYPES_H
 #define _FTYPES_H
 
@@ -9,18 +13,23 @@ namespace erebos {
 
 	void parse_arg(const std::string& input, std::vector<std::string>& output);
 
-	/*
-	* Args
-	* A class for terminal argument handling.
-	* Construct with Args(argc, argv).
-	* Commonly declared and used in Erebos as 'args'.
-	*/
+
+	/*!
+	 * @class erebos::Args
+	 * @brief command line argument parser
+	 */
 	class Args {
 		private:
 			std::vector<std::string> list;
 			size_t argsize;
 
 		public:
+			/*!
+			 * @fn erebos::Args::Args(const int&, char const*)
+			 * @brief class constructor
+			 * @param argc
+			 * @param argv
+			 */
 			inline Args(const int& argc, char const *argv[]) : 
 					list({}), argsize(0) {
 
@@ -34,18 +43,22 @@ namespace erebos {
 				argsize = list.size();
 			}
 
-			/*
-			* std::string operator[](size_t i)
-			* Get the nth argument.
-			*/
+        	/*!
+        	 * @fn erebos::Args::operator[](const size_t&) const
+        	 * @brief (may throw exception) gets the i-th argument from parsed arguments
+        	 * @param i
+        	 * @return i-th argument
+        	 */
 			inline const std::string& operator[](const size_t& i) const {
 				return list.at(i);
 			}
 
-			/*
-			* bool contains(std::string s)
-			* Checks whether the argument list contains the specified string.
-			*/
+        	/*!
+        	 * @fn erebos::Args::contains(const std::string&) const noexcept
+        	 * @brief checks if the s-string is availible
+        	 * @param s
+        	 * @return true if inside, false otherwise
+        	 */
 			inline bool contains(const std::string& s) const {
 				for (size_t i = 0; i < argsize; ++i)
 					if(list[i] == s)
@@ -53,10 +66,12 @@ namespace erebos {
 				return false;
 			}
 
-			/*
-			* bool contains_s(std::string s)
-			* Checks wether the argument list contains the specified string or its first two characters.
-			*/
+			/*!
+			 * @fn erebos::Args::contains_s(const std::string&)
+			 * @brief safe version of contains
+			 * @param s
+			 * @return true if s-string is inside, false otherwise
+			 */
 			inline bool contains_s(const std::string& s) const {
 
 				for (size_t i = 0; i < argsize; ++i)
@@ -82,60 +97,102 @@ namespace erebos {
 				return false;
 			}
 
-			/*
-			* size_t size()
-			* Get the argument list size.
-			*/
+
+			/*!
+			 * @fn erebos::Args::size() const noexcept
+			 * @brief retrieve argument length
+			 * @return const-ref to argument size
+			 */
 			inline const size_t& size() const noexcept {
 				return argsize;
 			}
 	};
 
+	/*!
+	 * @class erebos::data_t
+	 * @brief hold generic data (dynamic allocated)
+	 */
 	class data_t {
-		using data_size = unsigned long;
+		/*!
+		 * @typedef data_size
+		 * @brief 64-bit unsigned integer
+		 */
+		using data_size = unsigned long long;
 
 		public:
+			/*!
+			 * @var data
+			 * @brief data handled by data_t class
+			 */
 			char* data;
+
+			/*!
+			 * @var size
+			 * @brief data size
+			 */
 			data_size size;
 
+			/*!
+			 * @fn erebos::data_t::data_t()
+			 * @brief class constructor, initializes data to nullptr and size to 0
+			 */
 			inline data_t() : data(nullptr), size(0) {}
 
+			/*!
+			 * @fn erebos::data_t::data_t(const std::string&)
+			 * @brief class constructor, dynamically allocates, and makes deep copy of data
+			 * @param str
+			 */
 			inline explicit data_t(const std::string& str)
-					: data(const_cast<char*>(str.c_str())),
-						size(static_cast<data_size>(str.size())) {
+                    : size(static_cast<data_size>(str.size())) {
 				this->data = new char[size];
 				memcpy(this->data, str.c_str(), size);
 			}
 
+			/*!
+			 * @fn erebos::data_t::~data_t()
+			 * @brief class deconstructor, this ensures data is freed when object goes out-of-scope
+			 */
 			inline ~data_t() {
 				free();
 			}
 
+			/*!
+			 * @fn erebos::data_t::data_t(const char*, const data_size&)
+			 * @brief class constuctor, dynamically allocates, and makes deep copy of data
+			 * @param data
+			 * @param size
+			 */
 			inline data_t(const char* data, const data_size& size)
 					: size(size) {
 				this->data = new char[size];
 				memcpy(this->data, data, size);
 			}
 
-			// Makes a deep copy of the passed data_t structure.
+        	/*!
+        	 * @fn erebos::data_t::data_t(const data_t&)
+        	 * @brief class copy-constructor, this allows class copy
+        	 * @param prev
+        	 */
 			inline data_t(const data_t& prev) {
 				this->data = new char[prev.size];
 				this->size = prev.size;
 				memcpy(this->data, prev.data, this->size);
 			}
 
+			/*!
+			 * @fn erebos::data_t::free()
+			 * @brief frees dynamically-allocated region before class gets destroyed.
+			 * (Ready for holding other data)
+			 */
 			inline void free() {
 				if (data) {
 					delete[] data;
 					size = 0;
+                    data = nullptr;
 				}
 			}
-
-			inline const char& operator[](const data_size& index) const noexcept {
-				return data[index];
-			}
 	};
-
 }
 
 #endif

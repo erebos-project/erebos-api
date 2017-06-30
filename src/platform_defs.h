@@ -1,4 +1,7 @@
-//internal usage only
+/*!
+ * @headerfile platform_defs.h
+ * @brief You should not include this explicitly.
+ */
 #ifndef PLATFORM_DEFS_H
 #define PLATFORM_DEFS_H
 

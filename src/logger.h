@@ -1,3 +1,7 @@
+/*!
+ * @headerfile logger.h
+ * @brief logging facilities
+ */
 #ifndef LOGGER_H
 #define LOGGER_H
 

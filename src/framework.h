@@ -1,10 +1,7 @@
-/*
-* framework.h
-* Erebos API providing common utility functions.
-* Includes 'native.h' and 'stringutils.h'
-* All functions should be cross-platform.
-*/
-
+/*!
+ * @headerfile framework.h
+ * @brief core framework header
+ */
 #ifndef _FRAMEWORK_H
 #define _FRAMEWORK_H
 

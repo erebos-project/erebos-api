@@ -1,3 +1,7 @@
+/*!
+ * @headerfile file.h
+ * @brief file os-independent utilities
+ */
 #ifndef EREBOS_FILE_H
 #define EREBOS_FILE_H
 

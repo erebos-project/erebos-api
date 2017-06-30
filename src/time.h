@@ -1,3 +1,7 @@
+/*!
+ * @headerfile time.h
+ * @brief time utilities
+ */
 #ifndef EREBOS_TIME_H
 #define EREBOS_TIME_H
 

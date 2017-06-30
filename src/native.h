@@ -1,8 +1,7 @@
-/*
-* native.h
-* Functions interfacing with the operative system.
-*/
-
+/*!
+ * @headerfile native.h
+ * @brief operating-system dependent utilities
+ */
 #ifndef _NATIVE_H
 #define _NATIVE_H
 
