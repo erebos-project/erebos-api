@@ -1,5 +1,5 @@
 /*!
- * @headerfile file.h
+ * @file file.h
  * @brief file os-independent utilities
  */
 #ifndef EREBOS_FILE_H
@@ -10,82 +10,78 @@
 namespace erebos {
 
     /*!
-     * @namespace erebos::file
      * @brief file utilities
      */
 	namespace file {
 
-		/*
-		* std::string get_file_path(std::string filename)
-		* Parses the given string and returns the path without the filename.
-		* Windows slash is converted to unix-style slash using 'to_unix_slash'
-		* If the path couldn't be found returns an empty string.
-		* e.g. get_file_path("/folder/folder/file")
-		* returns: "/folder/folder/"
-		*/
+		/*!
+		 * @brief gets full path to s
+		 * @param s : relative path
+		 * @return full path
+		 */
 		std::string get_path(std::string s);
 
-		/*
-		* std::string get_file_extension(std::string filename)
-		* Parses the given filename and returns the file's extension.
-		* e.g. get_file_extension("file.dat")
-		* returns: "dat"
-		* Does not consider multiple extension files, in the case returns the last extension.
-		* e.g. get_file_extension("file.tar.bz")
-		* returns: "bz"
-		*/
+        /*!
+         * @brief filename extension
+         * @param filename
+         * @return filename extension
+         */
 		std::string get_extension(const std::string& filename);
 
-		/*
-		* std::string get_file_name(std::string filename)
-		* Parses the given filename and returns the file's name without the path.
-		* e.g. get_file_name("/folder/file.dat")
-		* returns: "file.dat"
-		*/
+		/*!
+		 * @brief filename name, without extension
+		 * @param filename
+		 * @return filename name
+		 */
 		std::string get_name(std::string filename);
 
-		/*
-		* std::string get_basename(std::string filename)
-		* Parses the given filename and returns the file's basename.
-		* e.g. get_file_basename("/folder/file.dat")
-		* returns: "file"
-		*/
+		/*!
+		 * @brief filename basename
+		 * @param filename
+		 * @return filename basename
+		 */
 		std::string get_basename(std::string filename);
 
-		/*
-		* bool get_exists(std::string filename)
-		* Checks wether the file exists or not.
-		*/
+		/*!
+		 * @brief does file exist?
+		 * @param filename
+		 * @return true if file exists, false otherwise
+		 */
 		bool get_exists(const std::string& filename);
 
-		/*
-		* std::string read(std::string filename)
-		* Reads the whole content of a file into a string.
-		*/
+		/*!
+		 * @brief read an entire file
+		 * @param filename
+		 * @return content, if empty string, probably failure
+		 */
 		std::string read(const std::string& filename);
 
-		/*
-		* data_t read_bin(std::string filename)
-		* Reads the whole file content into a string as binary data.
-		* Returns an empty data_t structure on fail.
-		*/
+		/*!
+		 * @brief read an entire binary file, then store result in holding
+		 * erebos::data_t class
+		 * @param filename
+		 * @param [out]bytecount : how many read bytes? nullptr if not interested (set by default)
+		 * @return an erebos::data_t structure holding binary data
+		 */
 		data_t read_bin(const std::string& filename, std::uint64_t* bytecount = nullptr);
 
-
-		/*
-		* bool write(std::string filename, std::string data, bool truncate)
-		* Writes the given string to the specified file.
-		* Returns 'true' if the file could be written, false otherwise.
-		*/
+		/*!
+		 * @brief write bytes to a file
+		 * @param filename
+		 * @param data
+		 * @param truncate : true by default
+		 * @return true if function succeed, false otherwise
+		 */
 		bool write(const std::string& filename, const std::string& data, bool truncate = true);
 
-		/*
-		* bool write_bin(std::string filename, data_t data, bool truncate)
-		* Writes the given data to the specified file as binary data.
-		* Returns 'true' if successful, 'false' otherwise.
-		*/
+		/*!
+		 * @brief write data hold by erebos::data_t class to binary file
+		 * @param filename
+		 * @param data : erebos::data_t class holding data
+		 * @param truncate : true by default
+		 * @return true if function succeed, false otherwise
+		 */
 		bool write_bin(const std::string& filename, const data_t& data, bool truncate = true);
-
 	}
 }
 

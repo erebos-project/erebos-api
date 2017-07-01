@@ -1,5 +1,5 @@
 /*!
- * @headerfile framework.h
+ * @file framework.h
  * @brief core framework header
  */
 #ifndef _FRAMEWORK_H
@@ -21,7 +21,6 @@
 #include "version.h"
 
 /*!
- * @def DEFVERSION(MAJOR,MINOR,PATCH)
  * @brief define your own program version
  * (expands to 3 constexpr integers)
  * @param MAJOR (constexpr int VERSION_MAJOR)
@@ -35,20 +34,17 @@
 	constexpr int VERSION_PATCH = PATCH
 
 /*!
- * @def FUNCALIAS(NEWNAME,OLDNAME)
  * @brief this macro allows you to define a new name
  * for your subroutines, no more overhead.
  * Widely used within the framework itself
  * (expands to a constexpr runtime-type-deducted symbol)
  * @param NEWNAME
  * @param OLDNAME
- * @example FUNCALIAS(new_subr,old_subr);
  */
 #define FUNCALIAS(NEWNAME, OLDNAME) \
 	constexpr auto NEWNAME = OLDNAME
 
 /*!
- * @def VERSIONFUNC(_args,progname)
  * @brief checks if program cmdline contains -version
  * then prints out the following:
  *   ${PROGAM_NAME} ${PROGRAM_VERSION}
@@ -56,7 +52,6 @@
  * WARNING: DEFVERSION() should expand first
  * @param _args: erebos::Args class instance
  * @param progname: program name
- * @example VERSIONFUNC(my_args,"MyProgram");
  */
 #define VERSIONFUNC(_args,progname) \
 	if(_args.contains_s("-version") { \
@@ -67,13 +62,11 @@
 	}
 
 /*!
- * @namespace erebos
- * @brief main erebos namespace, contains core
- * functions,classes,enums,templates...
+ * @brief main erebos namespace
  */
 namespace erebos {
     /*!
-     * @fn erebos::get_api_version()
+     * @brief Erebos API version
      * @return Erebos API version in the form:
      * ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
      */
@@ -84,7 +77,7 @@ namespace erebos {
 	}
 
     /*!
-     * @fn erebos::hex_to_int(const std::string&)
+     * @brief hex from string to int
      * @param str: a string containing hex value
      * @return the hex value as integer
      */
@@ -96,7 +89,6 @@ namespace erebos {
 	}
 
 	/*!
-	 * @fn erebos::var_to_string(const T&)
 	 * @brief converts whatever type to string
 	 * @tparam T
 	 * @param var: parameter to be converted
@@ -110,7 +102,6 @@ namespace erebos {
 	}
 
 	/*!
-	 * @enum erebos::shell_color
 	 * @brief contains colors integer constants
 	 */
 	enum shell_color : int {
@@ -154,7 +145,6 @@ namespace erebos {
 	};
 
 	/*!
-	 * @fn erebos::set_shell_color(const shell_color&)
 	 * @param color
 	 * @brief changes color by printing out the escape sequence
 	 * Note: only if LINUX or _WINDOWS_SHELL_COLOR are actually defined
@@ -166,7 +156,7 @@ namespace erebos {
 	}
 
     /*!
-     * @fn erebos::get_color_string(const shell_color&)
+     * @brief gets entire color escape sequence
      * @param color
      * @return escape sequence with color code (erebos::color() is an alias)
      */
@@ -178,11 +168,13 @@ namespace erebos {
 #endif
 	}
 
-	FUNCALIAS(color, get_color_string); // Function alias for easier usage
+	/*!
+	 * @brief alias for get_color_string
+	 */
+	FUNCALIAS(color, get_color_string);
 
 
 	/*!
-	 * @fn erebos::make_unique(TypeArgs&&...)
 	 * @tparam UniqueType : the type for unique_ptr
 	 * @tparam TypeArgs : type for passed parameter to the pointer which unique_ptr will hold
 	 * @param args_fwd : parameter to be passed to the pointer which unique_ptr will hold
@@ -195,7 +187,6 @@ namespace erebos {
 	}
 
 	/*!
-	 * @fn erebos::make_shared(TypeArgs&&...)
 	 * @tparam SharedType : the type for shared_ptr
 	 * @tparam TypeArgs : type for passed parameter to the pointer which shared_ptr will hold
 	 * @param args_fwd : parameter to be passed to the pointer which shared_ptr will hold
@@ -208,7 +199,6 @@ namespace erebos {
 	}
 
 	/*!
-	 * @fn erebos::make_weak(TypeArgs&&...)
 	 * @tparam WeakType : the type for weak_ptr
 	 * @tparam TypeArgs : type for passed parameter to the pointer which weak_ptr will hold
 	 * @param args_fwd : parameter to be passed to the pointer which weak_ptr will hold
@@ -221,13 +211,12 @@ namespace erebos {
 	}
 
 	/*!
-	 * @fn erebos::get_exe_path()
-	 * @return program executable
+	 * @brief gets program executable
+	 * @return program executable string
 	 */
 	std::string get_exe_path();
 
 	/*!
-	 * @fn erebos::get_help_string()
 	 * @return "-help Get help for this program."
 	 */
 	inline const std::string get_help_string() {
@@ -236,15 +225,13 @@ namespace erebos {
 	}
 
 	/*!
-	 * @fn erebos::to_unix_slash(const std::string&)
+	 * @brief converts backslash to slash
 	 * @param s : windows-like path
 	 * @return new string containing unix-like path
-	 * @example to_unix_slash("C:\Windows\System32") => C:/Windows/System32
 	 */
 	std::string to_unix_slash(const std::string& s);
 
 	/*!
-	 * @fn erebos::println()
 	 * @brief prints newline
 	 */
 	inline void println() {
@@ -252,7 +239,6 @@ namespace erebos {
 	}
 
 	/*!
-	 * @fn erebos::println(const First&, const Many&...)
 	 * @tparam First
 	 * @tparam Many
 	 * @param arg
@@ -266,7 +252,6 @@ namespace erebos {
 	}
 
 	/*!
-	 * @fn erebos::print()
 	 * @brief Does nothing. Literally
 	 */
 	inline void print() {
@@ -274,7 +259,6 @@ namespace erebos {
 	}
 
 	/*!
-	 * @fn erebos::print(const First&, const Many&...)
 	 * @tparam First
 	 * @tparam Many
 	 * @param arg
@@ -288,7 +272,6 @@ namespace erebos {
 	}
 
     /*!
-     * @fn erebos::printerrln()
      * @brief prints a newline to stderr
      */
 	inline void printerrln() {
@@ -296,7 +279,6 @@ namespace erebos {
 	}
 
 	/*!
-	 * @fn erebos::printerrln(const First&, const Many&...)
 	 * @tparam First
 	 * @tparam Many
 	 * @param arg
@@ -310,7 +292,6 @@ namespace erebos {
 	}
 
 	/*!
-	 * @fn erebos::printerr()
 	 * @brief Does nothing. Literally
 	 */
 	inline void printerr() {
@@ -318,7 +299,6 @@ namespace erebos {
 	}
 
 	/*!
-	 * @fn erebos::printerr(const First&, const Many&...)
 	 * @tparam First
 	 * @tparam Many
 	 * @param arg
@@ -332,7 +312,6 @@ namespace erebos {
 	}
 
     /*!
-     * @fn erebos::ferror(const std::string&, const int&)
      * @param message : message to be printed out
      * @param code : exit code, -1 by default
      * @brief prints out to stderr your message, then exits with 'code'
@@ -343,7 +322,6 @@ namespace erebos {
 	}
 
 	/*!
-	 * @fn erebos::print_logo()
 	 * @brief Prints erebos logo :)
 	 */
 	inline void print_logo() {
@@ -351,7 +329,7 @@ namespace erebos {
 	}
 
 	/*!
-	 * @fn erebos::get_prompt_answer(const std::string&, const std::string&, const bool&)
+	 * @brief prompt menu facility
 	 * @param message : your question
 	 * @param error_message : error message if user answers wrong (default = "")
 	 * @param exit_on_error : should exit on wrong input by user? (default = true)
@@ -361,14 +339,14 @@ namespace erebos {
 						   const bool& exit_on_error = true);
 
 	/*!
-	 * @fn erebos::parse_quotes(const std::string&)
+	 * @brief new quoted string
 	 * @param s : string to be quoted
 	 * @return new quoted string
 	 */
 	std::string parse_quotes(const std::string& s);
 
 	/*!
-	 * @fn erebos::parse_arg(const std::string&, std::vector<std::string>&)
+	 * @brief argument parser, used by erebos::Args
 	 * @param input : input string to be parsed (based on spaces and quotes)
 	 * @param output : parsed string
 	 */

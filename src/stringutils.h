@@ -1,5 +1,5 @@
 /*!
- * @headerfile stringutils.h
+ * @file stringutils.h
  * @brief string utilities
  */
 #ifndef _STRINGUTILS_H
@@ -13,25 +13,22 @@
 
 namespace erebos {
     /*!
-     * @namespace erebos::strutil
      * @brief contains string manip utils
      */
 	namespace strutil {
 
 		/*!
-		 * @typedef erebos::strutil::ssize
 		 * @brief defines a 64 bit signed integer
 		 */
 		using ssize = long long;
 
 		/*!
-		 * @typedef erebos::strutil::ssize32
 		 * @brief defines a 32 bit signed integer
 		 */
 		using ssize32 = long;
 
 		/*!
-		 * @fn erebos::strutil::chomp(std::string&)
+		 * @brief erase newline at the end of the string
 		 * @param [out]target : string to be chomp-ed
 		 * @return true if newline was found and erased, false otherwise
 		 */
@@ -46,34 +43,38 @@ namespace erebos {
             return false;
         }
 
-		/*
-		* bool is_literal(char c)
-		* Checks wether the given character is a letter.
-		*/
+        /*!
+         * @brief check if character is literal
+         * @param c
+         * @return true if c is literal, false otherwise
+         */
 		inline bool is_literal(const char& c) {
 			return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
 		}
 
-		/*
-		* bool is_numeral(char c)
-		* Checks wether the given character is a number.
-		*/
+        /*!
+         * @brief check if character is numeric
+         * @param c
+         * @return true if c is numeric, false otherwise
+         */
 		inline bool is_numeral(const char& c) {
 			return (c >= '0') && (c <= '9');
 		}
 
-		/*
-		* bool is_quotes(char c)
-		* Checks wether the given character is a quote (" or ')
-		*/
+		/*!
+		 * @brief check if char is double/single quote
+		 * @param c
+		 * @return true if the char 'c' is a single/double quote, false otherwise
+		 */
 		inline bool is_quotes(const char& c) {
 			return c == '\'' || c == '\"';
 		}
 
-		/*
-		* bool is_literal(std::string s)
-		* Checks wether the whole string is made of letters.
-		*/
+		/*!
+		 * @brief check if string is literal
+		 * @param s
+		 * @return true if string is literal, false otherwise
+		 */
 		inline bool is_literal(const std::string& s) {
 			for (size_t i = 0; i < s.size(); ++i) {
 				if(!is_literal(s[i]))
@@ -82,10 +83,11 @@ namespace erebos {
 			return true;
 		}
 
-		/*
-		* bool is_numeral(std::string)
-		* Checks wether the given string is made of numbers.
-		*/
+        /*!
+         * @brief check if string is numeric
+         * @param s
+         * @return true if string is numeric, false otherwise
+         */
 		inline bool is_numeral(const std::string& s) {
 			for (size_t i = 0; i < s.size(); ++i) {
 				if(!is_numeral(s[i]))
@@ -94,10 +96,13 @@ namespace erebos {
 			return true;
 		}
 
-		/*
-		* std::string string_cut(std::string s, size_t offset, size_t size)
-		* Returns a part of the specified string, starting from [offset] and reading [size] characters.
-		*/
+        /*!
+         * @brief cut a string
+         * @param s : string to be cutted
+         * @param offset : offset at
+         * @param size : size of the cut
+         * @return new cutted string
+         */
 		inline std::string cut(const std::string& s, const size_t& offset, size_t size = 0) {
 			std::string res;
 			if(!size)
@@ -111,10 +116,13 @@ namespace erebos {
 			return res;
 		}
 
-		/*
-		* string string_replace(std::string target, std::string replaced, std::string replacement, size_t n = 0)
-		* Replace 'n' occurrences of 'replaced' with 'replacement'.
-		*/
+        /*!
+         * @brief replace substring in string
+         * @param [out]target : string for replacement
+         * @param replaced : substring TO BE replaced
+         * @param replacement : replacement for 'replaced'
+         * @param n : how many times
+         */
 		inline void replace(std::string& target, const std::string& replaced,
 										  const std::string& replacement, const size_t& n = 0) {
 			const size_t replaced_length = replaced.length();
@@ -136,10 +144,13 @@ namespace erebos {
 			}
 		}
 
-		/*
-		* std::string string_replace(std::string target, std::string replaced, std::string replacement, size_t n = 0)
-		* Replace 'n' occurrences of 'replaced' with 'replacement'.
-		*/
+		/*!
+		 * @brief replace character in string
+		 * @param [out]target : string for replacement
+		 * @param replaced : char to be replaced
+		 * @param replacement : replacement for 'replaced'
+		 * @param n : how many times
+		 */
 		inline void replace(std::string& target, const char& replaced,
 							const char& replacement, const size_t& n = 0) {
 			size_t iterations = 0;
@@ -154,11 +165,12 @@ namespace erebos {
 			}
 		}
 
-		/*
-		* std::string string_mul(std::string s, size_t times)
-		* Ruby style string multiplication.
-		* Returns a string made of [times] times [s].
-		*/
+        /*!
+         * @brief ruby-style string multiply
+         * @param s : string to be multiplied
+         * @param times : how many times the multiplication has to be repeated
+         * @return new multiplied string
+         */
 		inline std::string mul(const std::string& s, const size_t& times) {
 			std::string res;
 			for (size_t i = 0; i < times; ++i)
@@ -166,11 +178,12 @@ namespace erebos {
 			return res;
 		}
 
-		/*
-		* const std::vector<std::string> split(const std::string& str, const char& splchr)
-		* Splits a string based on spaces.
-		* Returns an std::vector of std::strings.
-		*/
+		/*!
+		 * @brief split a string by 'splchr' and put it into 'output' vector
+		 * @param str : string to be splitted
+		 * @param splchr : split character
+		 * @param [out]output : target vector
+		 */
 		inline void split(const std::string& str, const char& splchr, std::vector<std::string>& output) {
 
 			std::stringstream ss(str);
@@ -180,10 +193,12 @@ namespace erebos {
 				output.emplace_back(item);
 		}
 
-		/*
-		* size_t index_of(const char array[], char element)
-		* Return the index of the element into the array or -1 if doesn't exist
-		*/
+        /*!
+         * @brief find an element into an array of bytes
+         * @param array : the array
+         * @param element : the element
+         * @return array index, -1 if not found
+         */
 		inline ssize index_of(const char array[], const char& element) {
 			for(ssize i = 0; i < static_cast<ssize>(std::string(array).size()); i++)
 				if(array[i] == element)
@@ -192,6 +207,12 @@ namespace erebos {
 			return -1;
 		}
 
+		/*!
+		 * @brief encode a string using base64 cipher
+		 * @param str : your string
+		 * @param characters : (already set)
+		 * @return new encoded string
+		 */
 		inline std::string encode_base64(const std::string& str,
 			const char* characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") {
 
@@ -234,6 +255,12 @@ namespace erebos {
 			return string_encoded;
 		}
 
+		/*!
+		 * @brief decode a previously encoded base64 string
+		 * @param str : base64-encoded string
+		 * @param characters : (already set)
+		 * @return new decoded string
+		 */
 		inline std::string decode_base64(const std::string& str,
 			const char* characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") {
 
@@ -275,32 +302,39 @@ namespace erebos {
 		}
 
 #if defined(LINUX)
+        /*!
+         *
+         * @param command
+         * @return new string command with stderr to stdout, useful with erebos::cmd()
+         */
 		inline std::string stderr_to_stdout(const std::string& command) {
 			return std::string(command).append("2>&1");
 		}
 #endif
 
-		/*
-		* std::string convert_base64_mime(std::string str)
-		* std::string string_encode_base64_mime(std::string str)
-		* Converts the given ASCII string to Base64 MIME.
-		*/
+		/*!
+		 * @brief encode a string to base64 mime
+		 * @param str : string to be encoded
+		 * @return new encoded string
+		 */
 		inline std::string encode_base64_mime(const std::string& str) {
 			return encode_base64(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
 		}
 
-		/*
-		* std::string string_decode_base64_mime(std::string str)
-		* Converts the given Base64 MIME string to ASCII.
-		*/
+        /*!
+         * @brief decode a string from base64 mime
+         * @param str : your encoded string
+         * @return new decoded string
+         */
 		inline std::string decode_base64_mime(const std::string& str) {
 			return decode_base64(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
 		}
 
-		/*
-		* std::string string_encode_base64_url(std::string str)
-		* Converts the given ASCII string to Base64 URL.
-		*/
+        /*!
+         * @brief encode an URL to base64
+         * @param str : your url
+         * @return new encoded URL
+         */
 		inline std::string encode_base64_url(const std::string& str) {
 			return encode_base64(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_");
 		}

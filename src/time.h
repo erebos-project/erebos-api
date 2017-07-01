@@ -1,5 +1,5 @@
 /*!
- * @headerfile time.h
+ * @file time.h
  * @brief time utilities
  */
 #ifndef EREBOS_TIME_H
@@ -11,20 +11,18 @@
 namespace erebos {
 
 		/*!
-		 * @struct erebos::Time
 		 * @brief contains year,month,day,hour,min,sec, refer to the constructor
 		 */
 		struct Time {
 		public:
 			/*!
-			 * @fn erebos::Time::Time(std::tm*)
 			 * @param right_now : tm structure
-			 * @brief parses right_now and then sets fields. If nullptr, initialized to 0
+			 * @brief parses right_now and then sets fields.
+			 * If nullptr, fields are initialized to 0
 			 */
 			explicit Time(std::tm* right_now);
 
 			/*!
-			 * @fn erebos::Time::to_string(std::string format) const
 			 * @param format : A format string like: "YY/MM/DD @ hh:mm:ss"
 			 * @return new string containing formatted string
 			 * @brief formats are:
@@ -45,6 +43,10 @@ namespace erebos {
 			int sec;
 		};
 
+		/*!
+		 * @brief new Time-ready structure with current time
+		 * @return Time structure with current time values
+		 */
 		Time get_localtime();
 
 }

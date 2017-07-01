@@ -1,5 +1,5 @@
 /*!
- * @headerfile logger.h
+ * @file logger.h
  * @brief logging facilities
  */
 #ifndef LOGGER_H
@@ -10,13 +10,11 @@
 namespace erebos {
 
 	/*!
-	 * @namespace erebos::logger
 	 * @brief event logging utilities
 	 */
 	namespace logger {
 
 		/*!
-		 * @enum erebos::logger::log_type
 		 * @brief how many information the log should bring?
 		 * constants are self-explainatory
 		 */
@@ -28,7 +26,6 @@ namespace erebos {
 		};
 
 		/*!
-		 * @enum erebos::logger::log_level
 		 * @brief which type of event is this?
 		 * constants are self-explainatory
 		 */
@@ -39,31 +36,31 @@ namespace erebos {
 		};
 
 		/*!
-		 * @fn erebos::logger::set_stream(std::ostream&)
 		 * @param stream : an std::ostream based class
 		 * (in most cases std::cout or std::cerr)
-		 * !! DO NOT USE THIS OVERLOAD WITH FILES !!
+		 * @brief this overload should not be used with files (ofstream)
 		 */
 		void set_stream(std::ostream& stream);
+
 		/*!
-		 * @fn erebos::logger::set_stream(const std::string&)
+		 * @brief this overload enable logging to file!
 		 * @param filename : file name string
 		 */
 		void set_stream(const std::string& filename);
+
 		/*!
-		 * @fn erebos::logger::reset_stream()
 		 * @brief reset the stream, log() will fail and return false
 		 */
 		void reset_stream();
+
 		/*!
-		 * @fn erebos::logger::set_data_format(const std::string&)
+		 * @brief change logging data format
 		 * @param format : Time format (refer to erebos::Time struct)
-		 * @refitem erebos::Time
 		 */
 		void set_data_format(const std::string& format);
 
 		/*!
-		 * @fn erebos::logger::log(const std::string&, const log_level&, const log_type&)
+		 * @brief logging facility function
 		 * @param message
 		 * @param level : event type (refer to erebos::logger::log_level enum)
 		 * @param type : logging informatios (default = LOG_TYPE_NORMAL)(refer to erebos::logger::log_type enum)

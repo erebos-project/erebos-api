@@ -1,5 +1,5 @@
 /*!
- * @headerfile ftypes.h
+ * @file ftypes.h
  * @brief framework core data types
  */
 #ifndef _FTYPES_H
@@ -15,7 +15,6 @@ namespace erebos {
 
 
 	/*!
-	 * @class erebos::Args
 	 * @brief command line argument parser
 	 */
 	class Args {
@@ -25,7 +24,6 @@ namespace erebos {
 
 		public:
 			/*!
-			 * @fn erebos::Args::Args(const int&, char const*)
 			 * @brief class constructor
 			 * @param argc
 			 * @param argv
@@ -44,7 +42,6 @@ namespace erebos {
 			}
 
         	/*!
-        	 * @fn erebos::Args::operator[](const size_t&) const
         	 * @brief (may throw exception) gets the i-th argument from parsed arguments
         	 * @param i
         	 * @return i-th argument
@@ -54,7 +51,6 @@ namespace erebos {
 			}
 
         	/*!
-        	 * @fn erebos::Args::contains(const std::string&) const noexcept
         	 * @brief checks if the s-string is availible
         	 * @param s
         	 * @return true if inside, false otherwise
@@ -67,7 +63,6 @@ namespace erebos {
 			}
 
 			/*!
-			 * @fn erebos::Args::contains_s(const std::string&)
 			 * @brief safe version of contains
 			 * @param s
 			 * @return true if s-string is inside, false otherwise
@@ -99,7 +94,6 @@ namespace erebos {
 
 
 			/*!
-			 * @fn erebos::Args::size() const noexcept
 			 * @brief retrieve argument length
 			 * @return const-ref to argument size
 			 */
@@ -109,37 +103,31 @@ namespace erebos {
 	};
 
 	/*!
-	 * @class erebos::data_t
 	 * @brief hold generic data (dynamic allocated)
 	 */
 	class data_t {
 		/*!
-		 * @typedef data_size
 		 * @brief 64-bit unsigned integer
 		 */
 		using data_size = unsigned long long;
 
 		public:
 			/*!
-			 * @var data
 			 * @brief data handled by data_t class
 			 */
 			char* data;
 
 			/*!
-			 * @var size
 			 * @brief data size
 			 */
 			data_size size;
 
 			/*!
-			 * @fn erebos::data_t::data_t()
 			 * @brief class constructor, initializes data to nullptr and size to 0
 			 */
 			inline data_t() : data(nullptr), size(0) {}
 
 			/*!
-			 * @fn erebos::data_t::data_t(const std::string&)
 			 * @brief class constructor, dynamically allocates, and makes deep copy of data
 			 * @param str
 			 */
@@ -150,7 +138,6 @@ namespace erebos {
 			}
 
 			/*!
-			 * @fn erebos::data_t::~data_t()
 			 * @brief class deconstructor, this ensures data is freed when object goes out-of-scope
 			 */
 			inline ~data_t() {
@@ -158,7 +145,6 @@ namespace erebos {
 			}
 
 			/*!
-			 * @fn erebos::data_t::data_t(const char*, const data_size&)
 			 * @brief class constuctor, dynamically allocates, and makes deep copy of data
 			 * @param data
 			 * @param size
@@ -170,7 +156,6 @@ namespace erebos {
 			}
 
         	/*!
-        	 * @fn erebos::data_t::data_t(const data_t&)
         	 * @brief class copy-constructor, this allows class copy
         	 * @param prev
         	 */
@@ -181,7 +166,6 @@ namespace erebos {
 			}
 
 			/*!
-			 * @fn erebos::data_t::free()
 			 * @brief frees dynamically-allocated region before class gets destroyed.
 			 * (Ready for holding other data)
 			 */
