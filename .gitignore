@@ -23,3 +23,7 @@ CTestTestfile.cmake
 version.h
 .idea/
 cmake-build-debug/
+scripts/include
+scripts/lib
+scripts/README.md
+scripts/LICENSE
