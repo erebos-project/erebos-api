@@ -24,6 +24,9 @@ script:
    - build-wrapper-linux-x86-64 --out-dir build_wrapper make -j3
    - sonar-scanner
 
+after_script:
+   - ./scripts/deploy_pages.sh
+
 deploy:
    provider: pages
    skip_cleanup: true
