@@ -23,9 +23,7 @@ script:
    - cmake . -DCMAKE_BUILD_TYPE="Release"
    - build-wrapper-linux-x86-64 --out-dir build_wrapper make -j3
    - sonar-scanner
-
-after_script:
-   - ./scripts/deploy_pages.sh
+   - bash ./scripts/deploy_pages.sh
 
 deploy:
    provider: pages
