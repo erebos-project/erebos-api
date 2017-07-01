@@ -18,7 +18,8 @@
 #endif
 
 // __stdcall ignored here
-using CheckTokenMembership_rawfp = BOOL(*)(HANDLE TokenHandle, PSID SidToCheck, PBOOL IsMember);
+using CheckTokenMembership_ptr = BOOL(*)(HANDLE TokenHandle, PSID SidToCheck, PBOOL IsMember);
+
 #elif defined(LINUX)
 #define POPEN_F popen
 #define PCLOSE_F pclose
@@ -144,7 +145,7 @@ bool erebos::proc::kill(const int& pid) {
 #endif
 }
 
-size_t erebos::proc::mem_read(const int& pid, const size_t& address, char* result, const size_t& size ) {
+int erebos::proc::mem_read(const int& pid, const size_t& address, char* result, const size_t& size ) {
 
 #if defined(WINDOWS)
 	HANDLE process_handle;
@@ -155,13 +156,13 @@ size_t erebos::proc::mem_read(const int& pid, const size_t& address, char* resul
 
 	size_t bytecount;
 	if (!ReadProcessMemory(process_handle, (LPVOID)address,
-			result, size, (SIZE_T*)&bytecount))
+			result, size, (SIZE_T*) &bytecount))
 		return 0;
 
 	if (!CloseHandle(process_handle))
 		return 0;
 
-	return bytecount;
+	return (int) bytecount;
 
 #elif defined(LINUX)
 	iovec local;
@@ -177,13 +178,14 @@ size_t erebos::proc::mem_read(const int& pid, const size_t& address, char* resul
 	if (bytes < 0)
 		return 0;
 
-	return static_cast<size_t>(bytes);
+	return (int) bytes;
 #endif
 }
 
-size_t erebos::proc::mem_write(const int& pid, const size_t& address, char* data, const size_t& size) {
+int erebos::proc::mem_write(const int& pid, const size_t& address, char* data, const size_t& size) {
 
 #if defined(WINDOWS)
+
 	HANDLE process_handle;
 	SIZE_T bytecount = 0;
 	LPCVOID value_ptr = static_cast<LPCVOID>(&data);
@@ -199,9 +201,10 @@ size_t erebos::proc::mem_write(const int& pid, const size_t& address, char* data
 	if (!CloseHandle(process_handle))
 		return 0;
 
-	return bytecount;
+	return (int) bytecount;
 
 #elif defined(LINUX)
+
 	iovec local;
 	iovec remote;
 
@@ -215,22 +218,27 @@ size_t erebos::proc::mem_write(const int& pid, const size_t& address, char* data
 	if (bytes < 0)
 		return 0;
 
-	return static_cast<size_t>(bytes);
+	return (int) bytes;
+
 #endif
 }
 
 
 bool erebos::proc::mem_lock(void* address, const size_t& size) {
+
 #if defined(WINDOWS)
 	return VirtualLock(address, size);
+
 #elif defined(LINUX)
 	return !mlock(address, size);
 #endif
 }
 
 bool erebos::proc::mem_unlock(void* address, const size_t& size) {
+
 #if defined(WINDOWS)
 	return VirtualUnlock(address, size);
+
 #elif defined(LINUX)
 	return !munlock(address, size);
 #endif
@@ -240,23 +248,21 @@ bool erebos::is_privileged() {
 
 #if defined(WINDOWS)
 
-	BOOL b;
 	SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
 	PSID AdministratorsGroup;
-	b = AllocateAndInitializeSid(&NtAuthority,
-								 2,
-								 SECURITY_BUILTIN_DOMAIN_RID,
-								 DOMAIN_ALIAS_RID_ADMINS,
-								 0, 0, 0, 0, 0, 0,
-								 &AdministratorsGroup);
+	BOOL b = AllocateAndInitializeSid(&NtAuthority,
+									 2,
+									 SECURITY_BUILTIN_DOMAIN_RID,
+									 DOMAIN_ALIAS_RID_ADMINS,
+									 0, 0, 0, 0, 0, 0,
+									 &AdministratorsGroup);
 
 	HINSTANCE lib = LoadLibrary("Advapi32.dll");
 
 	if(!lib)
 		return false;
 
-	CheckTokenMembership_rawfp checkTokenMembership;
-	checkTokenMembership = reinterpret_cast<CheckTokenMembership_rawfp>(GetProcAddress(lib, "CheckTokenMembership"));
+	CheckTokenMembership_ptr checkTokenMembership = (CheckTokenMembership_ptr) GetProcAddress(lib, "CheckTokenMembership");
 
 	FreeLibrary(lib);
 
@@ -282,6 +288,7 @@ bool erebos::is_privileged() {
 int erebos::get_random_secure() {
 
 #if defined(WINDOWS)
+
 	HCRYPTPROV hProv;
 
 	int res;
@@ -300,6 +307,7 @@ int erebos::get_random_secure() {
 	return res;
 
 #elif defined(LINUX) && defined(SYS_getrandom) && defined(GRND_RANDOM)
+
 	int res;
 	syscall(SYS_getrandom, &res, 4, GRND_RANDOM);
 
@@ -344,6 +352,7 @@ bool erebos::file::get_dir_file_list(const std::string& dir, std::vector<std::st
 
 	return retval;
 #elif defined(LINUX)
+
 	DIR* handle = opendir(dir.c_str());
 	if(!handle)
 		return false;

@@ -63,7 +63,7 @@ namespace erebos {
         	 * @param size : (set to 1 by default) bytes to be read
         	 * @return read bytes from address
         	 */
-			size_t mem_read(const int& pid, const size_t& address, char* result, const size_t& size = 1);
+			int mem_read(const int& pid, const size_t& address, char* result, const size_t& size = 1);
 
         	/*!
         	 * @brief write a chunk of bytes to process' address space
@@ -73,7 +73,7 @@ namespace erebos {
         	 * @param size : (set to 1 by default) how any bytes
         	 * @return written bytes to address
         	 */
-			size_t mem_write(const int& pid, const size_t& address, char* data, const size_t& size = 1);
+			int mem_write(const int& pid, const size_t& address, char* data, const size_t& size = 1);
 
         	/*!
         	 * @brief locks the specified memory area
