@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 
 #find_package if required
 configure_file("${PROJECT_SOURCE_DIR}/src/version.h.in" "${PROJECT_SOURCE_DIR}/src/version.h")
+file(GLOB_RECURSE HEADERS "*.h")
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -46,15 +47,54 @@ else()
 	add_library(erebos STATIC ${SOURCES})
 endif()
 
-if(UNIX AND LIBRARY STREQUAL "shared")
-	install(TARGETS erebos LIBRARY
-			DESTINATION ${CMAKE_PREFIX_DIR}/lib)
-elseif(UNIX AND LIBRARY STREQUAL "static")
-	install(TARGETS erebos ARCHIVE
-			DESTINATION ${CMAKE_PREFIX_DIR}/lib)
+if(NOT CMAKE_PREFIX_DIR AND UNIX)
+	message("-- Probing prefix directory...")
+	if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+		set(CMAKE_PREFIX_DIR "/usr")
+	else()
+		set(CMAKE_PREFIX_DIR "/usr/local")
+	endif()
+	message("-- CMAKE_PREFIX_DIR=${CMAKE_PREFIX_DIR}")
 endif()
 
 if(UNIX)
-	install(FILES *.h DESTINATION ${CMAKE_PREFIX_DIR}/include/erebos
-		PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ)
+	if(LIBRARY STREQUAL "shared")
+		install(TARGETS erebos LIBRARY
+				DESTINATION ${CMAKE_PREFIX_DIR}/lib
+				PERMISSIONS OWNER_WRITE OWNER_READ
+								GROUP_READ)
+	elseif(LIBRARY STREQUAL "static")
+		install(TARGETS erebos ARCHIVE
+				DESTINATION ${CMAKE_PREFIX_DIR}/lib
+				PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE
+								GROUP_WRITE GROUP_READ)
+		install(FILES ${HEADERS} DESTINATION ${CMAKE_PREFIX_DIR}/include/erebos
+				PERMISSIONS OWNER_WRITE OWNER_READ 
+								GROUP_WRITE GROUP_READ)
+	endif()
+elseif(WIN32)
+	if(WINDOWS_HDR_DEST)
+		install(FILES ${HEADERS} DESTINATION ${WINDOWS_HDR_DEST}
+			PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ)
+	else()
+		message(WARNING "install won't copy development header, unless you
+		explicitly set WINDOWS_HDR_DEST (-DWINDOWS_HDR_DEST=\"mydest\")")
+	endif()
+
+	if(WINDOWS_LIB_DEST)
+		if(LIBRARY STREQUAL "shared")
+			install(TARGETS erebos LIBRARY
+				DESTINATION ${WINDOWS_LIB_DEST}
+				PERMISSIONS OWNER_WRITE OWNER_READ OWNER_EXECUTE 
+								GROUP_EXECUTE GROUP_READ GROUP_WRITE)
+		elseif(LIBRARY STREQUAL "static")
+			install(TARGETS erebos ARCHIVE
+				DESTINATION ${WINDOWS_LIB_DEST}
+				PERMISSIONS OWNER_WRITE OWNER_READ 
+								GROUP_WRITE GROUP_READ)
+		endif()
+	else()
+		message(WARNING "install won't copy the library, unless you explicitly
+		set WINDOWS_LIB_DEST (-DWINDOWS_LIB_DEST=\"mydest\")")
+	endif()
 endif()
