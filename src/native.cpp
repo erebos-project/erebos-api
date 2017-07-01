@@ -194,7 +194,7 @@ int erebos::proc::mem_write(const int& pid, const size_t& address, char* data, c
 	if(!process_handle)
 		return 0;
 
-	if (!WriteProcessMemory(process_handle, (LPVOID)address,
+	if (!WriteProcessMemory(process_handle, (LPVOID) address,
 			value_ptr, static_cast<SIZE_T>(size), &bytecount))
 		return 0;
 
