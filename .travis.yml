@@ -22,3 +22,10 @@ script:
    - cmake . -DCMAKE_BUILD_TYPE="Release"
    - build-wrapper-linux-x86-64 --out-dir build_wrapper make -j3
    - sonar-scanner
+
+deploy:
+   provider: pages
+   skip_cleanup: true
+   github_token: $GITHUB_TOKEN
+   on:
+      branch: stable
