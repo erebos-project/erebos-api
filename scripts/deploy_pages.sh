@@ -1,6 +1,6 @@
 #!/bin/sh
 
-REMOVE="lib src scripts README.md appveyor.yml .travis.yml sonar-project.properties build_wrapper .gitignore Doxyfile CMakeLists.txt LICENSE "
+REMOVE="CMakeFiles CMakeCache.txt Makefile lib src scripts README.md appveyor.yml .travis.yml sonar-project.properties build_wrapper .gitignore Doxyfile CMakeLists.txt LICENSE "
 
 make docs
 
