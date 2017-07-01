@@ -30,4 +30,13 @@ if(COMPILER STREQUAL "Unknown")
 	message(FATAL_ERROR "Your compiler identification: ${CMAKE_CXX_COMPILER_ID} is not supported")
 endif()
 
+find_program(DOXYGEN_EXISTS "doxygen")
+if(DOXYGEN_EXISTS)
+	add_custom_target(docs doxygen Doxyfile
+						DEPENDS "src/version.h"
+						WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+	message("-- Doxygen is availible, use 'make docs' to generate docs")
+endif()
+
 add_subdirectory(src)

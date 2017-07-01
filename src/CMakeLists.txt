@@ -45,3 +45,16 @@ else()
 	message("-- Static library")
 	add_library(erebos STATIC ${SOURCES})
 endif()
+
+if(UNIX AND LIBRARY STREQUAL "shared")
+	install(TARGETS erebos LIBRARY
+			DESTINATION ${CMAKE_PREFIX_DIR}/lib)
+elseif(UNIX AND LIBRARY STREQUAL "static")
+	install(TARGETS erebos ARCHIVE
+			DESTINATION ${CMAKE_PREFIX_DIR}/lib)
+endif()
+
+if(UNIX)
+	install(FILES *.h DESTINATION ${CMAKE_PREFIX_DIR}/include/erebos
+		PERMISSIONS OWNER_WRITE OWNER_READ GROUP_READ)
+endif()
