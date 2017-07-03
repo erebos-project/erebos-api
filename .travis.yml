@@ -7,13 +7,13 @@ compiler:
 
 addons:
   apt:
-     packages:
-        - cmake
-        - doxygen
+	 packages:
+		- cmake
+		- doxygen
   sonarcloud:
-     organization: "stefanobelli-github"
-     token:
-        secure: "XUvVU6Lht45a6sLbCCU8tPBWNeYKsMohNv6mocpS0W9Dwa6fKKKUUMbeoFcjsVng56y+okj4WJcajWftQzhwv3njRZYyladksIQEEbbH8Z6SCREelWpKxsnguUBI9CCj6QL1QYjI9mkosqVV9kXqFMhHnq9D7kUYvxUHxJh7qI4GtPdsD2eUx9EPzmozyq+Qw5D4K6EUG0PGHrkkgrZeDZl0lojWbViIVPBYkQx3B0WsOd7CPKyw9KbIEnyZ9wEUFUAbLgWjQXtaZGydZ3195ZD5PEQIws/kiZfz9fVnudmtadNGvmlueL96kH1xmrPEneTskZwRIPqQ0iD8R8gPgTcWgkmhB35uSboBzxgQN3V/kjzEngMuczap0YpIs62PBOTyWwdxwBA7AVx0nZUc56EQoZoqkA8Wb4rL82lK6rzZYGVVPClv0FZN4jxyDqQcLYC0j7p7aQwNsW07yMI5PVHzSyBRhopqCXubrTObuSX8Q9eZooNbu8OgR6+STLrQJX8ugTKZSMhlrknpu1iLfDGjrXBtldhJrUFDhhG5dnmXL1rGK+MnDR/hfDy01axOJ/wAQVY7sPD/5fxiI9ocV35GYxV4l80E+6IaWNTZc9vN6sTvt6HF9H7hLXv/jCx9QfRuuzkTF9YXP3p1X4bbyyAbbZOfOVSuC8fzfiJSzik="
+	 organization: "stefanobelli-github"
+	 token:
+		secure: "XUvVU6Lht45a6sLbCCU8tPBWNeYKsMohNv6mocpS0W9Dwa6fKKKUUMbeoFcjsVng56y+okj4WJcajWftQzhwv3njRZYyladksIQEEbbH8Z6SCREelWpKxsnguUBI9CCj6QL1QYjI9mkosqVV9kXqFMhHnq9D7kUYvxUHxJh7qI4GtPdsD2eUx9EPzmozyq+Qw5D4K6EUG0PGHrkkgrZeDZl0lojWbViIVPBYkQx3B0WsOd7CPKyw9KbIEnyZ9wEUFUAbLgWjQXtaZGydZ3195ZD5PEQIws/kiZfz9fVnudmtadNGvmlueL96kH1xmrPEneTskZwRIPqQ0iD8R8gPgTcWgkmhB35uSboBzxgQN3V/kjzEngMuczap0YpIs62PBOTyWwdxwBA7AVx0nZUc56EQoZoqkA8Wb4rL82lK6rzZYGVVPClv0FZN4jxyDqQcLYC0j7p7aQwNsW07yMI5PVHzSyBRhopqCXubrTObuSX8Q9eZooNbu8OgR6+STLrQJX8ugTKZSMhlrknpu1iLfDGjrXBtldhJrUFDhhG5dnmXL1rGK+MnDR/hfDy01axOJ/wAQVY7sPD/5fxiI9ocV35GYxV4l80E+6IaWNTZc9vN6sTvt6HF9H7hLXv/jCx9QfRuuzkTF9YXP3p1X4bbyyAbbZOfOVSuC8fzfiJSzik="
 
 
 before_script:
@@ -30,4 +30,4 @@ deploy:
    skip_cleanup: true
    github_token: $GITHUB_TOKEN
    on:
-      branch: stable
+	  branch: stable

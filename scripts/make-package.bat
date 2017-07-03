@@ -34,7 +34,7 @@ set API_PACKAGE_NAME_PATTERN=%API_PACKAGE_NAME%-%API_VERSION_MAJOR%-%API_VERSION
 
 
 if "%USE_MINGW%" == "1" (
-	set API_LIBRARY_AR_EREBOS="lib\liberebos.lib"
+	set API_LIBRARY_AR_EREBOS="lib\liberebos.a"
 	set API_LIBRARY_SHARED_EREBOS="lib\liberebos.dll"
 )
 
