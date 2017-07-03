@@ -32,13 +32,6 @@ namespace erebos {
 			 */
 			int get_pid_by_name(const std::string& name, std::vector<int>& output);
 
-#if defined(LINUX)
-            /*!
-             * @brief short alias for Linux: pidof => get_pid_by_name
-             */
-            FUNCALIAS(pidof,get_pid_by_name);
-#endif
-
 #if defined(WINDOWS)
         	/*!
         	 * @brief gets PID by window name (Windows only)

@@ -25,7 +25,6 @@ using CheckTokenMembership_ptr = BOOL(*)(HANDLE TokenHandle, PSID SidToCheck, PB
 #define PCLOSE_F pclose
 
 #include "stringutils.h"
-#include "file.h"
 
 #include <unistd.h>
 #include <sys/uio.h>
@@ -478,7 +477,11 @@ bool erebos::file::remove(const std::string& filename) {
 
 #ifdef LINUX
 int remove_callback(const char *filepath, const struct stat *st, int flag, struct FTW *buffer) {
-
+	SUPPRESS_UNUSED(filepath);
+	SUPPRESS_UNUSED(st);
+	SUPPRESS_UNUSED(flag);
+	SUPPRESS_UNUSED(buffer);
+	
 	return ::remove(filepath);
 }
 #endif

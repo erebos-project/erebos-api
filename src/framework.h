@@ -64,6 +64,13 @@
 	}
 
 /*!
+ * @brief (pre-c++17)
+ * @param xparam
+ */
+#define SUPPRESS_UNUSED(xparam) \
+	((void)xparam)
+
+/*!
  * @brief main erebos namespace
  */
 namespace erebos {
