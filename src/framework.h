@@ -40,7 +40,7 @@
  * @brief this macro allows you to define a new name
  * for your subroutines, no more overhead.
  * Widely used within the framework itself
- * (expands to a constexpr runtime-type-deducted symbol)
+ * (expands to a constexpr compiletime-type-deducted symbol)
  * @param NEWNAME
  * @param OLDNAME
  */
