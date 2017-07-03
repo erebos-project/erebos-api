@@ -41,7 +41,7 @@ erebos-build> nmake
 
 To compile as a shared library add the `-DLIBRARY="shared"` argument to CMake.
 
-If you want to enable colored output on Windows (through `set_shell_color`, `get_color_string` and `make_rainbow`) add the `-D_WINDOWS_SHELL_COLOR` argument to CMake.
+If you want to enable colored output on Windows add the `-D_WINDOWS_SHELL_COLOR` argument to CMake.
 
 
 ### Using the library
