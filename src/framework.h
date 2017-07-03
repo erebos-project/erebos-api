@@ -183,6 +183,26 @@ namespace erebos {
 	 */
 	FUNCALIAS(color, get_color_string);
 
+	/*!
+	 * @brief returns a string with each character colored differently
+	 * @param input string
+	 * @return
+	 */
+	inline std::string make_rainbow_string(const std::string& s) {
+
+		std::string res;
+		for (int i = 0; i < s.size(); ++i) {
+			char c = s[i];
+			if(c > 32)
+				res += get_color_string((shell_color) ((i % 8) + 90));
+			res += c;
+		}
+
+		res += get_color_string(SHELL_RESET);
+
+		return res;
+	}
+
 
 	/*!
 	 * @tparam UniqueType : the type for unique_ptr

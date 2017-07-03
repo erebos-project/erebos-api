@@ -115,7 +115,7 @@ namespace erebos {
 		/*!
 		 * @brief data handled by data_t class
 		 */
-		char *data;
+		char* data;
 
 		/*!
 		 * @brief data size
