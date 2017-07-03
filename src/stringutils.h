@@ -15,27 +15,27 @@ namespace erebos {
     /*!
      * @brief contains string manip utils
      */
-	namespace strutil {
+    namespace strutil {
 
-		/*!
-		 * @brief defines a 64 bit signed integer
-		 */
-		using ssize = long long;
+        /*!
+         * @brief defines a 64 bit signed integer
+         */
+        using ssize = long long;
 
-		/*!
-		 * @brief defines a 32 bit signed integer
-		 */
-		using ssize32 = long;
+        /*!
+         * @brief defines a 32 bit signed integer
+         */
+        using ssize32 = long;
 
-		/*!
-		 * @brief erase newline at the end of the string
-		 * @param [out]target : string to be chomp-ed
-		 * @return true if newline was found and erased, false otherwise
-		 */
-        inline bool chomp(std::string& target) {
-			const size_t end_pos = target.size() - 1;
+        /*!
+         * @brief erase newline at the end of the string
+         * @param [out]target : string to be chomp-ed
+         * @return true if newline was found and erased, false otherwise
+         */
+        inline bool chomp(std::string &target) {
+            const size_t end_pos = target.size() - 1;
 
-            if(target.at(end_pos) == '\n') {
+            if (target.at(end_pos) == '\n') {
                 target.erase(end_pos);
                 return true;
             }
@@ -48,53 +48,53 @@ namespace erebos {
          * @param c
          * @return true if c is literal, false otherwise
          */
-		inline bool is_literal(const char& c) {
-			return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
-		}
+        inline bool is_literal(const char &c) {
+            return (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z');
+        }
 
         /*!
          * @brief check if character is numeric
          * @param c
          * @return true if c is numeric, false otherwise
          */
-		inline bool is_numeral(const char& c) {
-			return (c >= '0') && (c <= '9');
-		}
+        inline bool is_numeral(const char &c) {
+            return (c >= '0') && (c <= '9');
+        }
 
-		/*!
-		 * @brief check if char is double/single quote
-		 * @param c
-		 * @return true if the char 'c' is a single/double quote, false otherwise
-		 */
-		inline bool is_quotes(const char& c) {
-			return c == '\'' || c == '\"';
-		}
+        /*!
+         * @brief check if char is double/single quote
+         * @param c
+         * @return true if the char 'c' is a single/double quote, false otherwise
+         */
+        inline bool is_quotes(const char &c) {
+            return c == '\'' || c == '\"';
+        }
 
-		/*!
-		 * @brief check if string is literal
-		 * @param s
-		 * @return true if string is literal, false otherwise
-		 */
-		inline bool is_literal(const std::string& s) {
-			for (size_t i = 0; i < s.size(); ++i) {
-				if(!is_literal(s[i]))
-					return false;
-			}
-			return true;
-		}
+        /*!
+         * @brief check if string is literal
+         * @param s
+         * @return true if string is literal, false otherwise
+         */
+        inline bool is_literal(const std::string &s) {
+            for (size_t i = 0; i < s.size(); ++i) {
+                if (!is_literal(s[i]))
+                    return false;
+            }
+            return true;
+        }
 
         /*!
          * @brief check if string is numeric
          * @param s
          * @return true if string is numeric, false otherwise
          */
-		inline bool is_numeral(const std::string& s) {
-			for (size_t i = 0; i < s.size(); ++i) {
-				if(!is_numeral(s[i]))
-					return false;
-			}
-			return true;
-		}
+        inline bool is_numeral(const std::string &s) {
+            for (size_t i = 0; i < s.size(); ++i) {
+                if (!is_numeral(s[i]))
+                    return false;
+            }
+            return true;
+        }
 
         /*!
          * @brief cut a string
@@ -103,18 +103,18 @@ namespace erebos {
          * @param size : size of the cut
          * @return new cutted string
          */
-		inline std::string cut(const std::string& s, const size_t& offset, size_t size = 0) {
-			std::string res;
-			if(!size)
-				size = s.size() - offset;
+        inline std::string cut(const std::string &s, const size_t &offset, size_t size = 0) {
+            std::string res;
+            if (!size)
+                size = s.size() - offset;
 
-			res.reserve(size);
+            res.reserve(size);
 
-			for (size_t i = offset; i < offset + size; ++i)
-				res += s[i];
+            for (size_t i = offset; i < offset + size; ++i)
+                res += s[i];
 
-			return res;
-		}
+            return res;
+        }
 
         /*!
          * @brief replace substring in string
@@ -123,47 +123,47 @@ namespace erebos {
          * @param replacement : replacement for 'replaced'
          * @param n : how many times
          */
-		inline void replace(std::string& target, const std::string& replaced,
-										  const std::string& replacement, const size_t& n = 0) {
-			const size_t replaced_length = replaced.length();
+        inline void replace(std::string &target, const std::string &replaced,
+                            const std::string &replacement, const size_t &n = 0) {
+            const size_t replaced_length = replaced.length();
 
 #if defined(WINDOWS)
-			ssize32 position = -1;
+            ssize32 position = -1;
 #elif defined(LINUX)
-			ssize position = -1;
+            ssize position = -1;
 #endif
 
-			size_t iterations = 0;
+            size_t iterations = 0;
 
-			while ((position = target.find(replaced, position + 1)) != std::string::npos) {
-				target.replace(position, replaced_length, replacement);
-				iterations++;
+            while ((position = target.find(replaced, position + 1)) != std::string::npos) {
+                target.replace(position, replaced_length, replacement);
+                iterations++;
 
-				if (iterations == n)
-					break;
-			}
-		}
+                if (iterations == n)
+                    break;
+            }
+        }
 
-		/*!
-		 * @brief replace character in string
-		 * @param [out]target : string for replacement
-		 * @param replaced : char to be replaced
-		 * @param replacement : replacement for 'replaced'
-		 * @param n : how many times
-		 */
-		inline void replace(std::string& target, const char& replaced,
-							const char& replacement, const size_t& n = 0) {
-			size_t iterations = 0;
-			for (size_t i = 0; i < target.size(); ++i) {
-				if(target[i] == replaced) {
-					target[i] = replacement;
-					iterations++;
-				}
+        /*!
+         * @brief replace character in string
+         * @param [out]target : string for replacement
+         * @param replaced : char to be replaced
+         * @param replacement : replacement for 'replaced'
+         * @param n : how many times
+         */
+        inline void replace(std::string &target, const char &replaced,
+                            const char &replacement, const size_t &n = 0) {
+            size_t iterations = 0;
+            for (size_t i = 0; i < target.size(); ++i) {
+                if (target[i] == replaced) {
+                    target[i] = replacement;
+                    iterations++;
+                }
 
-				if(iterations == n && n > 0)
-					break;
-			}
-		}
+                if (iterations == n && n > 0)
+                    break;
+            }
+        }
 
         /*!
          * @brief ruby-style string multiply
@@ -171,27 +171,27 @@ namespace erebos {
          * @param times : how many times the multiplication has to be repeated
          * @return new multiplied string
          */
-		inline std::string mul(const std::string& s, const size_t& times) {
-			std::string res;
-			for (size_t i = 0; i < times; ++i)
-				res += s;
-			return res;
-		}
+        inline std::string mul(const std::string &s, const size_t &times) {
+            std::string res;
+            for (size_t i = 0; i < times; ++i)
+                res += s;
+            return res;
+        }
 
-		/*!
-		 * @brief split a string by 'splchr' and put it into 'output' vector
-		 * @param str : string to be splitted
-		 * @param splchr : split character
-		 * @param [out]output : target vector
-		 */
-		inline void split(const std::string& str, const char& splchr, std::vector<std::string>& output) {
+        /*!
+         * @brief split a string by 'splchr' and put it into 'output' vector
+         * @param str : string to be splitted
+         * @param splchr : split character
+         * @param [out]output : target vector
+         */
+        inline void split(const std::string &str, const char &splchr, std::vector<std::string> &output) {
 
-			std::stringstream ss(str);
-			std::string item;
+            std::stringstream ss(str);
+            std::string item;
 
-			while (getline(ss, item, splchr))
-				output.emplace_back(item);
-		}
+            while (getline(ss, item, splchr))
+                output.emplace_back(item);
+        }
 
         /*!
          * @brief find an element into an array of bytes
@@ -199,154 +199,156 @@ namespace erebos {
          * @param element : the element
          * @return array index, -1 if not found
          */
-		inline ssize index_of(const char array[], const char& element) {
-			for(ssize i = 0; i < static_cast<ssize>(std::string(array).size()); i++)
-				if(array[i] == element)
-					return i;
+        inline ssize index_of(const char array[], const char &element) {
+            for (ssize i = 0; i < static_cast<ssize>(std::string(array).size()); i++)
+                if (array[i] == element)
+                    return i;
 
-			return -1;
-		}
+            return -1;
+        }
 
-		/*!
-		 * @brief encode a string using base64 cipher
-		 * @param str : your string
-		 * @param characters : (already set)
-		 * @return new encoded string
-		 */
-		inline std::string encode_base64(const std::string& str,
-			const char* characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") {
+        /*!
+         * @brief encode a string using base64 cipher
+         * @param str : your string
+         * @param characters : (already set)
+         * @return new encoded string
+         */
+        inline std::string encode_base64(const std::string &str,
+                                         const char *characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") {
 
-			std::string string_encoded = "";
+            std::string string_encoded = "";
 
-			const size_t str_len = str.length();
-			size_t index = 0;
+            const size_t str_len = str.length();
+            size_t index = 0;
 
-			while(index < str_len) {
+            while (index < str_len) {
 
-				uint8_t ch1 = str[index];
-				uint8_t ch2 = ((index + 1) < str_len) ? str[index + 1] : 0;
-				uint8_t ch3 = ((index + 2) < str_len) ? str[index + 2] : 0;
+                uint8_t ch1 = str[index];
+                uint8_t ch2 = ((index + 1) < str_len) ? str[index + 1] : 0;
+                uint8_t ch3 = ((index + 2) < str_len) ? str[index + 2] : 0;
 
-				uint8_t ch1_temp = (ch1 >> 0x02);
-				uint8_t ch2_temp = ((ch1 & 0x03) << 0x04) | (ch2 >> 0x04);
-				uint8_t ch3_temp = ((ch2 & 0x0F) << 0x02) | (ch3 >> 0x06);
-				uint8_t ch4_temp = (ch3  & 0x3F);
+                uint8_t ch1_temp = (ch1 >> 0x02);
+                uint8_t ch2_temp = ((ch1 & 0x03) << 0x04) | (ch2 >> 0x04);
+                uint8_t ch3_temp = ((ch2 & 0x0F) << 0x02) | (ch3 >> 0x06);
+                uint8_t ch4_temp = (ch3 & 0x3F);
 
-				string_encoded += characters[ch1_temp];
-				string_encoded += characters[ch2_temp];
-				string_encoded += characters[ch3_temp];
-				string_encoded += characters[ch4_temp];
+                string_encoded += characters[ch1_temp];
+                string_encoded += characters[ch2_temp];
+                string_encoded += characters[ch3_temp];
+                string_encoded += characters[ch4_temp];
 
-				index += 3;
-			}
+                index += 3;
+            }
 
-			size_t padding;
-			if(str_len % 3 == 0)
-				padding = 0;
-			else if(str_len % 3 == 1)
-				padding = 2;
-			else
-				padding = 1;
+            size_t padding;
+            if (str_len % 3 == 0)
+                padding = 0;
+            else if (str_len % 3 == 1)
+                padding = 2;
+            else
+                padding = 1;
 
-			string_encoded.erase(string_encoded.end() - padding, string_encoded.end());
-			while(padding--)
-				string_encoded += "=";
+            string_encoded.erase(string_encoded.end() - padding, string_encoded.end());
+            while (padding--)
+                string_encoded += "=";
 
-			return string_encoded;
-		}
+            return string_encoded;
+        }
 
-		/*!
-		 * @brief decode a previously encoded base64 string
-		 * @param str : base64-encoded string
-		 * @param characters : (already set)
-		 * @return new decoded string
-		 */
-		inline std::string decode_base64(const std::string& str,
-			const char* characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") {
+        /*!
+         * @brief decode a previously encoded base64 string
+         * @param str : base64-encoded string
+         * @param characters : (already set)
+         * @return new decoded string
+         */
+        inline std::string decode_base64(const std::string &str,
+                                         const char *characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") {
 
-			ssize ch1_code;
-			ssize ch2_code;
-			ssize ch3_code;
+            ssize ch1_code;
+            ssize ch2_code;
+            ssize ch3_code;
 
-			std::string string_decoded = "";
+            std::string string_decoded = "";
 
-			const size_t str_len = str.length();
-			size_t index = 0;
+            const size_t str_len = str.length();
+            size_t index = 0;
 
-			while(index < str_len) {
+            while (index < str_len) {
 
-				ssize index1_temp = index_of(characters, str[index+0]);
-				ssize index2_temp = index_of(characters, str[index+1]);
-				ssize index3_temp = index_of(characters, str[index+2]);
-				ssize index4_temp = index_of(characters, str[index+3]);
+                ssize index1_temp = index_of(characters, str[index + 0]);
+                ssize index2_temp = index_of(characters, str[index + 1]);
+                ssize index3_temp = index_of(characters, str[index + 2]);
+                ssize index4_temp = index_of(characters, str[index + 3]);
 
-				// First char code
-				ch1_code =  index1_temp << 0x02  |  index2_temp >> 0x04;
-				string_decoded += static_cast<char>(ch1_code);
+                // First char code
+                ch1_code = index1_temp << 0x02 | index2_temp >> 0x04;
+                string_decoded += static_cast<char>(ch1_code);
 
-				if(index3_temp & 0x80 || index4_temp & 0x80)
-					break; // char not found (ie. '=', or not valid char)
+                if (index3_temp & 0x80 || index4_temp & 0x80)
+                    break; // char not found (ie. '=', or not valid char)
 
-				// Second char code
-				ch2_code = (index2_temp << 0x04) | (index3_temp >> 0x02);
-				string_decoded += static_cast<char>(ch2_code);
+                // Second char code
+                ch2_code = (index2_temp << 0x04) | (index3_temp >> 0x02);
+                string_decoded += static_cast<char>(ch2_code);
 
-				// Third char code
-				ch3_code = (index3_temp & 0x03) << 0x06 | (index4_temp & 0x3F);
-				string_decoded += static_cast<char>(ch3_code);
+                // Third char code
+                ch3_code = (index3_temp & 0x03) << 0x06 | (index4_temp & 0x3F);
+                string_decoded += static_cast<char>(ch3_code);
 
-				index += 4;
-			}
+                index += 4;
+            }
 
-			return string_decoded;
-		}
+            return string_decoded;
+        }
 
 #if defined(LINUX)
+
         /*!
          *
          * @param command
          * @return new string command with stderr to stdout, useful with erebos::cmd()
          */
-		inline std::string stderr_to_stdout(const std::string& command) {
-			return std::string(command).append("2>&1");
-		}
+        inline std::string stderr_to_stdout(const std::string &command) {
+            return std::string(command).append("2>&1");
+        }
+
 #endif
 
-		/*!
-		 * @brief encode a string to base64 mime
-		 * @param str : string to be encoded
-		 * @return new encoded string
-		 */
-		inline std::string encode_base64_mime(const std::string& str) {
-			return encode_base64(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
-		}
+        /*!
+         * @brief encode a string to base64 mime
+         * @param str : string to be encoded
+         * @return new encoded string
+         */
+        inline std::string encode_base64_mime(const std::string &str) {
+            return encode_base64(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
+        }
 
         /*!
          * @brief decode a string from base64 mime
          * @param str : your encoded string
          * @return new decoded string
          */
-		inline std::string decode_base64_mime(const std::string& str) {
-			return decode_base64(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
-		}
+        inline std::string decode_base64_mime(const std::string &str) {
+            return decode_base64(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
+        }
 
         /*!
          * @brief encode an URL to base64
          * @param str : your url
          * @return new encoded URL
          */
-		inline std::string encode_base64_url(const std::string& str) {
-			return encode_base64(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_");
-		}
+        inline std::string encode_base64_url(const std::string &str) {
+            return encode_base64(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_");
+        }
 
-		/*
-		* std::string string_decode_base64_url(std::string str)
-		* Converts the given Base64 URL string to ASCII.
-		wtfit
-		inline std::string decode_base64_url(const std::string& str) {
-			return decode_base64_url("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_");
-		}*/
-	}
+        /*
+        * std::string string_decode_base64_url(std::string str)
+        * Converts the given Base64 URL string to ASCII.
+        wtfit
+        inline std::string decode_base64_url(const std::string& str) {
+            return decode_base64_url("ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_");
+        }*/
+    }
 }
 
 #endif
