@@ -16,12 +16,10 @@ std::string erebos::file::get_path(std::string s) {
 			break;
 		}
 	}
-	std::string buff;
-	if (index) {
-		for (size_t i = 0; i < index; ++i)
-			buff += s[i];
-		return buff;
-	}
+
+	if (index)
+		return strutil::cut(s, 0, index);
+
 	return "";
 }
 
@@ -31,7 +29,7 @@ std::string erebos::file::get_extension(const std::string& filename) {
 	const size_t filename_len = filename.size();
 
 	for (size_t i = 0; i < filename_len; ++i)
-		if (filename[i] == '.') 
+		if (filename[i] == '.')
 			index = i;
 
 	return strutil::cut(filename, index + 1, filename_len - index - 1);
@@ -43,12 +41,15 @@ std::string erebos::file::get_name(std::string s) {
 
 	s = to_unix_slash(s);
 	const size_t s_len = s.size();
+	bool set = false;
 
 	for (size_t i = 0; i < s_len; ++i)
-		if (s[i] == '/') 
+		if (s[i] == '/') {
 			index = i;
+			set = true;
+		}
 
-	if (index)
+	if (set)
 		return strutil::cut(s, index + 1, s_len - index);
 
 	return s;
@@ -138,10 +139,10 @@ bool erebos::file::write(const std::string& filename, const std::string& data, b
 	std::ofstream stream;
 	if (truncate)
 		stream.open(filename, std::ofstream::out | std::ofstream::trunc);
-	else 
+	else
 		stream.open(filename);
 
-	if (!stream.is_open()) 
+	if (!stream.is_open())
 		return false;
 
 	stream << data;

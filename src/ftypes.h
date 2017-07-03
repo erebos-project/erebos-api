@@ -28,7 +28,7 @@ namespace erebos {
 			 * @param argc
 			 * @param argv
 			 */
-			inline Args(const int& argc, char const *argv[]) : 
+			inline Args(const int& argc, char *argv[]) :
 					list({}), argsize(0) {
 
 				std::string s;
@@ -51,7 +51,7 @@ namespace erebos {
 			}
 
         	/*!
-        	 * @brief checks if the s-string is availible
+        	 * @brief checks if the s-string is available
         	 * @param s
         	 * @return true if inside, false otherwise
         	 */
@@ -63,7 +63,7 @@ namespace erebos {
 			}
 
 			/*!
-			 * @brief safe version of contains
+			 * @brief extended function, checks for shorter versions of the argument
 			 * @param s
 			 * @return true if s-string is inside, false otherwise
 			 */

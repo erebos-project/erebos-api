@@ -38,6 +38,10 @@ erebos-build> cmake ../erebos-api -G "NMake Makefiles" -DCMAKE_BUILD_TYPE="Relea
 erebos-build> nmake
 ~~~
 
+
+To compile as a shared library (DLL) add the `-DLIBRARY="shared"` argument to CMake.
+
+
 ### Using the library
 * Create a file named `toolname.cpp`
 * Include `framework.h`
@@ -62,11 +66,11 @@ Example:
 
 using namespace erebos;
 
-DEFVERSION(1, 0, 0)
+DEFVERSION(1, 0, 0);
 
 int main(int argc, char* argv[]) {
 	Args args(argc, argv);
-	VERSIONFUNC("toolname");
+	VERSIONFUNC(args, "toolname");
 
 	// Code
 

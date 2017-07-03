@@ -19,6 +19,8 @@
 
 #include "ftypes.h"
 #include "version.h"
+#include "native.h"
+#include "file.h"
 
 /*!
  * @brief define your own program version
@@ -26,7 +28,7 @@
  * @param MAJOR (constexpr int VERSION_MAJOR)
  * @param MINOR (constexpr int VERSION_MINOR)
  * @param PATCH (constexpr int VERSION_PATCH)
- * @example DEFVERSION(0,0,1);
+ * @example DEFVERSION(0, 0, 1);
  */
 #define DEFVERSION(MAJOR, MINOR, PATCH) \
 	constexpr int VERSION_MAJOR = MAJOR; \
@@ -53,8 +55,8 @@
  * @param _args: erebos::Args class instance
  * @param progname: program name
  */
-#define VERSIONFUNC(_args,progname) \
-	if(_args.contains_s("-version") { \
+#define VERSIONFUNC(_args, progname) \
+	if(_args.contains_s("-version")) { \
 		std::stringstream ss; \
 		ss << "\n" << progname << "\t" << "v" << VERSION_MAJOR << "." << VERSION_MINOR << "." << VERSION_PATCH; \
 		std::cout << ss.str() << std::endl; \

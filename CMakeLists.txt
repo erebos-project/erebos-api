@@ -36,7 +36,7 @@ if(DOXYGEN_EXISTS)
 						DEPENDS "src/version.h"
 						WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
-	message("-- Doxygen is availible, use 'make docs' to generate docs")
+	message("-- Doxygen is available, use 'make docs' to generate docs")
 endif()
 
 add_subdirectory(src)
