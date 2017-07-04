@@ -7,9 +7,6 @@ REMOVE="*.cmake CMakeFiles CMakeCache.txt Makefile lib
 
 make docs
 
-cd scripts
-bash ./make-package.sh pre-rel-test $(uname -s) $(uname -m) $CC
-
 #cleanup dirty tree
 rm -rfv $REMOVE
 
