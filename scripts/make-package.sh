@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if [ $# -lt 3 ]; then
-	echo " * Usage: $0 <version_tag> <target_os> <target_arch> [ignored...]"
+	echo " * Usage: $0 <version_tag> <target_os> <target_arch> <compiler> [ignored...]"
 	exit 1
 fi
 
@@ -10,8 +10,9 @@ fi
 API_TREE_MAIN_DIRECTORY=".."
 
 API_VERSION_TAG=$1
-API_TARGET_OS=$4
-API_TARGET_ARCH=$5
+API_TARGET_OS=$2
+API_TARGET_ARCH=$3
+COMPILER=$4
 
 __REQUIRED__API_HEADER_VERSION_H="src/version.h"
 API_HEADER_PATTERN="src/*.h"
@@ -28,7 +29,7 @@ API_PACKAGE_PLACE_LICENSE=true
 API_PACKAGE_PLACE_AR=true
 API_PACAKGE_PLACE_SHARED=true
 API_PACAKGE_PLACE_HEADERS=true
-API_PACKAGE_NAME_PATTERN="${API_PACKAGE_NAME}-${API_VERSION_TAG}-${API_TARGET_OS}-${API_TARGET_ARCH}"
+API_PACKAGE_NAME_PATTERN="${API_PACKAGE_NAME}-${API_VERSION_TAG}-${API_TARGET_OS}-${API_TARGET_ARCH}-${COMPILER}"
 
 check_depends() {
 	if $API_PACKAGE_PLACE_README; then
