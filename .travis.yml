@@ -17,22 +17,30 @@ addons:
 
 
 ###
-before_script:
-   - cmake . -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="-Wall -Wextra -W -finline-functions -funroll-loops -O2 -s"
-
 script:
+   - cmake . -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="-Wall -Wextra -W -finline-functions -funroll-loops -O2 -s"
    - build-wrapper-linux-x86-64 --out-dir build_wrapper make -j3
-
-after_script:
+   - cmake . -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="-Wall -Wextra -W -finline-functions -funroll-loops -O2 -s" -DLIBRARY="shared"
+   - make -j3
    - sonar-scanner
 
 ###
 before_deploy:
-   - bash ./scripts/deploy_pages.sh
+   - bash ./scripts/deploy_all.sh
 
 deploy:
-   provider: pages
+   - provider: pages
    skip_cleanup: true
    github_token: $GITHUB_TOKEN
    on:
      branch: stable
+   - provider: releases
+   skip_cleanup: true
+   file_glob: true
+   file: "scripts/*.zip"
+   user: "StefanoBelli"
+   password:
+		secure: "gPINtf7AZtHwbjEoBsX7utTFfKBuPOBqD6NyoiRGX9EmIL0kjTQjpGSDf/DOj37ukH5MKb+b0E2CED0/1mfb3zTBTNoNUgpVR7x7RXM9w6ml7W7A2pAGvV78xJbFsIP2C2PuYUCE79c6Ab7RY6ddRqQ3sLWcAWuuzBdpJV12LubAlE2sZGqMihrXTRiWz1MEX8ZQcIddrvwSzuBwLkdwldpYVsu9SORpcVdR9ZaiMF0zuKRSvARqfHY9FO+R7aoTMitvC9bqt9z6LKnJU73XvLG1PJKstcJypGS4uun9kRpTbvaaFIKfrTquW13yMwZJm0A8PhAoM8zPm/IiZg4Nn1qPg/bsGQjL1dMYbpuL3Ck1jCbktsZSHxlOhor0f7gG+Fu5gwytUJGXZLAEFAXw4R791+OxbMbKNn01EwwX+GmFZOuOlGhv9cPUx6oCli58F0dd+WSygX/vXFNXOcisCTlB3fVEnZ3kvIqvAathh0ur+KY1ClKQ1g5AZeSNez6c1mIbi36/GlsiuW3jhgxDsg7ukLicntVofgk/q0lqOIkeH8K5urTchtJh20emuNY6jeTIrjbDgifKaegPLfyxyrgmRb0g+v6cmf97fCpUN5hyi4SKPncK+QhlZnoDhJIOAr1vvFQPziR5qMx5Mi43Rvp5OVVslCtIZSy2xWFKecM="
+	on:
+		branch: stable
+		tags: true
