@@ -27,7 +27,7 @@ before_deploy:
    - bash ./scripts/deploy_pages.sh
 
 deploy:
-   - provider: pages
+   provider: pages
    skip_cleanup: true
    github_token: $GITHUB_TOKEN
    on:
