@@ -342,8 +342,12 @@ bool erebos::file::get_dir_file_list(const std::string &dir, std::vector<std::st
 	bool retval = true;
 
 	do {
-		if(!(wfd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL))
+		if(!(wfd.dwFileAttributes & FILE_ATTRIBUTE_NORMAL) &&
+			 std::string(wfd.cFileName) != "." &&
+			 std::string(wfd.cFileName) != "..")
+
 			output.emplace_back(wfd.cFileName);
+
 	} while(FindNextFile(hFile, &wfd) != 0);
 
 	if (GetLastError() != 0)
@@ -397,7 +401,9 @@ bool erebos::file::get_dir_folder_list(const std::string &dir, std::vector<std::
 	bool retval = true;
 
 	do {
-		if(wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+		if(wfd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY &&
+			 std::string(wfd.cFileName) != "." &&
+			 std::string(wfd.cFileName) != "..")
 			output.emplace_back(wfd.cFileName);
 	} while(FindNextFile(hFile, &wfd) != 0);
 
@@ -506,7 +512,7 @@ bool erebos::file::remove_dir(const std::string &dirname) {
 		nullptr,
 		FO_DELETE,
 		buffer,
-		nullptr,
+		"\0\0",
 		FOF_NOCONFIRMATION |
 		FOF_NOERRORUI |
 		FOF_SILENT,
@@ -526,7 +532,7 @@ bool erebos::file::remove_dir(const std::string &dirname) {
 }
 
 
-int erebos::cmd(const std::string &command, int *retval) {
+int erebos::cmd(const std::string& command, int* retval) {
 
 	FILE *open_pipe = POPEN_F(command.c_str(), "r");
 	if (!open_pipe)
@@ -544,7 +550,7 @@ int erebos::cmd(const std::string &command, int *retval) {
 }
 
 
-int erebos::cmd(const std::string &command, std::string &output, int *retval) {
+int erebos::cmd(const std::string& command, std::string& output, int* retval) {
 
 	FILE *open_pipe = POPEN_F(command.c_str(), "r");
 	if (!open_pipe)

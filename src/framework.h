@@ -354,10 +354,33 @@ namespace erebos {
 	}
 
 	/*!
-	 * @brief Prints erebos logo :)
+	 * @brief Prints erebos logo
 	 */
 	inline void print_logo() {
-		println(""); // TO-DO
+		println(color(SHELL_BLUE),
+				"                       .-/+oossso+/-\n"
+				"                   `:ohmNMMMMMMMMMMMMNds:\n"
+				"                 `/yNMMmdyso+/////+shmMMMMm.\n"
+				"               '+mMms`             `-sdms`\n"
+				"             `hMh:`                    ``\n"
+				"            -sMy`\n"
+				"            dM:\n"
+				"           +Mhs`\n"
+				"            +mmo:/syhhhhh`..\n"
+				"           .+NNdNMNhyssssymMmMm.\n"
+				"           .smdommM-/++oo++/`\n"
+				"         `+Nd/`\n"
+				"        `yMs`\n"
+				"         sMs\n"
+				"        `NMn.\n"
+				"        `MMm:                        :/\n"
+				"         sMm:`                    .sNs\n"
+				"         `yMMdo-``.         .``-/ymm/\n"
+				"           :hNMMNmdhyyyyyyyhdmNMNh/`\n"
+				"             .+ymNNMMMMMMMNNmho:`\n"
+				"                  `.-::/::-.`\n",
+				color(SHELL_RESET)
+			);
 	}
 
 	/*!

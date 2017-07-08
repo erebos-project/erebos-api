@@ -118,7 +118,7 @@ namespace erebos {
 		/*!
 		 * @brief get file size
 		 * @param filename : your file
-		 * @return file bytes, < 0 if function fails
+		 * @return file bytes, less than 0 if function fails
 		 */
 		int get_size(const std::string &filename);
 
