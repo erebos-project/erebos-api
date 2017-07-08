@@ -193,7 +193,7 @@ namespace erebos {
 	inline std::string make_rainbow_string(const std::string& s) {
 
 		std::string res;
-		for (int i = 0; i < s.size(); ++i) {
+		for (std::size_t i = 0; i < s.size(); ++i) {
 			char c = s[i];
 			if(c > 32)
 				res += get_color_string((shell_color) ((i % 8) + 90));
