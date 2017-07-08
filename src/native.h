@@ -185,7 +185,7 @@ namespace erebos {
 	std::string string_from_errno(const int &errn);
 
 	//undoc
-	std::string get_exe_path_();
+	std::string _get_exe_path_();
 
 }
 

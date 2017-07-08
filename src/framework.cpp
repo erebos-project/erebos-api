@@ -5,7 +5,7 @@ using namespace erebos;
 using namespace strutil;
 
 std::string erebos::get_exe_path() {
-	return file::get_path(get_exe_path_());
+	return file::get_path(_get_exe_path_());
 }
 
 std::string erebos::to_unix_slash(const std::string &s) {

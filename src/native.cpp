@@ -39,7 +39,7 @@ using CheckTokenMembership_ptr = BOOL(*)(HANDLE TokenHandle, PSID SidToCheck, PB
 
 #endif
 
-std::string erebos::get_exe_path_() {
+std::string erebos::_get_exe_path_() {
 
 #if defined(WINDOWS)
 	char buff[256];

@@ -22,6 +22,7 @@
 #include "version.h"
 #include "native.h"
 #include "file.h"
+#include "stringutils.h"
 
 /*!
  * @brief define your own program version
@@ -41,6 +42,7 @@
  * for your subroutines, no more overhead.
  * Widely used within the framework itself
  * (expands to a constexpr compiletime-type-deducted symbol)
+ * WARNING: Does not work with templated functions.
  * @param NEWNAME
  * @param OLDNAME
  */

@@ -8,16 +8,21 @@ std::string erebos::file::get_path(std::string s) {
 	size_t index = 0;
 	s = to_unix_slash(s);
 	const size_t size = s.size();
+	bool set = false;
 
-	for (size_t i = size - 1; i > 0; --i) {
+	if(!size)
+		return "";
+
+	for (size_t i = size - 1; i >= 0; --i) {
 		if (s[i] == '/') {
 			index = i + 1;
+			set = true;
 			break;
 		}
 	}
 
-	if (index)
-		return strutil::cut(s, 0, index);
+	if (set)
+		return strutil::cut(s, 0, index ? index : 1);
 
 	return "";
 }
@@ -25,13 +30,23 @@ std::string erebos::file::get_path(std::string s) {
 
 std::string erebos::file::get_extension(const std::string &filename) {
 	size_t index = 0;
-	const size_t filename_len = filename.size();
+	const size_t size = filename.size();
+	bool set = false;
 
-	for (size_t i = 0; i < filename_len; ++i)
-		if (filename[i] == '.')
+	if(!size)
+		return "";
+
+	for (size_t i = 0; i < size; ++i)
+		if (filename[i] == '.') {
 			index = i;
+			set = true;
+		}
 
-	return strutil::cut(filename, index + 1, filename_len - index - 1);
+
+	if (set)
+		return strutil::cut(filename, index + 1, size - index - 1);
+
+	return "";
 }
 
 
@@ -39,17 +54,20 @@ std::string erebos::file::get_name(std::string s) {
 	size_t index = 0;
 
 	s = to_unix_slash(s);
-	const size_t s_len = s.size();
+	const size_t size = s.size();
 	bool set = false;
 
-	for (size_t i = 0; i < s_len; ++i)
+	if(!size)
+		return "";
+
+	for (size_t i = 0; i < size; ++i)
 		if (s[i] == '/') {
 			index = i;
 			set = true;
 		}
 
 	if (set)
-		return strutil::cut(s, index + 1, s_len - index);
+		return strutil::cut(s, index + 1, size - index);
 
 	return s;
 }
@@ -57,11 +75,17 @@ std::string erebos::file::get_name(std::string s) {
 std::string erebos::file::get_basename(std::string filename) {
 
 	filename = file::get_name(filename);
-
+	const size_t size = filename.size();
 	size_t index = 0;
-	for (size_t i = 0; i < filename.size(); ++i)
-		if (filename[i] == '.')
+
+	if(!size)
+		return "";
+
+	for (size_t i = 0; i < size; ++i)
+		if (filename[i] == '.') {
 			index = i;
+			break;
+		}
 
 	if (index)
 		filename = strutil::cut(filename, 0, index);
