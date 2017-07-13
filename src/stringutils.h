@@ -2,8 +2,8 @@
  * @file stringutils.h
  * @brief string utilities
  */
-#ifndef _STRINGUTILS_H
-#define _STRINGUTILS_H
+#ifndef EREBOS_STRINGUTILS_H
+#define EREBOS_STRINGUTILS_H
 
 #include "platform_defs.h"
 

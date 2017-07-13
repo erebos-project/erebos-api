@@ -2,8 +2,8 @@
  * @file ftypes.h
  * @brief framework core data types
  */
-#ifndef _FTYPES_H
-#define _FTYPES_H
+#ifndef EREBOS_FTYPES_H
+#define EREBOS_FTYPES_H
 
 #include <vector>
 #include <string>

@@ -2,8 +2,8 @@
  * @file framework.h
  * @brief core framework header
  */
-#ifndef _FRAMEWORK_H
-#define _FRAMEWORK_H
+#ifndef EREBOS_FRAMEWORK_H
+#define EREBOS_FRAMEWORK_H
 
 #include "platform_defs.h"
 

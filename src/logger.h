@@ -2,8 +2,8 @@
  * @file logger.h
  * @brief logging facilities
  */
-#ifndef LOGGER_H
-#define LOGGER_H
+#ifndef EREBOS_LOGGER_H
+#define EREBOS_LOGGER_H
 
 #include <ostream>
 
