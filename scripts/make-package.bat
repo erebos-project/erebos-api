@@ -8,12 +8,12 @@ set API_VERSION_PATCH=%3
 set API_TARGET_ARCH=%4
 set USE_MINGW=%5
 
-: Check that arguments exist
+:: Check that arguments exist
 if "%API_TARGET_ARCH%" == "" (
 	goto usage_and_exit
 )
 
-: Configuration
+:: Configuration
 
 set API_HEADER_VERSION_H="src\version.h"
 set API_HEADER_PATTERN="src\*.h"
@@ -143,8 +143,8 @@ if errorlevel 1 (
 
 :temporary_cleanup
 echo /i/ Cleanup...
-: Delete temp dir
-rmdir /S/Q %API_PACKAGE_NAME_PATTERN%
+:: Delete temp dir
+:: rmdir /S/Q %API_PACKAGE_NAME_PATTERN%
 
 echo /+/ Your package: %API_PACKAGE_NAME_PATTERN% was successfully built
 
