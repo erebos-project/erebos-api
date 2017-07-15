@@ -27,3 +27,4 @@ scripts/include
 scripts/lib
 scripts/README.md
 scripts/LICENSE
+build/

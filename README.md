@@ -11,22 +11,22 @@ This project uses CMake as build system.
 
 You can setup by command line with the following commands:
 
-* Create a new directory in the same folder as the repo
+* Create a new directory inside the repo directory
 * `cd` into the new directory
 * Run the following commands based on your compiler
 
 #### Linux/GCC
 
 ~~~
-erebos-build> cmake ../erebos-api -DCMAKE_BUILD_TYPE="Release"
-erebos-build> make
+erebos-api/build> cmake .. -DCMAKE_BUILD_TYPE="Release"
+erebos-api/build> make
 ~~~
 
 #### Windows/MinGW
 
 ~~~
-erebos-build> cmake ../erebos-api -G "Unix Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_COMPILER="g++"
-erebos-build> make
+erebos-api/build> cmake .. -G "Unix Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_COMPILER="g++"
+erebos-api/build> make
 ~~~
 
 On some MinGW installations you might have to add the `-DCMAKE_MAKE_PROGRAM="mingw32-make"` argument to CMake and use `mingw32-make` instead of `make`.
@@ -34,8 +34,8 @@ On some MinGW installations you might have to add the `-DCMAKE_MAKE_PROGRAM="min
 
 #### Windows/MSVC
 ~~~
-erebos-build> cmake ../erebos-api -G "NMake Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="/EHsc"
-erebos-build> nmake
+erebos-api/build> cmake .. -G "NMake Makefiles" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="/EHsc"
+erebos-api/build> nmake
 ~~~
 
 
