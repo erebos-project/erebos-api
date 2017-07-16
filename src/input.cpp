@@ -12,7 +12,7 @@
 #endif
 
 
-int erebos::input::get_key(unsigned int delta) {
+int erebos::input::get_key(const unsigned& delta) {
 
 #ifdef WINDOWS
 
@@ -45,7 +45,7 @@ int erebos::input::get_key(unsigned int delta) {
 }
 
 
-bool erebos::input::fake_put(int key) {
+bool erebos::input::fake_put(const int& key) {
 
 #ifdef WINDOWS
 
