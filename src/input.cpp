@@ -36,6 +36,8 @@ int erebos::input::get_key(const unsigned& delta) {
 		Sleep(delta);
 	}
 
+	return -1;
+
 #elif defined(LINUX)
 
 	// TO-DO
