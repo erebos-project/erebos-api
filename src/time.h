@@ -15,6 +15,13 @@ namespace erebos {
 	 */
 	struct Time {
 	public:
+		int year;
+		int month;
+		int day;
+		int hour;
+		int min;
+		int sec;
+
 		/*!
 		 * @param right_now : tm structure
 		 * @brief parses right_now and then sets fields.
@@ -35,12 +42,6 @@ namespace erebos {
 		 */
 		std::string to_string(std::string format) const;
 
-		int year;
-		int month;
-		int day;
-		int hour;
-		int min;
-		int sec;
 	};
 
 	/*!

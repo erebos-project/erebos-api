@@ -100,6 +100,62 @@ namespace erebos {
 		return res;
 	}
 
+
+	/*!
+	 * @brief converts a byte into a hex string
+	 * @param c : the byte to convert
+	 * @return a string containing the hex representation of c
+	 */
+	inline std::string byte_to_hex(unsigned char c) {
+
+		constexpr char hex_c[17] = "0123456789abcdef";
+
+		std::string output;
+		unsigned char nibble1 = c >> 4;
+		unsigned char nibble2 = c & 0x0F;
+
+		output += hex_c[nibble1];
+		output += hex_c[nibble2];
+
+		return output;
+	}
+
+
+	/*!
+	 * @brief converts a byte array into a hex string
+	 * @param array : the array to convert
+	 * @return a string containing the hex representation of the array data
+	 */
+	inline std::string byte_to_hex(unsigned char* array, unsigned int size) {
+
+		std::string output;
+
+		for (int i = 0; i < size; ++i)
+			output += byte_to_hex(array[i]);
+
+		return output;
+	}
+
+
+	/*!
+	 * @brief converts any variable into a hex string
+	 * @param variable : the variable to convert
+	 * @return a string containing the hex representation of the variable data
+	 */
+	template<typename T>
+	inline std::string byte_to_hex(T t) {
+
+		std::string output;
+
+		unsigned char* t_ptr = (unsigned char*) &t;
+
+		for (int i = 0; i < sizeof(T); ++i)
+			output += byte_to_hex(t_ptr[i]);
+
+		return output;
+	}
+
+
 	/*!
 	 * @brief converts whatever type to string
 	 * @tparam T
