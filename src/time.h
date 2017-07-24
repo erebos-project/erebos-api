@@ -7,13 +7,14 @@
 
 #include <string>
 #include <ctime>
+#include "platform_defs.h"
 
 namespace erebos {
 
 	/*!
 	 * @brief contains year, month, day, hour, min, sec, refer to the constructor
 	 */
-	struct Time {
+	struct ERAPI Time {
 	public:
 		int year;
 		int month;
@@ -27,7 +28,7 @@ namespace erebos {
 		 * @brief parses right_now and then sets fields.
 		 * If nullptr, fields are initialized to 0
 		 */
-		explicit Time(std::tm *right_now);
+		ERAPI explicit Time(std::tm *right_now);
 
 		/*!
 		 * @param format : A format string like: "YY/MM/DD @ hh:mm:ss"
@@ -40,7 +41,7 @@ namespace erebos {
 		 *   - mm minute
 		 *   - ss second
 		 */
-		std::string to_string(std::string format) const;
+		ERAPI std::string to_string(std::string format) const;
 
 	};
 
@@ -48,7 +49,7 @@ namespace erebos {
 	 * @brief new Time-ready structure with current time
 	 * @return Time structure with current time values
 	 */
-	Time get_localtime();
+	ERAPI Time get_localtime();
 
 }
 

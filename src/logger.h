@@ -6,6 +6,7 @@
 #define EREBOS_LOGGER_H
 
 #include <ostream>
+#include "platform_defs.h"
 
 namespace erebos {
 
@@ -40,24 +41,24 @@ namespace erebos {
 		 * (in most cases std::cout or std::cerr)
 		 * @brief this overload should not be used with files (ofstream)
 		 */
-		void set_stream(std::ostream &stream);
+		ERAPI void set_stream(std::ostream &stream);
 
 		/*!
-		 * @brief this overload enable logging to file!
+		 * @brief this overload enables logging to file!
 		 * @param filename : file name string
 		 */
-		void set_stream(const std::string &filename);
+		ERAPI void set_stream(const std::string &filename);
 
 		/*!
 		 * @brief reset the stream, log() will fail and return false
 		 */
-		void reset_stream();
+		ERAPI void reset_stream();
 
 		/*!
 		 * @brief change logging data format
 		 * @param format : Time format (refer to erebos::Time struct)
 		 */
-		void set_data_format(const std::string &format);
+		ERAPI void set_data_format(const std::string &format);
 
 		/*!
 		 * @brief logging facility function
@@ -66,7 +67,7 @@ namespace erebos {
 		 * @param type : logging informatios (default = LOG_TYPE_NORMAL)(refer to erebos::logger::log_type enum)
 		 * @return fails ONLY if stream not set
 		 */
-		bool log(const std::string &message,
+		ERAPI bool log(const std::string &message,
 				 const log_level &level,
 				 const log_type &type = log_type::LOG_TYPE_NORMAL);
 

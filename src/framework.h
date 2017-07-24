@@ -307,7 +307,7 @@ namespace erebos {
 	 * @brief gets program executable
 	 * @return program executable string
 	 */
-	std::string get_exe_path();
+	ERAPI std::string get_exe_path();
 
 	/*!
 	 * @return "-help Get help for this program."
@@ -322,7 +322,7 @@ namespace erebos {
 	 * @param s : windows-like path
 	 * @return new string containing unix-like path
 	 */
-	std::string to_unix_slash(const std::string &s);
+	ERAPI std::string to_unix_slash(const std::string &s);
 
 	/*!
 	 * @brief prints newline
@@ -451,7 +451,7 @@ namespace erebos {
 	 * @param exit_on_error : should exit on wrong input by user? (default = true)
 	 * @return user chosen Y or N ?
 	 */
-	bool get_prompt_answer(const std::string &message, const std::string &error_message = "",
+	 bool get_prompt_answer(const std::string &message, const std::string &error_message = "",
 						   const bool &exit_on_error = true);
 
 	/*!
@@ -459,14 +459,14 @@ namespace erebos {
 	 * @param s : string to be quoted
 	 * @return new quoted string
 	 */
-	std::string parse_quotes(const std::string &s);
+	ERAPI std::string parse_quotes(const std::string &s);
 
 	/*!
 	 * @brief argument parser, used by erebos::Args
 	 * @param input : input string to be parsed (based on spaces and quotes)
 	 * @param output : parsed string
 	 */
-	void parse_arg(const std::string &input, std::vector<std::string> &output);
+	ERAPI void parse_arg(const std::string &input, std::vector<std::string> &output);
 }
 
 #endif

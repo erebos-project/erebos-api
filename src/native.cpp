@@ -103,6 +103,7 @@ int erebos::proc::get_pid_by_name(const std::string &name, std::vector<int> &out
 		retval = -4;
 
 	return retval;
+
 #elif defined(LINUX)
 	std::vector<std::string> running_procs;
 	if (!file::get_dir_folder_list("/proc", running_procs))
@@ -110,13 +111,17 @@ int erebos::proc::get_pid_by_name(const std::string &name, std::vector<int> &out
 
 	char comm_path[PATH_MAX];
 	for (const auto &proc_dir : running_procs) {
+
 		if (strutil::is_numeral(proc_dir)) {
+
 			snprintf(comm_path, PATH_MAX, "/proc/%s/comm", proc_dir.c_str());
 			std::string content = file::read(comm_path);
 			strutil::chomp(content);
+
 			if (content == name)
 				output.push_back(std::stoi(proc_dir));
 		}
+
 	}
 
 	return 0;

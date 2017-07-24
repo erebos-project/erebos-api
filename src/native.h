@@ -22,7 +22,7 @@ namespace erebos {
 		 * @brief get this process' PID
 		 * @return process' PID
 		 */
-		int get_pid();
+		ERAPI int get_pid();
 
 		/*!
 		 * @brief look for process' name and retrieve PIDs
@@ -30,7 +30,7 @@ namespace erebos {
 		 * @param [out]output : PIDs
 		 * @return 0 if success, < 0 otherwise
 		 */
-		int get_pid_by_name(const std::string &name, std::vector<int> &output);
+		ERAPI int get_pid_by_name(const std::string &name, std::vector<int> &output);
 
 #if defined(LINUX)
 		constexpr auto pidof = get_pid_by_name;
@@ -42,7 +42,7 @@ namespace erebos {
 		 * @param win_name: window name
 		 * @return 0 if success, < 0 otherwise
 		 */
-		int get_pid_by_win_name(const std::string& win_name);
+		ERAPI int get_pid_by_win_name(const std::string& win_name);
 #endif
 
 		/*!
@@ -50,7 +50,7 @@ namespace erebos {
 		 * @param pid : target pid
 		 * @return true if PID was successfully killed
 		 */
-		bool kill(const int &pid);
+		ERAPI bool kill(const int &pid);
 
 		/*!
 		 * @brief read a chunk of bytes from process' address space
@@ -60,7 +60,7 @@ namespace erebos {
 		 * @param size : (set to 1 by default) bytes to be read
 		 * @return read bytes from address
 		 */
-		int mem_read(const int &pid, const size_t &address, char *result, const size_t &size = 1);
+		ERAPI int mem_read(const int &pid, const size_t &address, char *result, const size_t &size = 1);
 
 		/*!
 		 * @brief write a chunk of bytes to process' address space
@@ -70,7 +70,7 @@ namespace erebos {
 		 * @param size : (set to 1 by default) how any bytes
 		 * @return written bytes to address
 		 */
-		int mem_write(const int &pid, const size_t &address, char *data, const size_t &size = 1);
+		ERAPI int mem_write(const int &pid, const size_t &address, char *data, const size_t &size = 1);
 
 		/*!
 		 * @brief locks the specified memory area
@@ -78,7 +78,7 @@ namespace erebos {
 		 * @param size : bytes
 		 * @return true if memory could be locked, false otherwise
 		 */
-		bool mem_lock(void *address, const size_t &size);
+		ERAPI bool mem_lock(void *address, const size_t &size);
 
 		/*!
 		 * @brief unlocks the specified memory area (previously locked)
@@ -86,7 +86,7 @@ namespace erebos {
 		 * @param size : bytes
 		 * @return true if memory could be unlocked, false otherwise
 		 */
-		bool mem_unlock(void *address, const size_t &size);
+		ERAPI bool mem_unlock(void *address, const size_t &size);
 	}
 
 
@@ -98,7 +98,7 @@ namespace erebos {
 		 * @param [out]output : file list
 		 * @return true if everything went fine, false otherwise
 		 */
-		bool get_dir_file_list(const std::string &dir, std::vector<std::string> &output);
+		ERAPI bool get_dir_file_list(const std::string &dir, std::vector<std::string> &output);
 
 		/*!
 		 * @brief retrieve directory folder list
@@ -106,21 +106,21 @@ namespace erebos {
 		 * @param [out]output : dir list
 		 * @return true if everything went fine, false otherwise
 		 */
-		bool get_dir_folder_list(const std::string &dir, std::vector<std::string> &output);
+		ERAPI bool get_dir_folder_list(const std::string &dir, std::vector<std::string> &output);
 
 		/*!
 		 * @brief checks if folder exist
 		 * @param foldername : directory target
 		 * @return true if exists, false otherwise
 		 */
-		bool get_folder_exists(const std::string &foldername);
+		ERAPI bool get_folder_exists(const std::string &foldername);
 
 		/*!
 		 * @brief get file size
 		 * @param filename : your file
 		 * @return file bytes, less than 0 if function fails
 		 */
-		int get_size(const std::string &filename);
+		ERAPI int get_size(const std::string &filename);
 
 #if defined(LINUX)
 
@@ -138,14 +138,14 @@ namespace erebos {
 		 * @param filename : your filename
 		 * @return true if function succeed, false otherwise
 		 */
-		bool remove(const std::string &filename);
+		ERAPI bool remove(const std::string &filename);
 
 		/*!
 		 * @brief remove a directory
 		 * @param dirname : your directory
 		 * @return true if function succeed, false otherwise
 		 */
-		bool remove_dir(const std::string &dirname);
+		ERAPI bool remove_dir(const std::string &dirname);
 
 	}
 
@@ -155,7 +155,7 @@ namespace erebos {
 	 * @return The result of the pipe usage: 0 if successful, -1 if popen failed, -2 if pclose failed
 	 * @brief Executes a command and writes the exit code to [retval]
 	 */
-	int cmd(const std::string &command, int *retval = nullptr);
+	ERAPI int cmd(const std::string &command, int *retval = nullptr);
 
 	/*!
 	 * @param command
@@ -164,28 +164,28 @@ namespace erebos {
 	 * @return The result of the pipe usage: 0 if successful, -1 if popen failed, -2 if pclose failed
 	 * @brief Executes a command and writes the output to [output] and the exit code to [retval]
 	 */
-	int cmd(const std::string &command, std::string &output, int *retval = nullptr);
+	ERAPI int cmd(const std::string &command, std::string &output, int *retval = nullptr);
 
 	/*!
 	 * @return If user is privileged (Checks for EUID in UNIX/Unix-like environments)
 	 * @brief Has user special permissions?
 	 */
-	bool is_privileged();
+	ERAPI bool is_privileged();
 
 	/*!
 	 * @return Crypto-secure randomized number
 	 * @brief Number randomization
 	 */
-	int get_random_secure();
+	ERAPI int get_random_secure();
 
 	/*!
 	 * @return String error from errno integer
 	 * @param errn : the errno integer
 	 */
-	std::string string_from_errno(const int &errn);
+	ERAPI std::string string_from_errno(const int &errn);
 
 	//undoc
-	std::string _get_exe_path_();
+	ERAPI std::string _get_exe_path_();
 
 }
 

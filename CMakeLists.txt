@@ -25,6 +25,8 @@ elseif (CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
 	set(COMPILER "VCXX")
 endif ()
 
+add_definitions(-DLIBRARY)
+
 if (COMPILER STREQUAL "Unknown")
 	#ya just got killed
 	message(FATAL_ERROR "Your compiler identification: ${CMAKE_CXX_COMPILER_ID} is not supported")

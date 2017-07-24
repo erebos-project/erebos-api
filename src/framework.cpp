@@ -14,8 +14,9 @@ std::string erebos::to_unix_slash(const std::string &s) {
 	return from;
 }
 
-bool
-erebos::get_prompt_answer(const std::string &message, const std::string &error_message, const bool &exit_on_error) {
+bool erebos::get_prompt_answer(const std::string &message,
+									 const std::string &error_message,
+									 const bool &exit_on_error) {
 	print(message, " [Y/n]");
 	char res;
 	std::cin >> res;

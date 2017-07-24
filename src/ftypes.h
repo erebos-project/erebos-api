@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <cstring>
+#include "platform_defs.h"
 
 namespace erebos {
 
@@ -17,7 +18,7 @@ namespace erebos {
 	/*!
 	 * @brief command line argument parser
 	 */
-	class Args {
+	class ERAPI Args {
 	private:
 		std::vector<std::string> list;
 		size_t argsize;
@@ -105,7 +106,7 @@ namespace erebos {
 	/*!
 	 * @brief hold generic data (dynamic allocated)
 	 */
-	class data_t {
+	class ERAPI data_t {
 		/*!
 		 * @brief 64-bit unsigned integer
 		 */

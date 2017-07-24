@@ -1,5 +1,6 @@
 #ifndef EREBOS_INPUT_H
 #define EREBOS_INPUT_H
+#include "platform_defs.h"
 
 namespace erebos {
 
@@ -13,14 +14,14 @@ namespace erebos {
 		 * @param delta : the milliseconds to wait for updating (default is 66)
 		 * @return the key that was pressed
 		 */
-		int get_key(const unsigned& delta = 66);
+		ERAPI int get_key(const unsigned& delta = 66);
 
 		/*!
 		 * @brief send fake input to the system
 		 * @param key : the key to fake
 		 * @return true in case of success
 		 */
-		bool fake_put(const int& key);
+		ERAPI bool fake_put(const int& key);
 
 		/*!
 		 * @brief common virtual key codes
