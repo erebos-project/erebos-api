@@ -251,6 +251,18 @@ bool erebos::proc::mem_unlock(void *address, const size_t &size) {
 #endif
 }
 
+
+void sleep(unsigned int delta) {
+
+#if defined(WINDOWS)
+	Sleep(delta);
+#elif defined(LINUX)
+	usleep(delta * 1000);
+#endif
+
+}
+
+
 bool erebos::is_privileged() {
 
 #if defined(WINDOWS)

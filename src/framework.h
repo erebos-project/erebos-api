@@ -94,6 +94,10 @@ namespace erebos {
 	 * @return the hex value as integer
 	 */
 	inline int hex_to_int(const std::string &str) {
+
+		if(str.size() == 0)
+			return 0;
+
 		int res;
 		std::stringstream ss(str);
 		ss >> std::hex >> res;
