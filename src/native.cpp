@@ -252,7 +252,7 @@ bool erebos::proc::mem_unlock(void *address, const size_t &size) {
 }
 
 
-void sleep(unsigned int delta) {
+void erebos::proc::sleep(unsigned int delta) {
 
 #if defined(WINDOWS)
 	Sleep(delta);

@@ -18,7 +18,7 @@ namespace erebos {
 	/*!
 	 * @brief command line argument parser
 	 */
-	class ERAPI Args {
+	class Args {
 	private:
 		std::vector<std::string> list;
 		size_t argsize;
@@ -106,7 +106,7 @@ namespace erebos {
 	/*!
 	 * @brief hold generic data (dynamic allocated)
 	 */
-	class ERAPI data_t {
+	class data_t {
 		/*!
 		 * @brief 64-bit unsigned integer
 		 */

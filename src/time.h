@@ -14,7 +14,7 @@ namespace erebos {
 	/*!
 	 * @brief contains year, month, day, hour, min, sec, refer to the constructor
 	 */
-	struct ERAPI Time {
+	struct Time {
 	public:
 		int year;
 		int month;
