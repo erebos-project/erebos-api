@@ -46,6 +46,10 @@ inline void OUTPUT(const First &arg, const Many &... rest) {
 									function_fails++;	\
 								}
 
+#define TEST_ERROR() OUTPUT("ERROR: ", curr_function_name, " returned an unexpected result\n");	\
+									final_res++;	\
+									function_fails++
+
 
 // Use this macro to execute a function returning a string
 #define TEST_EXEC_STR(...) str_res = FUNCNAME(__VA_ARGS__)

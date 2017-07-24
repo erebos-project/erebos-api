@@ -35,6 +35,10 @@ bool erebos::get_prompt_answer(const std::string &message,
 
 
 std::string erebos::parse_quotes(const std::string &s) {
+
+	if(s == "")
+		return "";
+
 	const char &target = s.at(0);
 	if (target != '\"' && target != '\'')
 		return s;

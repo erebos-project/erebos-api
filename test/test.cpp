@@ -140,6 +140,105 @@ int main(int argc, char const *argv[]) {
 	TEST_END();
 
 
+	TEST_START("to_unix_slash");
+	#define FUNCNAME to_unix_slash
+
+		TEST_EXEC_STR("");
+		TEST_CHECK_EQUAL_STR("");
+
+		TEST_EXEC_STR("my\\path");
+		TEST_CHECK_EQUAL_STR("my/path");
+
+		TEST_EXEC_STR("\\\\");
+		TEST_CHECK_EQUAL_STR("//");
+
+		TEST_EXEC_STR("my\\path\\is\\really\\long");
+		TEST_CHECK_EQUAL_STR("my/path/is/really/long");
+
+		TEST_EXEC_STR("nothing here");
+		TEST_CHECK_EQUAL_STR("nothing here");
+
+	TEST_END();
+
+
+	TEST_START("parse_quotes");
+	#define FUNCNAME parse_quotes
+
+		TEST_EXEC_STR("");
+		TEST_CHECK_EQUAL_STR("");
+
+		TEST_EXEC_STR("\"my quoted string\"");
+		TEST_CHECK_EQUAL_STR("my quoted string");
+
+		TEST_EXEC_STR("no quotes here");
+		TEST_CHECK_EQUAL_STR("no quotes here");
+
+		TEST_EXEC_STR("\"some quotes\" \"some other quotes\"");
+		TEST_CHECK_EQUAL_STR("some quotes");
+
+	TEST_END();
+
+	TEST_START("parse_arg");
+	#define FUNCNAME parse_arg
+
+	std::vector<std::string> res;
+
+	TEST_EXEC("Param1 Param2 \"Param 3\" ", res);
+
+	TEST_CHECK_EQUAL(res[0], "Param1");
+	TEST_CHECK_EQUAL(res[1], "Param2");
+	TEST_CHECK_EQUAL(res[2], "Param 3");
+
+	std::vector<std::string> res_2;
+
+	TEST_EXEC("", res_2);
+	TEST_CHECK_EQUAL(res_2.size(), 0);
+
+
+	TEST_END();
+
+
+	TEST_START("cmd(std::string, int*)");
+	#define FUNCNAME cmd
+
+		int exitvalue;
+
+		TEST_EXEC_INT("echo Test Echo", &exitvalue);
+		TEST_CHECK_EQUAL(exitvalue, 0);
+		TEST_CHECK_EQUAL_INT(0);
+
+		TEST_EXEC_INT("");
+		TEST_CHECK_EQUAL_INT(0);
+
+	TEST_END();
+
+
+	TEST_START("cmd(std::string, std::string&, int*)");
+
+		int exitvalue;
+		std::string output;
+
+		TEST_EXEC_INT("echo Test Echo", output, &exitvalue);
+		TEST_CHECK_EQUAL(exitvalue, 0);
+		TEST_CHECK_EQUAL(output, "Test Echo");
+		TEST_CHECK_EQUAL_INT(0);
+
+		TEST_EXEC_INT("");
+		TEST_CHECK_EQUAL_INT(0);
+
+	TEST_END();
+
+	TEST_START("get_random_secure");
+	#define FUNCNAME get_random_secure
+
+		TEST_EXEC_INT();
+		if(int_res == 0)
+			TEST_ERROR();
+
+	TEST_END();
+
+
+
 	#endif
 
 	std::cin.get();
