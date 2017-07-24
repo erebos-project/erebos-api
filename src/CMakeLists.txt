@@ -33,7 +33,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 	endif ()
 endif ()
 
-set(SOURCES framework.cpp native.cpp logger.cpp time.cpp file.cpp input.cpp)
+set(SOURCES framework.cpp native.cpp logger.cpp time.cpp file.cpp input.cpp crypto.cpp sha256.cpp aes.cpp md5.cpp)
 
 if (NOT LIBRARY)
 	set(LIBRARY "static")
