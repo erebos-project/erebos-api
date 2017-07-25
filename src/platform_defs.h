@@ -25,12 +25,8 @@
 
 
 // We have to add this macro before EVERY function declaration because M$ was too lazy
-#ifdef _COMPILER_MSVC
-#ifdef LIBRARY
+#if defined(_COMPILER_MSVC) && defined(LIBRARY)
 #define ERAPI __declspec(dllexport)
-#else
-#define ERAPI __declspec(dllimport)
-#endif
 #else
 #define ERAPI
 #endif
