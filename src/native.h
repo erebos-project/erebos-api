@@ -93,7 +93,7 @@ namespace erebos {
 		 * @param delta : the time to sleep, in milliseconds
 		 * NOTE: On some implementations multithreading is not supported, so this function may help
 		 */
-		void sleep(unsigned int delta);
+		ERAPI void sleep(unsigned int delta);
 
 	}
 

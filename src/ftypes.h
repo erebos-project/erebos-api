@@ -12,7 +12,7 @@
 
 namespace erebos {
 
-	void parse_arg(const std::string &input, std::vector<std::string> &output);
+	ERAPI void parse_arg(const std::string &input, std::vector<std::string> &output);
 
 
 	/*!
