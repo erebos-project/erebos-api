@@ -594,6 +594,46 @@ int erebos::cmd(const std::string& command, std::string& output, int* retval) {
 }
 
 
+std::string erebos::get_cwd() {
+
+#if defined(WINDOWS)
+
+	char buff[256];
+	int size = GetCurrentDirectory(256, buff);
+	if(!size)
+		return "";
+	buff[size] = '\0';
+
+	return buff;
+
+#elif defined(LINUX)
+
+	char buff[MAX_PATH];
+	char* res = getcwd(buff, MAX_PATH);
+	if(!res)
+		return "";
+
+	return buff;
+
+#endif
+}
+
+
+bool erebos::set_cwd(std::string path) {
+
+#if defined(WINDOWS)
+
+	return SetCurrentDirectory(path.c_str()) != 0;
+
+#elif defined(LINUX)
+
+	return chdir(path.c_str()) != -1;
+
+#endif
+
+}
+
+
 #if defined(LINUX)
 
 std::string erebos::file::readlink(const std::string &filename) {

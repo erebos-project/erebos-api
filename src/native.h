@@ -175,6 +175,18 @@ namespace erebos {
 	ERAPI int cmd(const std::string &command, std::string &output, int *retval = nullptr);
 
 	/*!
+	 * @return The Current Working Directory
+	 * @brief Returns the Current Working Directory
+	 */
+	ERAPI std::string get_cwd();
+
+	/*!
+	 * @return On success returns true, false otherwise
+	 * @brief Sets the Current Working Directory
+	 */
+	ERAPI bool set_cwd(std::string path);
+
+	/*!
 	 * @return If user is privileged (Checks for EUID in UNIX/Unix-like environments)
 	 * @brief Has user special permissions?
 	 */
