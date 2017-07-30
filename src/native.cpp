@@ -608,8 +608,8 @@ std::string erebos::get_cwd() {
 
 #elif defined(LINUX)
 
-	char buff[MAX_PATH];
-	char* res = getcwd(buff, MAX_PATH);
+	char buff[PATH_MAX];
+	char* res = getcwd(buff, PATH_MAX);
 	if(!res)
 		return "";
 
