@@ -1,5 +1,4 @@
 #include "framework.h"
-#include "stringutils.h"
 
 using namespace erebos;
 using namespace strutil;
@@ -62,7 +61,7 @@ void erebos::parse_arg(const std::string &input, std::vector<std::string> &outpu
 	for (size_t i = 0; i < input.size(); ++i) {
 		std::string curr;
 
-		if (input[i] == '\n' && input[i] == '\0')
+		if (input[i] == '\n')
 			break;
 
 		if (is_quotes(input[i])) {

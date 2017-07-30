@@ -47,7 +47,7 @@ int main(int argc, char const *argv[]) {
 	*/
 
 
-	TEST_CONFIG();
+	TEST_INIT();
 
 
 	#if TEST_SELECT_MISC == 1

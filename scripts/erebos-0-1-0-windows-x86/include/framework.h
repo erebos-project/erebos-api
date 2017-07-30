@@ -94,71 +94,11 @@ namespace erebos {
 	 * @return the hex value as integer
 	 */
 	inline int hex_to_int(const std::string &str) {
-
-		if(str.size() == 0)
-			return 0;
-
 		int res;
 		std::stringstream ss(str);
 		ss >> std::hex >> res;
 		return res;
 	}
-
-
-	/*!
-	 * @brief converts a byte into a hex string
-	 * @param c : the byte to convert
-	 * @return a string containing the hex representation of c
-	 */
-	inline std::string byte_to_hex(unsigned char c) {
-
-		constexpr char hex_c[17] = "0123456789abcdef";
-
-		std::string output;
-		unsigned char nibble1 = c >> 4;
-		unsigned char nibble2 = c & 0x0F;
-
-		output += hex_c[nibble1];
-		output += hex_c[nibble2];
-
-		return output;
-	}
-
-
-	/*!
-	 * @brief converts a byte array into a hex string
-	 * @param array : the array to convert
-	 * @return a string containing the hex representation of the array data
-	 */
-	inline std::string byte_to_hex(unsigned char* array, unsigned int size) {
-
-		std::string output;
-
-		for (int i = 0; i < size; ++i)
-			output += byte_to_hex(array[i]);
-
-		return output;
-	}
-
-
-	/*!
-	 * @brief converts any variable into a hex string
-	 * @param variable : the variable to convert
-	 * @return a string containing the hex representation of the variable data
-	 */
-	template<typename T>
-	inline std::string byte_to_hex(T t) {
-
-		std::string output;
-
-		unsigned char* t_ptr = (unsigned char*) &t;
-
-		for (int i = 0; i < sizeof(T); ++i)
-			output += byte_to_hex(t_ptr[i]);
-
-		return output;
-	}
-
 
 	/*!
 	 * @brief converts whatever type to string
@@ -311,7 +251,7 @@ namespace erebos {
 	 * @brief gets program executable
 	 * @return program executable string
 	 */
-	ERAPI std::string get_exe_path();
+	std::string get_exe_path();
 
 	/*!
 	 * @return "-help Get help for this program."
@@ -326,7 +266,7 @@ namespace erebos {
 	 * @param s : windows-like path
 	 * @return new string containing unix-like path
 	 */
-	ERAPI std::string to_unix_slash(const std::string &s);
+	std::string to_unix_slash(const std::string &s);
 
 	/*!
 	 * @brief prints newline
@@ -455,7 +395,7 @@ namespace erebos {
 	 * @param exit_on_error : should exit on wrong input by user? (default = true)
 	 * @return user chosen Y or N ?
 	 */
-	 bool get_prompt_answer(const std::string &message, const std::string &error_message = "",
+	bool get_prompt_answer(const std::string &message, const std::string &error_message = "",
 						   const bool &exit_on_error = true);
 
 	/*!
@@ -463,7 +403,14 @@ namespace erebos {
 	 * @param s : string to be quoted
 	 * @return new quoted string
 	 */
-	ERAPI std::string parse_quotes(const std::string &s);
+	std::string parse_quotes(const std::string &s);
+
+	/*!
+	 * @brief argument parser, used by erebos::Args
+	 * @param input : input string to be parsed (based on spaces and quotes)
+	 * @param output : parsed string
+	 */
+	void parse_arg(const std::string &input, std::vector<std::string> &output);
 }
 
 #endif

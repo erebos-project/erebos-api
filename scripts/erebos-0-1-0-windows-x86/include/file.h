@@ -5,7 +5,7 @@
 #ifndef EREBOS_FILE_H
 #define EREBOS_FILE_H
 
-#include "types.h"
+#include "ftypes.h"
 
 namespace erebos {
 
@@ -19,42 +19,42 @@ namespace erebos {
 		 * @param s : relative path
 		 * @return full path
 		 */
-		ERAPI std::string get_path(std::string s);
+		std::string get_path(std::string s);
 
 		/*!
 		 * @brief filename extension
 		 * @param filename
 		 * @return filename extension
 		 */
-		ERAPI std::string get_extension(const std::string &filename);
+		std::string get_extension(const std::string &filename);
 
 		/*!
 		 * @brief filename name, without extension
 		 * @param filename
 		 * @return filename name
 		 */
-		ERAPI std::string get_name(std::string filename);
+		std::string get_name(std::string filename);
 
 		/*!
 		 * @brief filename basename
 		 * @param filename
 		 * @return filename basename
 		 */
-		ERAPI std::string get_basename(std::string filename);
+		std::string get_basename(std::string filename);
 
 		/*!
 		 * @brief does file exist?
 		 * @param filename
 		 * @return true if file exists, false otherwise
 		 */
-		ERAPI bool get_exists(const std::string &filename);
+		bool get_exists(const std::string &filename);
 
 		/*!
 		 * @brief read an entire file
 		 * @param filename
 		 * @return content, if empty string, probably failure
 		 */
-		ERAPI std::string read(const std::string &filename);
+		std::string read(const std::string &filename);
 
 		/*!
 		 * @brief read an entire binary file, then store result in holding
@@ -63,7 +63,7 @@ namespace erebos {
 		 * @param [out]bytecount : how many read bytes? nullptr if not interested (set by default)
 		 * @return an erebos::data_t structure holding binary data
 		 */
-		ERAPI data_t read_bin(const std::string &filename, std::uint64_t *bytecount = nullptr);
+		data_t read_bin(const std::string &filename, std::uint64_t *bytecount = nullptr);
 
 		/*!
 		 * @brief write bytes to a file
@@ -72,7 +72,7 @@ namespace erebos {
 		 * @param truncate : true by default
 		 * @return true if function succeed, false otherwise
 		 */
-		ERAPI bool write(const std::string &filename, const std::string &data, bool truncate = true);
+		bool write(const std::string &filename, const std::string &data, bool truncate = true);
 
 		/*!
 		 * @brief write data hold by erebos::data_t class to binary file
@@ -81,7 +81,7 @@ namespace erebos {
 		 * @param truncate : true by default
 		 * @return true if function succeed, false otherwise
 		 */
-		ERAPI bool write_bin(const std::string &filename, const data_t &data, bool truncate = true);
+		bool write_bin(const std::string &filename, const data_t &data, bool truncate = true);
 	}
 }
 

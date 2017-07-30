@@ -8,11 +8,10 @@
 #include <vector>
 #include <string>
 #include <cstring>
-#include "platform_defs.h"
 
 namespace erebos {
 
-	ERAPI void parse_arg(const std::string &input, std::vector<std::string> &output);
+	void parse_arg(const std::string &input, std::vector<std::string> &output);
 
 
 	/*!
