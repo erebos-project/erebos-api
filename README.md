@@ -6,6 +6,13 @@
 # erebos-api
 A C++ library providing cross-platform low-level functions.
 
+### Why use Erebos
+Erebos provides simple to use and cross-platform utilities that many programs need to use and usually re-implement or use giant libraries that take in more dependencies and slow down compilation time (and sometimes performance).
+This library solves this problem, as it is light-weight and really easy and straightforward to use.
+For example, if you want to read a file's entire content into a string, you can just write `std::string stringdata = file::read("filename")`, if you want to read binary data you can use `data_t binarydata = file::read_bin("filename")` and Erebos writes the file's content into a handy `data_t` structure and so on.
+We support file operations (like writing, reading and deleting files and folders), misc functionalities like changing font color and
+concatenated printing to the screen (`println`), an easy to use Logger class and functions to work on processes.
+
 ### Compiling from source
 This project uses CMake as build system.
 
