@@ -1,3 +1,4 @@
+//#define TEST_ABORT_IF_FAIL
 #include "test.h"
 
 int sym_sum(int a)
@@ -5,22 +6,14 @@ int sym_sum(int a)
 	return a + 1;
 }
 
-void sym_sum(int a, int b)
-{
-	std::cout << "lololol <" << a + b;
-}
-
 int main()
 {
 	NEW_MODULE_TEST("mymodule");
 
-	BEGIN_OVERLOAD(sym_sum,int,int);
+	BEGIN_TEST PRE_CALL(sym_sum);
 	WITH_RETV CALLBACK(1);
-	END();
-
-	BEGIN_VOID(sym_sum, int, int);
-	WITHOUT_RETV CALLBACK(1, 2);
-	END();
+	TEST_EQUALS(1);
+	END_TEST();
 
 	END_MODULE_TEST();
 }

@@ -21,6 +21,10 @@ inline Function<TyRet> extract_retype(TyRet(*target_fptr)(ManyParameters...)) {
 #define __DECLSYM_FUNCNAME(name) \
 	constexpr char function_name[] = name
 
+#define __ABORT_IFFAIL() \
+	std::cerr << "\n*** Test/ModuleTests/Abort: aborting by directives.\n"; \
+	END_MODULE_TEST()
+
 #define NEW_MODULE_TEST(modulename) \
 	constexpr char module_name[] = modulename; \
 	int failure = 0; \
@@ -35,23 +39,22 @@ inline Function<TyRet> extract_retype(TyRet(*target_fptr)(ManyParameters...)) {
 	std::cout << "*** Test/ModuleTests/End: tests finished for module: " << module_name << std::endl; \
 	return failure
 
-#define BEGIN(func_callback) \
-	{ \
+#define BEGIN_TEST {
+
+#define PRE_CALL(func_callback) \
 		__DECLSYM_FUNCNAME(#func_callback); \
 		std::cout << "\n\t--> RunTest/Function/Begin: running test for function: " << function_name; \
 		decltype(extract_retype(&func_callback))::Type retv; \
 		auto cb = func_callback
 
-#define BEGIN_OVERLOAD(func_callback, ret_type, ...) \
-	{ \
+#define PRE_CALL_OVERLOAD(func_callback, ret_type, ...) \
 		__DECLSYM_FUNCNAME(#func_callback); \
 		std::cout << "\n\t--> RunTest/Function/Begin: running test for function: " \
 			<< #ret_type << ' ' << function_name << '(' << #__VA_ARGS__ << ")\n"; \
 		ret_type retv; \
 		ret_type (*cb)(__VA_ARGS__) = func_callback
 
-#define BEGIN_VOID(func_callback, ...) \
-	{ \
+#define PRE_CALL_VOID(func_callback, ...) \
 		__DECLSYM_FUNCNAME(#func_callback); \
 		std::cout << "\n\t--> RunTest/Function/Begin: running test for function: void " \
 			<< function_name << '(' << #__VA_ARGS__ << ")\n"; \
@@ -63,8 +66,27 @@ inline Function<TyRet> extract_retype(TyRet(*target_fptr)(ManyParameters...)) {
 #define CALLBACK(...) \
 		cb(__VA_ARGS__)
 
-#define END() \
+#define END_TEST() \
 		std::cout << "\n\t--> RunTest/Function/End: test for function " << function_name << " done.\n"; \
 	}
+
+#ifndef TEST_ABORT_IF_FAIL
+#define TEST_EQUALS(expected) \
+	if(expected != retv) { \
+		std::cerr << "\n\t\t* Unexpected result, details below:\n\t\t* Expected: " \
+				<< expected << ", got: " << retv << "\n\t--> RunTest/Function/Result: negative result, test failed"; \
+		failure++; \
+	} else \
+		std::cout << "\n\t--> RunTest/Function/Result: positive result, test passed"
+#else
+#define TEST_EQUALS(expected) \
+	if(expected != retv) { \
+		std::cerr << "\n\t\t* Unexpected result, details below:\n\t\t* Expected: " \
+				<< expected << ", got: " << retv << "\n\t--> RunTest/Function/Result: negative result, test failed"; \
+		failure++; \
+		__ABORT_IFFAIL(); \
+	} else \
+		std::cout << "\n\t--> RunTest/Function/Result: positive result, test passed"
+#endif //TEST_ABORT_IF_FAIL
 
 #endif //TEST_H
