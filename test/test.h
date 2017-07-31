@@ -50,14 +50,14 @@ inline Function<TyRet> extract_retype(TyRet(*target_fptr)(ManyParameters...)) {
 #define PRE_CALL_OVERLOAD(func_callback, ret_type, ...) \
 		__DECLSYM_FUNCNAME(#func_callback); \
 		std::cout << "\n\t--> RunTest/Function/Begin: running test for function: " \
-			<< #ret_type << ' ' << function_name << '(' << #__VA_ARGS__ << ")\n"; \
+			<< #ret_type << ' ' << function_name << '(' << #__VA_ARGS__ << ")"; \
 		ret_type retv; \
 		ret_type (*cb)(__VA_ARGS__) = func_callback
 
 #define PRE_CALL_VOID(func_callback, ...) \
 		__DECLSYM_FUNCNAME(#func_callback); \
 		std::cout << "\n\t--> RunTest/Function/Begin: running test for function: void " \
-			<< function_name << '(' << #__VA_ARGS__ << ")\n"; \
+			<< function_name << '(' << #__VA_ARGS__ << ")"; \
 		void (*cb)(__VA_ARGS__) = func_callback
 
 #define WITHOUT_RETV
@@ -67,7 +67,7 @@ inline Function<TyRet> extract_retype(TyRet(*target_fptr)(ManyParameters...)) {
 		cb(__VA_ARGS__)
 
 #define END_TEST() \
-		std::cout << "\n\t--> RunTest/Function/End: test for function " << function_name << " done.\n"; \
+		std::cout << "\n\t--> RunTest/Function/End: test for function " << function_name << " done.\n...\n"; \
 	}
 
 #ifndef TEST_ABORT_IF_FAIL
