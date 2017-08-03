@@ -455,8 +455,8 @@ namespace erebos {
 	 * @param exit_on_error : should exit on wrong input by user? (default = true)
 	 * @return user chosen Y or N ?
 	 */
-	 bool get_prompt_answer(const std::string &message, const std::string &error_message = "",
-						   const bool &exit_on_error = true);
+	ERAPI bool get_prompt_answer(const std::string &message, const std::string &error_message = "",
+						   		 const bool &exit_on_error = true);
 
 	/*!
 	 * @brief new quoted string
