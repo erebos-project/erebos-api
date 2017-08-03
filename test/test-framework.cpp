@@ -155,7 +155,8 @@ int main(int argc, char const *argv[]) {
 
 	BEGIN_TEST PRE_CALL(get_random_secure);
 
-		// Special case, this functions must not return 0
+		WITH_RETV CALLBACK();
+		TEST_DISEQUALS(0);
 
 	TEST_END();
 
