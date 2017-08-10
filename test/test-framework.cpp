@@ -124,6 +124,7 @@ int main(int argc, char const *argv[]) {
 	END_TEST();
 
 
+	BEGIN_TEST PRE_CALL_VOID(parse_arg, const std::string&, std::vector<std::string>&);
 
 		std::vector<std::string> res;
 
