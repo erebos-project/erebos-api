@@ -26,19 +26,19 @@ namespace erebos {
 		 * @param filename
 		 * @return filename extension
 		 */
-		ERAPI std::string get_extension(const std::string &filename);
+		ERAPI std::string get_extension(const std::string& filename);
 
 		/*!
-		 * @brief filename name, without extension
-		 * @param filename
-		 * @return filename name
+		 * @brief file name, with extension
+		 * @param absolute path
+		 * @return file name
 		 */
 		ERAPI std::string get_name(std::string filename);
 
 		/*!
-		 * @brief filename basename
-		 * @param filename
-		 * @return filename basename
+		 * @brief file basename
+		 * @param absolute path
+		 * @return file basename
 		 */
 		ERAPI std::string get_basename(std::string filename);
 
