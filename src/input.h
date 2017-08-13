@@ -26,7 +26,7 @@ namespace erebos {
 		/*!
 		 * @brief common virtual key codes
 		 */
-		enum VKEY : int {
+		enum class VKey : int {
 			KEY_MOUSE_LEFT = 1,
 			KEY_MOUSE_RIGHT = 2,
 			KEY_CANCEL = 3,
