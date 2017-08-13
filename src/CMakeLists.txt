@@ -36,7 +36,11 @@ endif ()
 set(SOURCES framework.cpp native.cpp logger.cpp time.cpp file.cpp input.cpp)
 
 if (NOT LIBRARY)
-	set(LIBRARY "static")
+	if(COMPILER STREQUAL "VCXX")
+		set(LIBRARY "shared")
+	else()
+		set(LIBRARY "static")
+	endif()
 endif ()
 
 if (LIBRARY STREQUAL "shared")
