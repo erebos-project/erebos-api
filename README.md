@@ -52,7 +52,7 @@ If you want to enable colored output on Windows add the `-D_WINDOWS_SHELL_COLOR`
 
 
 ### Using the library
-* Create a file named `toolname.cpp`
+* Create a source file
 * Include `framework.h`
 * Define the program's initial version like this:
 ```
@@ -65,7 +65,7 @@ Args args(argc, argv);
 ```
 * Declare the version function using the `VERSIONFUNC` macro like this:
 ```
-VERSIONFUNC("toolname")
+VERSIONFUNC(args, "toolname")
 ```
 * Write your code from there as usual, you might also want to `using namespace erebos`.
 
