@@ -1,5 +1,5 @@
 #include "test.h"
-#include "framework.h"
+#include "../src/framework.h"
 
 using namespace erebos;
 
