@@ -1,6 +1,16 @@
 #ifndef EREBOS_INPUT_H
 #define EREBOS_INPUT_H
+
 #include "platform_defs.h"
+
+#ifdef LINUX
+#include <linux/input-event-codes.h>
+#include <string>
+#include <cstdio>
+#define INPUT_KEYTYPE u16
+#elif defined(WINDOWS)
+#define INPUT_KEYTYPE int
+#endif
 
 namespace erebos {
 
@@ -8,25 +18,14 @@ namespace erebos {
 	 * @brief input handling
 	 */
 	namespace input {
-
-		/*!
-		 * @brief wait until a key is pressed
-		 * @param delta : the milliseconds to wait for updating (default is 66)
-		 * @return the key that was pressed
-		 */
-		ERAPI int get_key(const unsigned& delta = 66);
-
-		/*!
-		 * @brief send fake input to the system
-		 * @param key : the key to fake
-		 * @return true in case of success
-		 */
-		ERAPI bool fake_put(const int& key);
+		typedef unsigned short u16;
 
 		/*!
 		 * @brief common virtual key codes
 		 */
-		enum class VKey : int {
+		enum class Key : INPUT_KEYTYPE {
+#if defined(WINDOWS)
+			KEY_WINAPI_ERROR = -1,
 			KEY_MOUSE_LEFT = 1,
 			KEY_MOUSE_RIGHT = 2,
 			KEY_CANCEL = 3,
@@ -115,11 +114,56 @@ namespace erebos {
 			KEY_EREOF = 0xF9,
 			KEY_PLAY = 0xFA,
 			KEY_ZOOM = 0xFB,
-			KEY_NONAME = 0xFC,
+			KEY_NONAME = 0xFC
+#endif
 		};
 
-	}
+#if defined(WINDOWS)
+		/*!
+		 * @brief wait until a key is pressed
+		 * @param delta : the milliseconds to wait for updating (default is 66)
+		 * @return the key that was pressed
+		 */
+		ERAPI Key get_key(const unsigned& delta = 66);
 
+		/*!
+		 * @brief send fake input to the system
+		 * @param key : the key to fake
+		 * @return true in case of success
+		 */
+		ERAPI bool fake_put(const Key& key);
+#elif defined(LINUX)
+        enum class KeyPressType : u16 {
+			KEY_RELEASE = 0,
+			KEY_PRESS = 1
+		};
+
+		FILE* getev_physical_keyboard();
+		Key get_key(FILE* physkb);
+
+		int new_virtual_kb_device(const char* name,
+								  const u16& bus_type = 0x03, //USB
+								  const u16& vendor = 0x01,
+								  const u16& product = 0x02,
+								  const u16& version = 0x03);
+
+		bool fake_put(const int& devfd, const Key& key, const KeyPressType& type);
+		bool destroy_virtual_kb_device(const int& devfd);
+
+		//We want to use only keys specified in Key enum
+		bool fake_put(int,int) = delete;
+		bool fake_put(int,int,KeyPressType) = delete;
+
+		//Just a shortcut...
+		inline bool fake_put(const int& devfd, const Key& key) {
+			if(!fake_put(devfd,key,KeyPressType::KEY_PRESS))
+				return false;
+
+			return fake_put(devfd,key,KeyPressType::KEY_RELEASE);
+		}
+#endif
+
+	}
 }
 
 
