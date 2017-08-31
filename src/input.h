@@ -17,7 +17,12 @@ namespace erebos {
 	 * @brief input handling
 	 */
 	namespace input {
+#ifdef LINUX
+        /*!
+         * @typedef unsigned short (16 bit) data type, used for enum Key with Linux
+         */
 		using u16 = unsigned short;
+#endif
 
 		/*!
 		 * @brief common virtual key codes
@@ -132,34 +137,71 @@ namespace erebos {
 		 */
 		ERAPI bool fake_put(const Key& key);
 #elif defined(LINUX)
+        /*!
+         * @brief determine which kind of event, see fake_put
+         */
         enum class KeyPressType : u16 {
 			KEY_RELEASE = 0,
 			KEY_PRESS = 1
 		};
 
+        /*!
+         * @return retrieve physical connected keyboard event path (see also get_key)
+         */
 		FILE* getev_physical_keyboard();
+
+        /*!
+         *
+         * @param physkb : the opened stream to keyboard event file
+         * @return pressed key
+         */
 		Key get_key(FILE* physkb);
 
+        /*!
+         *
+         * @param name
+         * @param bus_type (default USB = 0x03)
+         * @param vendor (default 0x01)
+         * @param product (default 0x02)
+         * @param version (default 0x03)
+         * @return a new file descriptor, representing the virtual keyboard, -1 otherwise
+         */
 		int new_virtual_kb_device(const char* name,
 								  const u16& bus_type = 0x03, //USB
 								  const u16& vendor = 0x01,
 								  const u16& product = 0x02,
 								  const u16& version = 0x03);
 
+        /*!
+         * @param devfd : the virtual keyboard fd
+         * @param key : key to press
+         * @param type : press or release? (see KeyPressType)
+         * @return true if key pressed, false otherwise
+         */
 		bool fake_put(const int& devfd, const Key& key, const KeyPressType& type);
+
+        /*!
+         * @param devfd : the virtual keyboard fd
+         * @return true if correctly destroyed, false otherwise
+         */
 		bool destroy_virtual_kb_device(const int& devfd);
 
-		//We want to use only keys specified in Key enum
-		bool fake_put(int,int) = delete;
-		bool fake_put(int,int,KeyPressType) = delete;
-
-		//Just a shortcut...
+        /*!
+         *
+         * @param devfd : the virtual keyboard fd
+         * @param key : key you wanna put
+         * @return true if key event emitted, false otherwise
+         */
 		inline bool fake_put(const int& devfd, const Key& key) {
 			if(!fake_put(devfd,key,KeyPressType::KEY_PRESS))
 				return false;
 
 			return fake_put(devfd,key,KeyPressType::KEY_RELEASE);
 		}
+
+		//we only want to use keys in Key enum
+		bool fake_put(int,int) = delete;
+		bool fake_put(int,int,KeyPressType) = delete;
 #endif
 
 	}

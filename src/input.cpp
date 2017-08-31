@@ -15,9 +15,6 @@
 #define EVENT_BYPATH "/dev/input/by-path/"
 #define NEED_MATCH "-event-kbd"
 #define NEED_MATCH_COUNT 10
-#define CANNOT_OPENDIR -1
-#define CANNOT_READLINK -2
-#define CANNOT_GETREALPATH -3
 #define COPY_INPUT_EVENT(from_stream,dest) \
     for(unsigned i=0;i<sizeof(struct input_event);i++) \
         ((char*)&dest)[i] = fgetc(from_stream)
@@ -30,7 +27,7 @@ using eikey = erebos::input::Key;
 static int get_keyboard_evpath_s(char* target) {
     DIR* evbp_dir = opendir(EVENT_BYPATH);
     if(!evbp_dir)
-        return CANNOT_OPENDIR;
+        return -1;
 
     struct dirent *entry;
 
@@ -46,18 +43,24 @@ static int get_keyboard_evpath_s(char* target) {
     int evbpfd = dirfd(evbp_dir);
 
     if(readlinkat(evbpfd,entry->d_name,local_target,sizeof(entry->d_name)) == -1)
-        return CANNOT_READLINK;
+        return -1;
 
     char current_workdir[PATH_MAX];
-    getcwd(current_workdir,PATH_MAX);
+    if(!getcwd(current_workdir,PATH_MAX))
+        return -1;
 
-    fchdir(evbpfd);
+    if(fchdir(evbpfd) < 0)
+        return -1;
+
     if(!realpath(local_target,target))
-        return CANNOT_GETREALPATH;
+        return -1;
 
-    closedir(evbp_dir);
+    if(closedir(evbp_dir) < 0)
+        return -1;
 
-    chdir(current_workdir);
+    if(chdir(current_workdir) < 0)
+        return -1;
+
     return 0;
 }
 
@@ -78,7 +81,7 @@ int erebos::input::new_virtual_kb_device(const char* name, const u16& bus_type,
     if(ioctl(fd,UI_SET_EVBIT,EV_KEY) < 0)
         return -1;
 
-    for(int i=0;i<256;i++)
+    for(u16 i=0;i<256;i++)
         if(ioctl(fd,UI_SET_KEYBIT,i) < 0)
             return -1;
 
