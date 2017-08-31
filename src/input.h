@@ -4,7 +4,6 @@
 #include "platform_defs.h"
 
 #ifdef LINUX
-#include <linux/input-event-codes.h>
 #include <string>
 #include <cstdio>
 #define INPUT_KEYTYPE u16
