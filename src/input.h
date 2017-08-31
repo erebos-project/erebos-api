@@ -119,6 +119,8 @@ namespace erebos {
 			KEY_PLAY = 0xFA,
 			KEY_ZOOM = 0xFB,
 			KEY_NONAME = 0xFC
+#elif defined(LINUX)
+            KEY_A = 30
 #endif
 		};
 

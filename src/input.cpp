@@ -6,6 +6,7 @@
 #include "winuser.h"
 #include "wincon.h"
 #elif defined(LINUX)
+#include <sys/time.h>
 #include <linux/uinput.h>
 #include <linux/limits.h>
 #include <fcntl.h>
@@ -104,7 +105,7 @@ int erebos::input::new_virtual_kb_device(const char* name, const u16& bus_type,
     return fd;
 }
 
-bool destroy_virtual_kb_device(const int& devfd) {
+bool erebos::input::destroy_virtual_kb_device(const int& devfd) {
     if(ioctl(devfd,UI_DEV_DESTROY) < 0)
         return false;
 
@@ -172,12 +173,13 @@ bool erebos::input::fake_put(const Key& key) {
 #elif defined(LINUX)
 bool erebos::input::fake_put(const int& devfd, const Key& key,
                              const KeyPressType& type) {
-    static struct input_event event = { 0, 0, 0, 0, 0 };
+    static struct input_event event;
 
     gettimeofday(&event.time,NULL);
     event.type = EV_KEY;
     event.code = static_cast<u16>(key);
     event.value = static_cast<u16>(type);
+
     if(write(devfd,&event,sizeof(struct input_event)) < 0)
         return false;
 
