@@ -156,7 +156,7 @@ bool erebos::input::fake_put(const Key& key) {
 	INPUT input;
 	// We want to send a keyboard event
 	input.type = 1;
-	input.ki.wVk = key;
+	input.ki.wVk = static_cast<int>(key);
 	input.ki.wScan = 0;
 	input.ki.dwFlags = 0;
 	input.ki.time = 0;

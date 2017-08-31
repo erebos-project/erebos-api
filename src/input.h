@@ -18,7 +18,7 @@ namespace erebos {
 	 * @brief input handling
 	 */
 	namespace input {
-		typedef unsigned short u16;
+		using u16 = unsigned short;
 
 		/*!
 		 * @brief common virtual key codes
