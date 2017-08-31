@@ -112,12 +112,12 @@ namespace erebos {
 	 * @brief hold generic data (dynamic allocated)
 	 */
 	class Data {
+	public:
 		/*!
 		 * @brief 64-bit unsigned integer
 		 */
 		using data_size = unsigned long long;
 
-	public:
 		/*!
 		 * @brief data handled by data_t class
 		 */

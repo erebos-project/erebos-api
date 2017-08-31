@@ -128,7 +128,7 @@ std::string erebos::file::read(const std::string &filename) {
 erebos::Data erebos::file::read_bin(const std::string &filename, std::uint64_t *bytecount) {
 	Data data;
 
-	data.size = file::get_size(filename);
+	data.size = static_cast<Data::data_size>(file::get_size(filename));
 	data.data = new char[data.size];
 
 	FILE *fd;
@@ -138,7 +138,7 @@ erebos::Data erebos::file::read_bin(const std::string &filename, std::uint64_t *
 #elif defined(_COMPILER_MSVC)
 	errno_t err = fopen_s(&fd, filename.c_str(), "rb");
 	if (err != 0)
-		return data_t(nullptr, 0);
+		return Data(nullptr, 0);
 #endif
 
 	if (!fd) {

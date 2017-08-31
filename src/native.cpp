@@ -53,9 +53,7 @@ std::string erebos::_get_exe_path_() {
 	std::stringstream ss;
 	ss << "/proc/" << getpid() << "/exe";
 
-	std::string exe_link = file::readlink(ss.str());
-
-	return exe_link;
+	return file::readlink(ss.str());
 #endif
 }
 
