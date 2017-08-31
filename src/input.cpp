@@ -85,7 +85,7 @@ int erebos::input::new_virtual_kb_device(const char* name, const bool& after_wai
 	 if(ioctl(fd,UI_SET_EVBIT,EV_KEY) < 0)
 		  return -1;
 
-	 for(u16 i=0;i<256;i++)
+	 for(u16 i=0;i<INPUT_KEY_MAX;i++)
 		  if(ioctl(fd,UI_SET_KEYBIT,i) < 0)
 				return -1;
 
