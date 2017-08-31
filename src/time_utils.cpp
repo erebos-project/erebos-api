@@ -30,18 +30,15 @@ std::string erebos::Time::to_string(std::string format) const {
 }
 
 erebos::Time erebos::get_localtime() {
-
-	std::time_t time_now = std::time(nullptr);
-	std::tm *now;
+	const std::time_t time_now = std::time(nullptr);
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
-	now = std::localtime(&time_now);
-
+    std::tm now;
+	localtime_r(&time_now,&now);
+	return erebos::Time(&now);
 #elif defined(_COMPILER_MSVC)
-	now = nullptr;
+	std::tm* now = nullptr;
 	localtime_s(now, &time_now);
-
+    return erebos::Time(now);
 #endif
-
-	return erebos::Time(now);
 }
