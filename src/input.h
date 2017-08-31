@@ -162,7 +162,7 @@ namespace erebos {
         /*!
          *
          * @param name
-         * @param after_wait : after device is correctly setup, wait for 5ms before returning (default true)
+         * @param after_wait : after device is correctly setup, wait for 500ms before returning (default true)
          * @param bus_type (default USB = 0x03)
          * @param vendor (default 0x01)
          * @param product (default 0x02)
