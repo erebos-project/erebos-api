@@ -125,8 +125,8 @@ std::string erebos::file::read(const std::string &filename) {
 }
 
 
-erebos::data_t erebos::file::read_bin(const std::string &filename, std::uint64_t *bytecount) {
-	data_t data;
+erebos::Data erebos::file::read_bin(const std::string &filename, std::uint64_t *bytecount) {
+	Data data;
 
 	data.size = file::get_size(filename);
 	data.data = new char[data.size];
@@ -143,7 +143,7 @@ erebos::data_t erebos::file::read_bin(const std::string &filename, std::uint64_t
 
 	if (!fd) {
 		delete[] data.data;
-		return data_t(nullptr, 0); // Return an empty data structure.
+		return Data(nullptr, 0); // Return an empty data structure.
 	}
 
 	size_t res = fread(data.data, 1, data.size, fd);
@@ -172,7 +172,7 @@ bool erebos::file::write(const std::string &filename, const std::string &data, b
 }
 
 
-bool erebos::file::write_bin(const std::string &filename, const data_t &data, bool truncate) {
+bool erebos::file::write_bin(const std::string &filename, const Data &data, bool truncate) {
 
 	FILE *fd;
 

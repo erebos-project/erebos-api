@@ -63,7 +63,7 @@ namespace erebos {
 		 * @param [out]bytecount : how many read bytes? nullptr if not interested (set by default)
 		 * @return an erebos::data_t structure holding binary data
 		 */
-		ERAPI data_t read_bin(const std::string &filename, std::uint64_t *bytecount = nullptr);
+		ERAPI Data read_bin(const std::string &filename, std::uint64_t *bytecount = nullptr);
 
 		/*!
 		 * @brief write bytes to a file
@@ -81,7 +81,7 @@ namespace erebos {
 		 * @param truncate : true by default
 		 * @return true if function succeed, false otherwise
 		 */
-		ERAPI bool write_bin(const std::string &filename, const data_t &data, bool truncate = true);
+		ERAPI bool write_bin(const std::string &filename, const Data &data, bool truncate = true);
 	}
 }
 

@@ -1,9 +1,9 @@
 /*!
- * @file time.h
+ * @file time_utils.h
  * @brief time utilities
  */
-#ifndef EREBOS_TIME_H
-#define EREBOS_TIME_H
+#ifndef EREBOS_TIME_UTILS_H
+#define EREBOS_TIME_UTILS_H
 
 #include <string>
 #include <ctime>

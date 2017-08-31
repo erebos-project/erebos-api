@@ -33,7 +33,13 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 	endif ()
 endif ()
 
-set(SOURCES framework.cpp native.cpp logger.cpp time.cpp file.cpp input.cpp)
+set(SOURCES
+		framework.cpp
+		native.cpp
+		logger.cpp
+		time_utils.cpp
+		file.cpp
+		input.cpp)
 
 if (NOT LIBRARY)
 	if(COMPILER STREQUAL "VCXX")

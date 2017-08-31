@@ -111,7 +111,7 @@ namespace erebos {
 	/*!
 	 * @brief hold generic data (dynamic allocated)
 	 */
-	class data_t {
+	class Data {
 		/*!
 		 * @brief 64-bit unsigned integer
 		 */
@@ -131,13 +131,13 @@ namespace erebos {
 		/*!
 		 * @brief class constructor, initializes data to nullptr and size to 0
 		 */
-		inline data_t() : data(nullptr), size(0) {}
+		inline Data() : data(nullptr), size(0) {}
 
 		/*!
 		 * @brief class constructor, dynamically allocates, and makes deep copy of data
 		 * @param str
 		 */
-		inline explicit data_t(const std::string &str)
+		inline explicit Data(const std::string &str)
 				: size(static_cast<data_size>(str.size())) {
 			this->data = new char[size];
 			memcpy(this->data, str.c_str(), size);
@@ -146,7 +146,7 @@ namespace erebos {
 		/*!
 		 * @brief class deconstructor, this ensures data is freed when object goes out-of-scope
 		 */
-		inline ~data_t() {
+		inline ~Data() {
 			free();
 		}
 
@@ -155,7 +155,7 @@ namespace erebos {
 		 * @param data
 		 * @param size
 		 */
-		inline data_t(const char *data, const data_size &size)
+		inline Data(const char *data, const data_size &size)
 				: size(size) {
 			this->data = new char[size];
 			memcpy(this->data, data, size);
@@ -165,7 +165,7 @@ namespace erebos {
 		 * @brief class copy-constructor, this allows class copy
 		 * @param prev
 		 */
-		inline data_t(const data_t &prev) {
+		inline Data(const Data &prev) {
 			this->data = new char[prev.size];
 			this->size = prev.size;
 			memcpy(this->data, prev.data, this->size);

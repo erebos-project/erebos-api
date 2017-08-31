@@ -181,7 +181,7 @@ bool erebos::input::fake_put(const int& devfd, const Key& key,
 		const KeyPressType& type) {
 	 static struct input_event event;
 
-	 gettimeofday(&event.time,NULL);
+	 gettimeofday(&event.time,nullptr);
 	 event.type = EV_KEY;
 	 event.code = static_cast<u16>(key);
 	 event.value = static_cast<u16>(type);
