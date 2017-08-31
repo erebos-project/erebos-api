@@ -38,7 +38,7 @@ static int get_keyboard_evpath_s(char* target) {
 	 while((entry=readdir(evbp_dir))) {
 		  if(entry->d_type == DT_LNK) {
 				if(!strncmp(entry->d_name + (strlen(entry->d_name) - NEED_MATCH_COUNT),
-								NEED_MATCH,NEED_MATCH_COUNT))
+							NEED_MATCH,NEED_MATCH_COUNT))
 					 break;
 		  }
 	 }
@@ -76,8 +76,8 @@ FILE* erebos::input::getev_physical_keyboard() {
 }
 
 int erebos::input::new_virtual_kb_device(const char* name, const bool& after_wait,
-													  const u16& bus_type, const u16& vendor,
-													  const u16& product, const u16& version) {
+		const u16& bus_type, const u16& vendor,
+		const u16& product, const u16& version) {
 	 int fd=open("/dev/uinput",O_WRONLY | O_NONBLOCK);
 	 if(fd < 0)
 		  return -1;
@@ -178,7 +178,7 @@ bool erebos::input::fake_put(const Key& key) {
 }
 #elif defined(LINUX)
 bool erebos::input::fake_put(const int& devfd, const Key& key,
-									  const KeyPressType& type) {
+		const KeyPressType& type) {
 	 static struct input_event event;
 
 	 gettimeofday(&event.time,NULL);
