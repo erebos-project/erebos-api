@@ -24,8 +24,6 @@ using CheckTokenMembership_ptr = BOOL(*)(HANDLE TokenHandle, PSID SidToCheck, PB
 #define POPEN_F popen
 #define PCLOSE_F pclose
 
-#include "stringutils.h"
-
 #include <unistd.h>
 #include <sys/uio.h>
 #include <linux/random.h>
@@ -250,18 +248,6 @@ bool erebos::proc::mem_unlock(void *address, const size_t &size) {
 	return !munlock(address, size);
 #endif
 }
-
-
-void erebos::proc::sleep(unsigned int delta) {
-
-#if defined(WINDOWS)
-	Sleep(delta);
-#elif defined(LINUX)
-	usleep(delta * 1000);
-#endif
-
-}
-
 
 bool erebos::is_privileged() {
 

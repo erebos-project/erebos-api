@@ -36,12 +36,14 @@ static int get_keyboard_evpath_s(char* target) {
 	 struct dirent *entry;
 
 	 while((entry=readdir(evbp_dir))) {
-		  if(entry->d_type == DT_LNK) {
-				if(!strncmp(entry->d_name + (strlen(entry->d_name) - NEED_MATCH_COUNT),
-							NEED_MATCH,NEED_MATCH_COUNT))
-					 break;
-		  }
+		  if(entry->d_type == DT_LNK &&
+		        !strncmp(entry->d_name + (strlen(entry->d_name) - NEED_MATCH_COUNT),
+						NEED_MATCH,NEED_MATCH_COUNT))
+				break;
 	 }
+
+     if(!entry)
+         return -1;
 
 	 char local_target[PATH_MAX];
 	 int evbpfd = dirfd(evbp_dir);
@@ -141,9 +143,6 @@ eikey erebos::input::get_key(const unsigned& delta) {
 
 		Sleep(delta);
 	}
-
-	//unreachable code
-	//return -1;
 }
 #elif defined(LINUX)
 eikey erebos::input::get_key(FILE *physkb) {
@@ -155,8 +154,6 @@ eikey erebos::input::get_key(FILE *physkb) {
 		  if(current.type == EV_KEY && current.value == 1)
 				return static_cast<Key>(current.code);
 	 }
-	 //unreachable code
-	 //return -1;
 }
 #endif
 

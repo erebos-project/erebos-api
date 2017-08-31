@@ -87,14 +87,6 @@ namespace erebos {
 		 * @return true if memory could be unlocked, false otherwise
 		 */
 		ERAPI bool mem_unlock(void *address, const size_t &size);
-
-		/*!
-		 * @brief Suspend execution for the amount of specified milliseconds
-		 * @param delta : the time to sleep, in milliseconds
-		 * NOTE: On some implementations multithreading is not supported, so this function may help
-		 */
-		ERAPI void sleep(unsigned int delta);
-
 	}
 
 
