@@ -162,6 +162,7 @@ namespace erebos {
         /*!
          *
          * @param name
+         * @param after_wait : after device is correctly setup, wait for 5ms before returning (default true)
          * @param bus_type (default USB = 0x03)
          * @param vendor (default 0x01)
          * @param product (default 0x02)
@@ -169,6 +170,7 @@ namespace erebos {
          * @return a new file descriptor, representing the virtual keyboard, -1 otherwise
          */
 		int new_virtual_kb_device(const char* name,
+                                  const bool& after_wait = true,
 								  const u16& bus_type = 0x03, //USB
 								  const u16& vendor = 0x01,
 								  const u16& product = 0x02,

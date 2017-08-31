@@ -13,6 +13,9 @@
 #include <unistd.h>
 #include <dirent.h>
 #include <cstring>
+#include <thread>
+#include <chrono>
+
 #define EVENT_BYPATH "/dev/input/by-path/"
 #define NEED_MATCH "-event-kbd"
 #define NEED_MATCH_COUNT 10
@@ -72,9 +75,9 @@ FILE* erebos::input::getev_physical_keyboard() {
     return ret ? nullptr : fopen(path,"r");
 }
 
-int erebos::input::new_virtual_kb_device(const char* name, const u16& bus_type,
-                                        const u16& vendor, const u16& product,
-                                        const u16& version) {
+int erebos::input::new_virtual_kb_device(const char* name, const bool& after_wait,
+                                         const u16& bus_type, const u16& vendor,
+                                         const u16& product, const u16& version) {
     int fd=open("/dev/uinput",O_WRONLY | O_NONBLOCK);
     if(fd < 0)
         return -1;
@@ -101,6 +104,9 @@ int erebos::input::new_virtual_kb_device(const char* name, const u16& bus_type,
     //create by written data
     if(ioctl(fd,UI_DEV_CREATE) < 0)
         return -1;
+
+    if(after_wait)
+        std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
     return fd;
 }
