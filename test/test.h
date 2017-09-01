@@ -74,6 +74,8 @@ inline Function<TyRet> extract_retype(TyRet(*target_fptr)(ManyParameters...)) {
 #define WITHOUT_RETV
 #define WITH_RETV retv =
 
+#define RUN_CUSTOM_TEST(xmessage) \
+		std::cout << "\n\t--> RunTest/Function/CustomTest: test defined by user"
 
 #define CALLBACK(...) \
 		cb(__VA_ARGS__)
@@ -102,6 +104,22 @@ inline Function<TyRet> extract_retype(TyRet(*target_fptr)(ManyParameters...)) {
 	} else \
 		std::cout << "\n\t--> RunTest/Function/Result: positive result, test passed"
 
+#define CUSTOM_TEST_EQUALS(expected,what) \
+	if(expected != what) { \
+		std::cerr << "\n\t\t* Unexpected result, details below:\n\t\t* Expected: " \
+				<< expected << ", got: " << what << "\n\t--> RunTest/Function/Result: negative result, test failed"; \
+		failure++; \
+	} else \
+		std::cout << "\n\t--> [Custom] RunTest/Function/Result: positive result, test passed"
+
+#define CUSTOM_TEST_DISEQUALS(expected, what) \
+	if(expected == what) { \
+		std::cerr << "\n\t\t* Unexpected result, details below:\n\t\t* Function returned unexpected value: " \
+				<< what << "\n\t--> RunTest/Function/Result: negative result, test failed"; \
+		failure++; \
+	} else \
+		std::cout << "\n\t--> [Custom] RunTest/Function/Result: positive result, test passed"
+
 #else
 
 #define TEST_EQUALS(expected) \
@@ -122,6 +140,24 @@ inline Function<TyRet> extract_retype(TyRet(*target_fptr)(ManyParameters...)) {
 		__ABORT_IFFAIL(); \
 	} else \
 		std::cout << "\n\t--> RunTest/Function/Result: positive result, test passed"
+
+#define CUSTOM_TEST_EQUALS(expected,what) \
+	if(expected != what) { \
+		std::cerr << "\n\t\t* Unexpected result, details below:\n\t\t* Expected: " \
+				<< expected << ", got: " << what << "\n\t--> RunTest/Function/Result: negative result, test failed"; \
+		failure++; \
+		__ABORT_IFFAIL(); \
+	} else \
+		std::cout << "\n\t--> [Custom] RunTest/Function/Result: positive result, test passed"
+
+#define CUSTOM_TEST_DISEQUALS(expected, what) \
+	if(expected == what) { \
+		std::cerr << "\n\t\t* Unexpected result, details below:\n\t\t* Function returned unexpected value: " \
+				<< what << "\n\t--> RunTest/Function/Result: negative result, test failed"; \
+		failure++; \
+		__ABORT_IFFAIL(); \
+	} else \
+		std::cout << "\n\t--> [Custom] RunTest/Function/Result: positive result, test passed"
 
 #endif //TEST_ABORT_IF_FAIL
 

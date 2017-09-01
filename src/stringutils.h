@@ -10,6 +10,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include <cstring>
 
 namespace erebos {
 	/*!
@@ -190,18 +191,33 @@ namespace erebos {
 			std::string item;
 
 			while (getline(ss, item, splchr))
-				output.emplace_back(item);
+				output.emplace_back(std::move(item));
+		}
+		
+		/*!
+		 * @brief find an element into an array of bytes (should be null-terminated in order to work the right way)
+		 * @param raw_array : the array
+		 * @param element : the element
+		 * @return array index, -1 if not found
+		 */
+		inline ssize index_of(const char *raw_array, const char &element) {
+			for (ssize i = 0; i < static_cast<ssize>(strlen(raw_array)); i++)
+				if (raw_array[i] == element)
+					return i;
+
+			return -1;
 		}
 
 		/*!
 		 * @brief find an element into an array of bytes
-		 * @param array : the array
+		 * @param raw_array : the array
 		 * @param element : the element
+		 * @param len : array length
 		 * @return array index, -1 if not found
 		 */
-		inline ssize index_of(const char array[], const char &element) {
-			for (ssize i = 0; i < static_cast<ssize>(std::string(array).size()); i++)
-				if (array[i] == element)
+		inline ssize index_of(const char *raw_array, const char &element, const ssize &len) {
+			for(ssize i = 0; i < len; i++)
+				if(raw_array[i] == element)
 					return i;
 
 			return -1;
@@ -309,7 +325,7 @@ namespace erebos {
 		 * @return new string command with stderr to stdout, useful with erebos::cmd()
 		 */
 		inline std::string stderr_to_stdout(const std::string &command) {
-			return std::string(command).append("2>&1");
+			return std::string(command).append(" 2>&1");
 		}
 
 #endif
