@@ -53,7 +53,7 @@ int main()
 
 	WITH_RETV CALLBACK('a');
 	TEST_EQUALS(false);
-	
+
 	END_TEST();
 
 	//is_literal string overload test
@@ -66,7 +66,7 @@ int main()
 	TEST_EQUALS(false);
 
 	END_TEST();
-	
+
 	//is_numeral string overload test
 	BEGIN_TEST PRE_CALL_OVERLOAD(erebos::strutil::is_numeral,bool, const std::string&);
 
@@ -111,7 +111,7 @@ int main()
 			const char*,const char&);
 
 	char arr[5] = { 'a','b','c','d' };
-	
+
 	WITH_RETV CALLBACK(arr,'b');
 	TEST_EQUALS(1);
 
@@ -128,15 +128,28 @@ int main()
 			const char*, const char&, const erebos::strutil::ssize&);
 
 	char arr[] = { 'a','b','c','d' };
-	
-	WITH_RETV CALLBACK(arr,'b',4);
+
+	WITH_RETV CALLBACK(arr,'b', 4);
 	TEST_EQUALS(1);
 
-	WITH_RETV CALLBACK(arr,'d',4);
+	WITH_RETV CALLBACK(arr,'d', 4);
 	TEST_EQUALS(3);
 
-	WITH_RETV CALLBACK(arr,'e',4);
+	WITH_RETV CALLBACK(arr,'e', 4);
 	TEST_EQUALS(-1);
+
+	END_TEST();
+
+	BEGIN_TEST PRE_CALL_VOID(erebos::strutil::replace,
+								std::string&, const std::string&,
+								const std::string&, const size_t&);
+	std::string str = "Szechuan sauce";
+	WITHOUT_RETV CALLBACK(str, " sauce", "", 1);
+	CUSTOM_TEST_EQUALS(str, "Szechuan");
+
+	str = "AaAaAa";
+	WITHOUT_RETV CALLBACK(str, "A", "B", 2);
+	CUSTOM_TEST_EQUALS(str, "BaBaAa");
 
 	END_TEST();
 
