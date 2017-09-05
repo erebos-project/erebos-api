@@ -123,6 +123,7 @@ int main()
 
 	END_TEST();
 
+	//index_of with specified length
 	BEGIN_TEST PRE_CALL_OVERLOAD(erebos::strutil::index_of,
 			erebos::strutil::ssize,
 			const char*, const char&, const erebos::strutil::ssize&);
@@ -140,6 +141,7 @@ int main()
 
 	END_TEST();
 
+	//replace
 	BEGIN_TEST PRE_CALL_VOID(erebos::strutil::replace,
 								std::string&, const std::string&,
 								const std::string&, const size_t&);
@@ -153,7 +155,14 @@ int main()
 
 	END_TEST();
 
-	//stringutils test end
+	//remaining
+	//cut
+	//replace overload
+	//mul
+	//encode_base64_*
+	//decode_base64_*
+	
+
 	END_MODULE_TEST();
 }
 
