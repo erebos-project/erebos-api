@@ -230,14 +230,6 @@ namespace erebos {
 			return !((*this) == other);
 		}
 
-
-		std::ostream& operator<<(std::ostream &out) {
-
-			out << data;
-			return out;
-		}
-
-
 	};
 }
 
