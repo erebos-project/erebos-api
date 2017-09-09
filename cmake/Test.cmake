@@ -19,7 +19,7 @@ enable_testing()
 foreach(TEST ${EREBOS_TESTS})
 	message(" -- AddTest: ${TEST}")
 	add_executable(${TEST} "${EREBOS_TESTS_LOCATION}/${TEST}.${EREBOS_SOURCE_EXT}")
-	target_link_libraries(${TEST} gcov ${EREBOS_STATIC_LIBRARY})
+	target_link_libraries(${TEST} -Wl,--whole-archive ${EREBOS_STATIC_LIBRARY} -Wl,--no-whole-archive)
 	add_dependencies(${TEST} erebos)
 
 	add_test(${TEST} ${EREBOS_TESTS_LOCATION}/${TEST})
