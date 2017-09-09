@@ -10,6 +10,7 @@ addons:
     packages:
       - cmake
       - doxygen
+      - gcov
   sonarcloud:
     organization: "stefanobelli-github"
     token:
@@ -18,8 +19,10 @@ addons:
 
 ###
 script:
-   - cmake . -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="-Wall -Wextra -W -finline-functions -funroll-loops -O2 -s"
+   - cmake . -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="-Wall -Wextra -W -finline-functions -funroll-loops -O2" -DMAKE_TESTS="yes"
    - build-wrapper-linux-x86-64 --out-dir build_wrapper make -j3
+   - make test
+   - ./scripts/coverage.sh . ./coverage-results
    - sonar-scanner
 
 ###
