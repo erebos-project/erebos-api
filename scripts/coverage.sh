@@ -23,7 +23,4 @@ for test in $TESTS; do
 	mv "${TESTS_EXEC_DIR}/test-$test" .
 done
 
-for test in $TESTS; do
-	gcov "test-$test"
-done
-
+gcov "*.gcno"

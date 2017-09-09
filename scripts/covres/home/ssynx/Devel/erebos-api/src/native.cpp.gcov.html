@@ -1,0 +1,740 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - /home/ssynx/Devel/erebos-api/src/native.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../index.html">top level</a> - <a href="index.html">home/ssynx/Devel/erebos-api/src</a> - native.cpp<span style="font-size: 80%;"> (source / <a href="native.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntry">107</td>
+            <td class="headerCovTableEntryLo">5.6 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-09-09 19:07:53</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntry">24</td>
+            <td class="headerCovTableEntryLo">12.5 %</td>
+          </tr>
+          <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #include &quot;native.h&quot;</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : #if defined(WINDOWS)
+<span class="lineNum">       4 </span>            : #define WINDOWS_LEAN_AND_MEAN 1
+<span class="lineNum">       5 </span>            : 
+<span class="lineNum">       6 </span>            : #include &lt;windows.h&gt;
+<span class="lineNum">       7 </span>            : #include &lt;wincrypt.h&gt;
+<span class="lineNum">       8 </span>            : #include &lt;tlhelp32.h&gt;
+<span class="lineNum">       9 </span>            : #include &quot;stringutils.h&quot;
+<span class="lineNum">      10 </span>            : 
+<span class="lineNum">      11 </span>            : #if defined(_COMPILER_MSVC)
+<span class="lineNum">      12 </span>            : #define POPEN_F _popen
+<span class="lineNum">      13 </span>            : #define PCLOSE_F _pclose
+<span class="lineNum">      14 </span>            : #elif defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
+<span class="lineNum">      15 </span>            : #include &lt;cstdio&gt;
+<span class="lineNum">      16 </span>            : #define POPEN_F popen
+<span class="lineNum">      17 </span>            : #define PCLOSE_F pclose
+<span class="lineNum">      18 </span>            : #endif
+<span class="lineNum">      19 </span>            : 
+<span class="lineNum">      20 </span>            : // __stdcall ignored here
+<span class="lineNum">      21 </span>            : using CheckTokenMembership_ptr = BOOL(*)(HANDLE TokenHandle, PSID SidToCheck, PBOOL IsMember);
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : #elif defined(LINUX)
+<span class="lineNum">      24 </span>            : #define POPEN_F popen
+<span class="lineNum">      25 </span>            : #define PCLOSE_F pclose
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : #include &lt;unistd.h&gt;
+<span class="lineNum">      28 </span>            : #include &lt;sys/uio.h&gt;
+<span class="lineNum">      29 </span>            : #include &lt;linux/random.h&gt;
+<span class="lineNum">      30 </span>            : #include &lt;linux/limits.h&gt;
+<span class="lineNum">      31 </span>            : #include &lt;signal.h&gt;
+<span class="lineNum">      32 </span>            : #include &lt;dirent.h&gt;
+<span class="lineNum">      33 </span>            : #include &lt;syscall.h&gt;
+<span class="lineNum">      34 </span>            : #include &lt;sys/stat.h&gt;
+<span class="lineNum">      35 </span>            : #include &lt;sys/mman.h&gt;
+<span class="lineNum">      36 </span>            : #include &lt;ftw.h&gt;
+<span class="lineNum">      37 </span>            : 
+<a name="38"><span class="lineNum">      38 </span>            : #endif</a>
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 : std::string erebos::_get_exe_path_() {</span>
+<span class="lineNum">      41 </span>            : 
+<span class="lineNum">      42 </span>            : #if defined(WINDOWS)
+<span class="lineNum">      43 </span>            :         char buff[256];
+<span class="lineNum">      44 </span>            :         int res = GetModuleFileName(NULL, buff, 256);
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span>            :         if(!res)
+<span class="lineNum">      47 </span>            :                 return &quot;&quot;;
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span>            :         return buff;
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            : #elif defined(LINUX)
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span><span class="lineNoCov">          0 :         std::stringstream ss;</span>
+<span class="lineNum">      54 </span><span class="lineNoCov">          0 :         ss &lt;&lt; &quot;/proc/&quot; &lt;&lt; getpid() &lt;&lt; &quot;/exe&quot;;</span>
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span><span class="lineNoCov">          0 :         return file::readlink(ss.str());</span>
+<span class="lineNum">      57 </span>            : #endif
+<span class="lineNum">      58 </span>            : }
+<a name="59"><span class="lineNum">      59 </span>            : </a>
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 : int erebos::proc::get_pid() {</span>
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            : #if defined(WINDOWS)
+<span class="lineNum">      64 </span>            :         return GetCurrentProcessId();
+<span class="lineNum">      65 </span>            : 
+<span class="lineNum">      66 </span>            : #elif defined(LINUX)
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :         return getpid();</span>
+<span class="lineNum">      68 </span>            : #endif
+<span class="lineNum">      69 </span>            : }
+<a name="70"><span class="lineNum">      70 </span>            : </a>
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span><span class="lineNoCov">          0 : int erebos::proc::get_pid_by_name(const std::string &amp;name, std::vector&lt;int&gt; &amp;output) {</span>
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            : #if defined(WINDOWS)
+<span class="lineNum">      75 </span>            :         PROCESSENTRY32 processEntry;
+<span class="lineNum">      76 </span>            :         HANDLE handle;
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :         if (!(handle = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0)))
+<span class="lineNum">      79 </span>            :                 return -1;
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span>            :         // We must initialize this word, otherwise Process32First fails.
+<span class="lineNum">      82 </span>            :         processEntry.dwSize = sizeof(PROCESSENTRY32);
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span>            :         int retval = 0;
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :         if (Process32First(handle, &amp;processEntry)) {
+<span class="lineNum">      87 </span>            :                 do {
+<span class="lineNum">      88 </span>            :                         if (!lstrcmp(processEntry.szExeFile, name.c_str()))
+<span class="lineNum">      89 </span>            :                                 output.push_back(processEntry.th32ProcessID);
+<span class="lineNum">      90 </span>            :                 } while (Process32Next(handle, &amp;processEntry));
+<span class="lineNum">      91 </span>            : 
+<span class="lineNum">      92 </span>            :                 if (GetLastError() != 0)
+<span class="lineNum">      93 </span>            :                         retval = -3;
+<span class="lineNum">      94 </span>            :         }
+<span class="lineNum">      95 </span>            :         else if (GetLastError() != 0)
+<span class="lineNum">      96 </span>            :                 retval = -2;
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :         if (!CloseHandle(handle))
+<span class="lineNum">      99 </span>            :                 retval = -4;
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span>            :         return retval;
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span>            : #elif defined(LINUX)
+<span class="lineNum">     104 </span><span class="lineNoCov">          0 :         std::vector&lt;std::string&gt; running_procs;</span>
+<span class="lineNum">     105 </span><span class="lineNoCov">          0 :         if (!file::get_dir_folder_list(&quot;/proc&quot;, running_procs))</span>
+<span class="lineNum">     106 </span>            :                 return -1;
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span>            :         char comm_path[PATH_MAX];
+<span class="lineNum">     109 </span><span class="lineNoCov">          0 :         for (const auto &amp;proc_dir : running_procs) {</span>
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :                 if (strutil::is_numeral(proc_dir)) {</span>
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span>            :                         snprintf(comm_path, PATH_MAX, &quot;/proc/%s/comm&quot;, proc_dir.c_str());
+<span class="lineNum">     114 </span><span class="lineNoCov">          0 :                         std::string content = file::read(comm_path);</span>
+<span class="lineNum">     115 </span><span class="lineNoCov">          0 :                         strutil::chomp(content);</span>
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :                         if (content == name)</span>
+<span class="lineNum">     118 </span><span class="lineNoCov">          0 :                                 output.push_back(std::stoi(proc_dir));</span>
+<span class="lineNum">     119 </span>            :                 }
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            :         }
+<span class="lineNum">     122 </span>            : 
+<span class="lineNum">     123 </span>            :         return 0;
+<span class="lineNum">     124 </span>            : #endif
+<span class="lineNum">     125 </span>            : }
+<span class="lineNum">     126 </span>            : 
+<span class="lineNum">     127 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     128 </span>            : int erebos::proc::get_pid_by_win_name(const std::string&amp; win_name) {
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :         HWND win_handle = FindWindow(nullptr, static_cast&lt;LPCSTR&gt;(win_name.c_str()));
+<span class="lineNum">     131 </span>            :         if(!win_handle)
+<span class="lineNum">     132 </span>            :                 return -1;
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span>            :         DWORD process_id;
+<span class="lineNum">     135 </span>            :         GetWindowThreadProcessId(win_handle, &amp;process_id);
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span>            :         return process_id;
+<span class="lineNum">     138 </span>            : }
+<span class="lineNum">     139 </span>            : #endif
+<a name="140"><span class="lineNum">     140 </span>            : </a>
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span><span class="lineNoCov">          0 : bool erebos::proc::kill(const int &amp;pid) {</span>
+<span class="lineNum">     143 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     144 </span>            :         HANDLE proc_handle = OpenProcess(PROCESS_TERMINATE, false, pid);
+<span class="lineNum">     145 </span>            :         return !TerminateProcess(proc_handle, 0);
+<span class="lineNum">     146 </span>            : #elif defined(LINUX)
+<span class="lineNum">     147 </span><span class="lineNoCov">          0 :         return !::kill(pid, SIGTERM);</span>
+<span class="lineNum">     148 </span>            : #endif
+<a name="149"><span class="lineNum">     149 </span>            : }</a>
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 : int erebos::proc::mem_read(const int &amp;pid, const size_t &amp;address, char *result, const size_t &amp;size) {</span>
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     154 </span>            :         HANDLE process_handle;
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span>            :         process_handle = OpenProcess(PROCESS_VM_READ, FALSE, pid);
+<span class="lineNum">     157 </span>            :         if(!process_handle)
+<span class="lineNum">     158 </span>            :                 return '\0';
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span>            :         size_t bytecount;
+<span class="lineNum">     161 </span>            :         if (!ReadProcessMemory(process_handle, (LPVOID)address,
+<span class="lineNum">     162 </span>            :                         result, size, (SIZE_T*) &amp;bytecount))
+<span class="lineNum">     163 </span>            :                 return 0;
+<span class="lineNum">     164 </span>            : 
+<span class="lineNum">     165 </span>            :         if (!CloseHandle(process_handle))
+<span class="lineNum">     166 </span>            :                 return 0;
+<span class="lineNum">     167 </span>            : 
+<span class="lineNum">     168 </span>            :         return (int) bytecount;
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            : #elif defined(LINUX)
+<span class="lineNum">     171 </span>            :         iovec local;
+<span class="lineNum">     172 </span>            :         iovec remote;
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span><span class="lineNoCov">          0 :         local.iov_base = result;</span>
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 :         local.iov_len = size;</span>
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 :         remote.iov_base = (void *) address;</span>
+<span class="lineNum">     178 </span><span class="lineNoCov">          0 :         remote.iov_len = size;</span>
+<span class="lineNum">     179 </span>            : 
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :         ssize_t bytes = process_vm_readv(pid, &amp;local, 1, &amp;remote, 1, 0);</span>
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :         if (bytes &lt; 0)</span>
+<span class="lineNum">     182 </span>            :                 return 0;
+<span class="lineNum">     183 </span>            : 
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :         return (int) bytes;</span>
+<span class="lineNum">     185 </span>            : #endif
+<a name="186"><span class="lineNum">     186 </span>            : }</a>
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span><span class="lineNoCov">          0 : int erebos::proc::mem_write(const int &amp;pid, const size_t &amp;address, char *data, const size_t &amp;size) {</span>
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span>            :         HANDLE process_handle;
+<span class="lineNum">     193 </span>            :         SIZE_T bytecount = 0;
+<span class="lineNum">     194 </span>            :         LPCVOID value_ptr = static_cast&lt;LPCVOID&gt;(&amp;data);
+<span class="lineNum">     195 </span>            : 
+<span class="lineNum">     196 </span>            :         process_handle = OpenProcess(PROCESS_ALL_ACCESS, FALSE, pid);
+<span class="lineNum">     197 </span>            :         if(!process_handle)
+<span class="lineNum">     198 </span>            :                 return 0;
+<span class="lineNum">     199 </span>            : 
+<span class="lineNum">     200 </span>            :         if (!WriteProcessMemory(process_handle, (LPVOID) address,
+<span class="lineNum">     201 </span>            :                         value_ptr, static_cast&lt;SIZE_T&gt;(size), &amp;bytecount))
+<span class="lineNum">     202 </span>            :                 return 0;
+<span class="lineNum">     203 </span>            : 
+<span class="lineNum">     204 </span>            :         if (!CloseHandle(process_handle))
+<span class="lineNum">     205 </span>            :                 return 0;
+<span class="lineNum">     206 </span>            : 
+<span class="lineNum">     207 </span>            :         return (int) bytecount;
+<span class="lineNum">     208 </span>            : 
+<span class="lineNum">     209 </span>            : #elif defined(LINUX)
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span>            :         iovec local;
+<span class="lineNum">     212 </span>            :         iovec remote;
+<span class="lineNum">     213 </span>            : 
+<span class="lineNum">     214 </span><span class="lineNoCov">          0 :         local.iov_base = data;</span>
+<span class="lineNum">     215 </span><span class="lineNoCov">          0 :         local.iov_len = size;</span>
+<span class="lineNum">     216 </span>            : 
+<span class="lineNum">     217 </span><span class="lineNoCov">          0 :         remote.iov_base = (void *) address;</span>
+<span class="lineNum">     218 </span><span class="lineNoCov">          0 :         remote.iov_len = size;</span>
+<span class="lineNum">     219 </span>            : 
+<span class="lineNum">     220 </span><span class="lineNoCov">          0 :         ssize_t bytes = process_vm_writev(pid, &amp;local, 1, &amp;remote, 1, 0);</span>
+<span class="lineNum">     221 </span><span class="lineNoCov">          0 :         if (bytes &lt; 0)</span>
+<span class="lineNum">     222 </span>            :                 return 0;
+<span class="lineNum">     223 </span>            : 
+<span class="lineNum">     224 </span><span class="lineNoCov">          0 :         return (int) bytes;</span>
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span>            : #endif
+<span class="lineNum">     227 </span>            : }
+<a name="228"><span class="lineNum">     228 </span>            : </a>
+<span class="lineNum">     229 </span>            : 
+<span class="lineNum">     230 </span><span class="lineNoCov">          0 : bool erebos::proc::mem_lock(void *address, const size_t &amp;size) {</span>
+<span class="lineNum">     231 </span>            : 
+<span class="lineNum">     232 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     233 </span>            :         return VirtualLock(address, size);
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span>            : #elif defined(LINUX)
+<span class="lineNum">     236 </span><span class="lineNoCov">          0 :         return !mlock(address, size);</span>
+<span class="lineNum">     237 </span>            : #endif
+<a name="238"><span class="lineNum">     238 </span>            : }</a>
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span><span class="lineNoCov">          0 : bool erebos::proc::mem_unlock(void *address, const size_t &amp;size) {</span>
+<span class="lineNum">     241 </span>            : 
+<span class="lineNum">     242 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     243 </span>            :         return VirtualUnlock(address, size);
+<span class="lineNum">     244 </span>            : 
+<span class="lineNum">     245 </span>            : #elif defined(LINUX)
+<span class="lineNum">     246 </span><span class="lineNoCov">          0 :         return !munlock(address, size);</span>
+<span class="lineNum">     247 </span>            : #endif
+<a name="248"><span class="lineNum">     248 </span>            : }</a>
+<span class="lineNum">     249 </span>            : 
+<span class="lineNum">     250 </span><span class="lineNoCov">          0 : bool erebos::is_privileged() {</span>
+<span class="lineNum">     251 </span>            : 
+<span class="lineNum">     252 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     253 </span>            : 
+<span class="lineNum">     254 </span>            :         SID_IDENTIFIER_AUTHORITY NtAuthority = SECURITY_NT_AUTHORITY;
+<span class="lineNum">     255 </span>            :         PSID AdministratorsGroup;
+<span class="lineNum">     256 </span>            :         BOOL b = AllocateAndInitializeSid(&amp;NtAuthority,
+<span class="lineNum">     257 </span>            :                                                                          2,
+<span class="lineNum">     258 </span>            :                                                                          SECURITY_BUILTIN_DOMAIN_RID,
+<span class="lineNum">     259 </span>            :                                                                          DOMAIN_ALIAS_RID_ADMINS,
+<span class="lineNum">     260 </span>            :                                                                          0, 0, 0, 0, 0, 0,
+<span class="lineNum">     261 </span>            :                                                                          &amp;AdministratorsGroup);
+<span class="lineNum">     262 </span>            : 
+<span class="lineNum">     263 </span>            :         HINSTANCE lib = LoadLibrary(&quot;Advapi32.dll&quot;);
+<span class="lineNum">     264 </span>            : 
+<span class="lineNum">     265 </span>            :         if(!lib)
+<span class="lineNum">     266 </span>            :                 return false;
+<span class="lineNum">     267 </span>            : 
+<span class="lineNum">     268 </span>            :         CheckTokenMembership_ptr checkTokenMembership = (CheckTokenMembership_ptr) GetProcAddress(lib, &quot;CheckTokenMembership&quot;);
+<span class="lineNum">     269 </span>            : 
+<span class="lineNum">     270 </span>            :         FreeLibrary(lib);
+<span class="lineNum">     271 </span>            : 
+<span class="lineNum">     272 </span>            :         if(!lib)
+<span class="lineNum">     273 </span>            :                 return false;
+<span class="lineNum">     274 </span>            : 
+<span class="lineNum">     275 </span>            :         if(b) {
+<span class="lineNum">     276 </span>            :                 if (!checkTokenMembership(0, AdministratorsGroup, &amp;b))
+<span class="lineNum">     277 </span>            :                         b = FALSE;
+<span class="lineNum">     278 </span>            : 
+<span class="lineNum">     279 </span>            :                 FreeSid(AdministratorsGroup);
+<span class="lineNum">     280 </span>            :         }
+<span class="lineNum">     281 </span>            : 
+<span class="lineNum">     282 </span>            :         return b != 0;
+<span class="lineNum">     283 </span>            : 
+<span class="lineNum">     284 </span>            : #elif defined(LINUX)
+<span class="lineNum">     285 </span>            : 
+<span class="lineNum">     286 </span><span class="lineNoCov">          0 :         return geteuid() == 0;</span>
+<span class="lineNum">     287 </span>            : 
+<span class="lineNum">     288 </span>            : #endif
+<a name="289"><span class="lineNum">     289 </span>            : }</a>
+<span class="lineNum">     290 </span>            : 
+<span class="lineNum">     291 </span><span class="lineCov">          1 : int erebos::get_random_secure() {</span>
+<span class="lineNum">     292 </span>            : 
+<span class="lineNum">     293 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     294 </span>            : 
+<span class="lineNum">     295 </span>            :         HCRYPTPROV hProv;
+<span class="lineNum">     296 </span>            : 
+<span class="lineNum">     297 </span>            :         int res;
+<span class="lineNum">     298 </span>            : 
+<span class="lineNum">     299 </span>            :         if(CryptAcquireContext(&amp;hProv, NULL, NULL, PROV_RSA_FULL, 0)) {
+<span class="lineNum">     300 </span>            :                 BYTE dbData[4];
+<span class="lineNum">     301 </span>            :                 if(CryptGenRandom(hProv, 4, dbData))
+<span class="lineNum">     302 </span>            :                         res = (dbData[0] &lt;&lt; 24) | (dbData[1] &lt;&lt; 16) | (dbData[2] &lt;&lt; 8) | dbData[3];
+<span class="lineNum">     303 </span>            :                 else
+<span class="lineNum">     304 </span>            :                         return 0;
+<span class="lineNum">     305 </span>            :         } else
+<span class="lineNum">     306 </span>            :                 return 0;
+<span class="lineNum">     307 </span>            : 
+<span class="lineNum">     308 </span>            :         CryptReleaseContext(hProv, 0);
+<span class="lineNum">     309 </span>            : 
+<span class="lineNum">     310 </span>            :         return res;
+<span class="lineNum">     311 </span>            : 
+<span class="lineNum">     312 </span>            : #elif defined(LINUX) &amp;&amp; defined(SYS_getrandom) &amp;&amp; defined(GRND_RANDOM)
+<span class="lineNum">     313 </span>            : 
+<span class="lineNum">     314 </span>            :         int res;
+<span class="lineNum">     315 </span><span class="lineCov">          1 :         syscall(SYS_getrandom, &amp;res, 4, GRND_RANDOM);</span>
+<span class="lineNum">     316 </span>            : 
+<span class="lineNum">     317 </span><span class="lineCov">          1 :         return res;</span>
+<span class="lineNum">     318 </span>            : #endif
+<span class="lineNum">     319 </span>            : }
+<a name="320"><span class="lineNum">     320 </span>            : </a>
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span><span class="lineNoCov">          0 : bool erebos::file::get_dir_file_list(const std::string &amp;dir, std::vector&lt;std::string&gt; &amp;output) {</span>
+<span class="lineNum">     323 </span>            : 
+<span class="lineNum">     324 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     325 </span>            :         HANDLE             hFile;
+<span class="lineNum">     326 </span>            :         WIN32_FIND_DATA  wfd;
+<span class="lineNum">     327 </span>            :         TCHAR                   path_ch[_MAX_PATH];
+<span class="lineNum">     328 </span>            : 
+<span class="lineNum">     329 </span>            :         // Compatible with Unix and Windows string format
+<span class="lineNum">     330 </span>            :         std::string path = dir;
+<span class="lineNum">     331 </span>            :         if (path.find(&quot;/&quot;) != std::string::npos)
+<span class="lineNum">     332 </span>            :                 erebos::strutil::replace(path, '/', '\\');
+<span class="lineNum">     333 </span>            : 
+<span class="lineNum">     334 </span>            :         path.append(&quot;\\*&quot;);
+<span class="lineNum">     335 </span>            : 
+<span class="lineNum">     336 </span>            :         path_ch[path.size()] = '\0';
+<span class="lineNum">     337 </span>            :         std::copy(path.begin(), path.end(), path_ch);
+<span class="lineNum">     338 </span>            : 
+<span class="lineNum">     339 </span>            :         hFile = FindFirstFile(path_ch, &amp;wfd);
+<span class="lineNum">     340 </span>            :         if(hFile == INVALID_HANDLE_VALUE)
+<span class="lineNum">     341 </span>            :                 return false;
+<span class="lineNum">     342 </span>            : 
+<span class="lineNum">     343 </span>            :         bool retval = true;
+<span class="lineNum">     344 </span>            : 
+<span class="lineNum">     345 </span>            :         do {
+<span class="lineNum">     346 </span>            :                 if(!(wfd.dwFileAttributes &amp; FILE_ATTRIBUTE_NORMAL) &amp;&amp;
+<span class="lineNum">     347 </span>            :                          std::string(wfd.cFileName) != &quot;.&quot; &amp;&amp;
+<span class="lineNum">     348 </span>            :                          std::string(wfd.cFileName) != &quot;..&quot;)
+<span class="lineNum">     349 </span>            : 
+<span class="lineNum">     350 </span>            :                         output.emplace_back(wfd.cFileName);
+<span class="lineNum">     351 </span>            : 
+<span class="lineNum">     352 </span>            :         } while(FindNextFile(hFile, &amp;wfd) != 0);
+<span class="lineNum">     353 </span>            : 
+<span class="lineNum">     354 </span>            :         if (GetLastError() != 0)
+<span class="lineNum">     355 </span>            :                 retval = false;
+<span class="lineNum">     356 </span>            : 
+<span class="lineNum">     357 </span>            :         if (!CloseHandle(hFile) &amp;&amp; retval)
+<span class="lineNum">     358 </span>            :                 retval = false;
+<span class="lineNum">     359 </span>            : 
+<span class="lineNum">     360 </span>            :         return retval;
+<span class="lineNum">     361 </span>            : #elif defined(LINUX)
+<span class="lineNum">     362 </span>            : 
+<span class="lineNum">     363 </span><span class="lineNoCov">          0 :         DIR *handle = opendir(dir.c_str());</span>
+<span class="lineNum">     364 </span><span class="lineNoCov">          0 :         if (!handle)</span>
+<span class="lineNum">     365 </span>            :                 return false;
+<span class="lineNum">     366 </span>            : 
+<span class="lineNum">     367 </span>            :         dirent *dir_entry;
+<span class="lineNum">     368 </span><span class="lineNoCov">          0 :         while ((dir_entry = readdir(handle)))</span>
+<span class="lineNum">     369 </span><span class="lineNoCov">          0 :                 if (dir_entry-&gt;d_type == DT_REG)</span>
+<span class="lineNum">     370 </span><span class="lineNoCov">          0 :                         output.emplace_back(dir_entry-&gt;d_name);</span>
+<span class="lineNum">     371 </span>            : 
+<span class="lineNum">     372 </span><span class="lineNoCov">          0 :         if (closedir(handle))</span>
+<span class="lineNum">     373 </span>            :                 return false;
+<span class="lineNum">     374 </span>            : #endif
+<span class="lineNum">     375 </span>            : 
+<span class="lineNum">     376 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     377 </span>            : }
+<a name="378"><span class="lineNum">     378 </span>            : </a>
+<span class="lineNum">     379 </span>            : 
+<span class="lineNum">     380 </span><span class="lineNoCov">          0 : bool erebos::file::get_dir_folder_list(const std::string &amp;dir, std::vector&lt;std::string&gt; &amp;output) {</span>
+<span class="lineNum">     381 </span>            : 
+<span class="lineNum">     382 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     383 </span>            :         HANDLE             hFile;
+<span class="lineNum">     384 </span>            :         WIN32_FIND_DATA  wfd;
+<span class="lineNum">     385 </span>            :         TCHAR                   path_ch[_MAX_PATH];
+<span class="lineNum">     386 </span>            : 
+<span class="lineNum">     387 </span>            :         // Compatible with Unix and Windows string format
+<span class="lineNum">     388 </span>            :         std::string path = dir;
+<span class="lineNum">     389 </span>            : 
+<span class="lineNum">     390 </span>            :         if (path.find(&quot;/&quot;) != std::string::npos)
+<span class="lineNum">     391 </span>            :                 erebos::strutil::replace(path, '/', '\\');
+<span class="lineNum">     392 </span>            : 
+<span class="lineNum">     393 </span>            :         path.append(&quot;\\*&quot;);
+<span class="lineNum">     394 </span>            : 
+<span class="lineNum">     395 </span>            :         path_ch[path.size()] = '\0';
+<span class="lineNum">     396 </span>            :         std::copy(path.begin(), path.end(), static_cast&lt;char*&gt;(path_ch));
+<span class="lineNum">     397 </span>            : 
+<span class="lineNum">     398 </span>            :         hFile = FindFirstFile(path_ch, &amp;wfd);
+<span class="lineNum">     399 </span>            :         if(hFile == INVALID_HANDLE_VALUE)
+<span class="lineNum">     400 </span>            :                 return false;
+<span class="lineNum">     401 </span>            : 
+<span class="lineNum">     402 </span>            :         bool retval = true;
+<span class="lineNum">     403 </span>            : 
+<span class="lineNum">     404 </span>            :         do {
+<span class="lineNum">     405 </span>            :                 if(wfd.dwFileAttributes &amp; FILE_ATTRIBUTE_DIRECTORY &amp;&amp;
+<span class="lineNum">     406 </span>            :                          std::string(wfd.cFileName) != &quot;.&quot; &amp;&amp;
+<span class="lineNum">     407 </span>            :                          std::string(wfd.cFileName) != &quot;..&quot;)
+<span class="lineNum">     408 </span>            :                         output.emplace_back(wfd.cFileName);
+<span class="lineNum">     409 </span>            :         } while(FindNextFile(hFile, &amp;wfd) != 0);
+<span class="lineNum">     410 </span>            : 
+<span class="lineNum">     411 </span>            :         if (GetLastError() != 0)
+<span class="lineNum">     412 </span>            :                 retval = false;
+<span class="lineNum">     413 </span>            : 
+<span class="lineNum">     414 </span>            :         if (!CloseHandle(hFile) &amp;&amp; retval)
+<span class="lineNum">     415 </span>            :                 retval = false;
+<span class="lineNum">     416 </span>            : 
+<span class="lineNum">     417 </span>            :         return retval;
+<span class="lineNum">     418 </span>            : 
+<span class="lineNum">     419 </span>            : #elif defined(LINUX)
+<span class="lineNum">     420 </span>            : 
+<span class="lineNum">     421 </span><span class="lineNoCov">          0 :         DIR *handle = opendir(dir.c_str());</span>
+<span class="lineNum">     422 </span><span class="lineNoCov">          0 :         if (!handle)</span>
+<span class="lineNum">     423 </span>            :                 return false;
+<span class="lineNum">     424 </span>            : 
+<span class="lineNum">     425 </span>            :         dirent *dir_entry;
+<span class="lineNum">     426 </span><span class="lineNoCov">          0 :         while ((dir_entry = readdir(handle)))</span>
+<span class="lineNum">     427 </span><span class="lineNoCov">          0 :                 if (dir_entry-&gt;d_type == DT_DIR)</span>
+<span class="lineNum">     428 </span><span class="lineNoCov">          0 :                         output.emplace_back(dir_entry-&gt;d_name);</span>
+<span class="lineNum">     429 </span>            : 
+<span class="lineNum">     430 </span><span class="lineNoCov">          0 :         if (closedir(handle))</span>
+<span class="lineNum">     431 </span>            :                 return false;
+<span class="lineNum">     432 </span>            : #endif
+<span class="lineNum">     433 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     434 </span>            : }
+<a name="435"><span class="lineNum">     435 </span>            : </a>
+<span class="lineNum">     436 </span>            : 
+<span class="lineNum">     437 </span><span class="lineNoCov">          0 : bool erebos::file::get_folder_exists(const std::string &amp;foldername) {</span>
+<span class="lineNum">     438 </span>            : 
+<span class="lineNum">     439 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     440 </span>            :         DWORD dwAttributes = GetFileAttributes(foldername.c_str());
+<span class="lineNum">     441 </span>            : 
+<span class="lineNum">     442 </span>            :         return dwAttributes != INVALID_FILE_ATTRIBUTES &amp;&amp;
+<span class="lineNum">     443 </span>            :                         (dwAttributes &amp;  FILE_ATTRIBUTE_DIRECTORY);
+<span class="lineNum">     444 </span>            : 
+<span class="lineNum">     445 </span>            : #elif defined(LINUX)
+<span class="lineNum">     446 </span><span class="lineNoCov">          0 :         return !access(foldername.c_str(), F_OK);</span>
+<span class="lineNum">     447 </span>            : #endif
+<span class="lineNum">     448 </span>            : }
+<a name="449"><span class="lineNum">     449 </span>            : </a>
+<span class="lineNum">     450 </span>            : 
+<span class="lineNum">     451 </span><span class="lineNoCov">          0 : int erebos::file::get_size(const std::string &amp;filename) {</span>
+<span class="lineNum">     452 </span>            : 
+<span class="lineNum">     453 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     454 </span>            :         HANDLE fd = CreateFile(filename.c_str(), GENERIC_READ, 0, nullptr,
+<span class="lineNum">     455 </span>            :                                                         OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+<span class="lineNum">     456 </span>            :         if (!fd)
+<span class="lineNum">     457 </span>            :                 return -1;
+<span class="lineNum">     458 </span>            : 
+<span class="lineNum">     459 </span>            :         DWORD size;
+<span class="lineNum">     460 </span>            :         GetFileSize(fd, &amp;size);
+<span class="lineNum">     461 </span>            : 
+<span class="lineNum">     462 </span>            :         if (!CloseHandle(fd))
+<span class="lineNum">     463 </span>            :                 return -2;
+<span class="lineNum">     464 </span>            : 
+<span class="lineNum">     465 </span>            :         return size;
+<span class="lineNum">     466 </span>            : 
+<span class="lineNum">     467 </span>            : #elif defined(LINUX)
+<span class="lineNum">     468 </span>            :         struct stat st;
+<span class="lineNum">     469 </span><span class="lineNoCov">          0 :         if (stat(filename.c_str(), &amp;st) == -1)</span>
+<span class="lineNum">     470 </span>            :                 return -1;
+<span class="lineNum">     471 </span>            : 
+<span class="lineNum">     472 </span><span class="lineNoCov">          0 :         return static_cast&lt;int&gt;(st.st_size);</span>
+<span class="lineNum">     473 </span>            : #endif
+<span class="lineNum">     474 </span>            : }
+<a name="475"><span class="lineNum">     475 </span>            : </a>
+<span class="lineNum">     476 </span>            : 
+<span class="lineNum">     477 </span><span class="lineCov">          1 : bool erebos::file::remove(const std::string &amp;filename) {</span>
+<span class="lineNum">     478 </span>            : 
+<span class="lineNum">     479 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     480 </span>            :         return DeleteFile(filename.c_str()) != 0;
+<span class="lineNum">     481 </span>            : #elif defined(LINUX)
+<span class="lineNum">     482 </span><span class="lineCov">          1 :         return unlink(filename.c_str()) == 0;</span>
+<span class="lineNum">     483 </span>            : #endif
+<span class="lineNum">     484 </span>            : 
+<span class="lineNum">     485 </span>            : }
+<span class="lineNum">     486 </span>            : 
+<span class="lineNum">     487 </span>            : 
+<a name="488"><span class="lineNum">     488 </span>            : #ifdef LINUX</a>
+<span class="lineNum">     489 </span>            : 
+<span class="lineNum">     490 </span><span class="lineNoCov">          0 : int remove_callback(const char *filepath, const struct stat *st, int flag, struct FTW *buffer) {</span>
+<span class="lineNum">     491 </span>            :         SUPPRESS_UNUSED(filepath);
+<span class="lineNum">     492 </span>            :         SUPPRESS_UNUSED(st);
+<span class="lineNum">     493 </span>            :         SUPPRESS_UNUSED(flag);
+<span class="lineNum">     494 </span>            :         SUPPRESS_UNUSED(buffer);
+<span class="lineNum">     495 </span>            : 
+<span class="lineNum">     496 </span><span class="lineNoCov">          0 :         return ::remove(filepath);</span>
+<span class="lineNum">     497 </span>            : }
+<span class="lineNum">     498 </span>            : 
+<span class="lineNum">     499 </span>            : #endif
+<a name="500"><span class="lineNum">     500 </span>            : </a>
+<span class="lineNum">     501 </span>            : 
+<span class="lineNum">     502 </span><span class="lineNoCov">          0 : bool erebos::file::remove_dir(const std::string &amp;dirname) {</span>
+<span class="lineNum">     503 </span>            : 
+<span class="lineNum">     504 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     505 </span>            : 
+<span class="lineNum">     506 </span>            :         char buffer[_MAX_DIR];
+<span class="lineNum">     507 </span>            :         snprintf(buffer, _MAX_DIR, &quot;%s\0\0&quot;, dirname.c_str());
+<span class="lineNum">     508 </span>            : 
+<span class="lineNum">     509 </span>            : 
+<span class="lineNum">     510 </span>            :         // This function needs paths to be double null terminated
+<span class="lineNum">     511 </span>            : 
+<span class="lineNum">     512 </span>            :         SHFILEOPSTRUCT opstruct = {
+<span class="lineNum">     513 </span>            :                 nullptr,
+<span class="lineNum">     514 </span>            :                 FO_DELETE,
+<span class="lineNum">     515 </span>            :                 buffer,
+<span class="lineNum">     516 </span>            :                 &quot;\0\0&quot;,
+<span class="lineNum">     517 </span>            :                 FOF_NOCONFIRMATION |
+<span class="lineNum">     518 </span>            :                 FOF_NOERRORUI |
+<span class="lineNum">     519 </span>            :                 FOF_SILENT,
+<span class="lineNum">     520 </span>            :                 false,
+<span class="lineNum">     521 </span>            :                 0,
+<span class="lineNum">     522 </span>            :                 nullptr
+<span class="lineNum">     523 </span>            :         };
+<span class="lineNum">     524 </span>            : 
+<span class="lineNum">     525 </span>            :         return SHFileOperation(&amp;opstruct) == 0;
+<span class="lineNum">     526 </span>            : 
+<span class="lineNum">     527 </span>            : #elif defined(LINUX)
+<span class="lineNum">     528 </span>            : 
+<span class="lineNum">     529 </span><span class="lineNoCov">          0 :         return nftw(dirname.c_str(), remove_callback, 64, FTW_DEPTH | FTW_PHYS) == 0;</span>
+<span class="lineNum">     530 </span>            : 
+<span class="lineNum">     531 </span>            : #endif
+<span class="lineNum">     532 </span>            : 
+<span class="lineNum">     533 </span>            : }
+<a name="534"><span class="lineNum">     534 </span>            : </a>
+<span class="lineNum">     535 </span>            : 
+<span class="lineNum">     536 </span><span class="lineNoCov">          0 : int erebos::cmd(const std::string&amp; command, int* retval) {</span>
+<span class="lineNum">     537 </span>            : 
+<span class="lineNum">     538 </span><span class="lineNoCov">          0 :         FILE *open_pipe = POPEN_F(command.c_str(), &quot;r&quot;);</span>
+<span class="lineNum">     539 </span><span class="lineNoCov">          0 :         if (!open_pipe)</span>
+<span class="lineNum">     540 </span>            :                 return -1;
+<span class="lineNum">     541 </span>            : 
+<span class="lineNum">     542 </span><span class="lineNoCov">          0 :         errno = 0;</span>
+<span class="lineNum">     543 </span><span class="lineNoCov">          0 :         int res = PCLOSE_F(open_pipe);</span>
+<span class="lineNum">     544 </span><span class="lineNoCov">          0 :         if (retval)</span>
+<span class="lineNum">     545 </span><span class="lineNoCov">          0 :                 *retval = res;</span>
+<span class="lineNum">     546 </span>            : 
+<span class="lineNum">     547 </span><span class="lineNoCov">          0 :         if (res == -1 &amp;&amp; errno != 0)</span>
+<span class="lineNum">     548 </span>            :                 return -2;
+<span class="lineNum">     549 </span>            : 
+<span class="lineNum">     550 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     551 </span>            : }
+<a name="552"><span class="lineNum">     552 </span>            : </a>
+<span class="lineNum">     553 </span>            : 
+<span class="lineNum">     554 </span><span class="lineNoCov">          0 : int erebos::cmd(const std::string&amp; command, std::string&amp; output, int* retval) {</span>
+<span class="lineNum">     555 </span>            : 
+<span class="lineNum">     556 </span><span class="lineNoCov">          0 :         FILE *open_pipe = POPEN_F(command.c_str(), &quot;r&quot;);</span>
+<span class="lineNum">     557 </span><span class="lineNoCov">          0 :         if (!open_pipe)</span>
+<span class="lineNum">     558 </span>            :                 return -1;
+<span class="lineNum">     559 </span>            : 
+<span class="lineNum">     560 </span><span class="lineNoCov">          0 :         std::stringstream outstream;</span>
+<span class="lineNum">     561 </span>            : 
+<span class="lineNum">     562 </span>            :         char each_line[BUFSIZ];
+<span class="lineNum">     563 </span><span class="lineNoCov">          0 :         while (fgets(each_line, BUFSIZ, open_pipe))</span>
+<span class="lineNum">     564 </span><span class="lineNoCov">          0 :                 outstream &lt;&lt; each_line;</span>
+<span class="lineNum">     565 </span>            : 
+<span class="lineNum">     566 </span><span class="lineNoCov">          0 :         output = outstream.str();</span>
+<span class="lineNum">     567 </span>            : 
+<span class="lineNum">     568 </span><span class="lineNoCov">          0 :         errno = 0;</span>
+<span class="lineNum">     569 </span><span class="lineNoCov">          0 :         int res = PCLOSE_F(open_pipe);</span>
+<span class="lineNum">     570 </span>            : 
+<span class="lineNum">     571 </span><span class="lineNoCov">          0 :         if (retval)</span>
+<span class="lineNum">     572 </span><span class="lineNoCov">          0 :                 *retval = res;</span>
+<span class="lineNum">     573 </span>            : 
+<span class="lineNum">     574 </span><span class="lineNoCov">          0 :         if (res == -1 &amp;&amp; errno != 0)</span>
+<span class="lineNum">     575 </span>            :                 return -2;
+<span class="lineNum">     576 </span>            : 
+<span class="lineNum">     577 </span><span class="lineNoCov">          0 :         return 0;</span>
+<span class="lineNum">     578 </span>            : }
+<a name="579"><span class="lineNum">     579 </span>            : </a>
+<span class="lineNum">     580 </span>            : 
+<span class="lineNum">     581 </span><span class="lineNoCov">          0 : std::string erebos::get_cwd() {</span>
+<span class="lineNum">     582 </span>            : 
+<span class="lineNum">     583 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     584 </span>            : 
+<span class="lineNum">     585 </span>            :         char buff[256];
+<span class="lineNum">     586 </span>            :         int size = GetCurrentDirectory(256, buff);
+<span class="lineNum">     587 </span>            :         if(!size)
+<span class="lineNum">     588 </span>            :                 return &quot;&quot;;
+<span class="lineNum">     589 </span>            :         buff[size] = '\0';
+<span class="lineNum">     590 </span>            : 
+<span class="lineNum">     591 </span>            :         return buff;
+<span class="lineNum">     592 </span>            : 
+<span class="lineNum">     593 </span>            : #elif defined(LINUX)
+<span class="lineNum">     594 </span>            : 
+<span class="lineNum">     595 </span>            :         char buff[PATH_MAX];
+<span class="lineNum">     596 </span>            :         char* res = getcwd(buff, PATH_MAX);
+<span class="lineNum">     597 </span><span class="lineNoCov">          0 :         if(!res)</span>
+<span class="lineNum">     598 </span><span class="lineNoCov">          0 :                 return &quot;&quot;;</span>
+<span class="lineNum">     599 </span>            : 
+<span class="lineNum">     600 </span><span class="lineNoCov">          0 :         return buff;</span>
+<span class="lineNum">     601 </span>            : 
+<span class="lineNum">     602 </span>            : #endif
+<span class="lineNum">     603 </span>            : }
+<a name="604"><span class="lineNum">     604 </span>            : </a>
+<span class="lineNum">     605 </span>            : 
+<span class="lineNum">     606 </span><span class="lineNoCov">          0 : bool erebos::set_cwd(std::string path) {</span>
+<span class="lineNum">     607 </span>            : 
+<span class="lineNum">     608 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     609 </span>            : 
+<span class="lineNum">     610 </span>            :         return SetCurrentDirectory(path.c_str()) != 0;
+<span class="lineNum">     611 </span>            : 
+<span class="lineNum">     612 </span>            : #elif defined(LINUX)
+<span class="lineNum">     613 </span>            : 
+<span class="lineNum">     614 </span><span class="lineNoCov">          0 :         return chdir(path.c_str()) != -1;</span>
+<span class="lineNum">     615 </span>            : 
+<span class="lineNum">     616 </span>            : #endif
+<span class="lineNum">     617 </span>            : 
+<span class="lineNum">     618 </span>            : }
+<span class="lineNum">     619 </span>            : 
+<span class="lineNum">     620 </span>            : 
+<a name="621"><span class="lineNum">     621 </span>            : #if defined(LINUX)</a>
+<span class="lineNum">     622 </span>            : 
+<span class="lineNum">     623 </span><span class="lineNoCov">          0 : std::string erebos::file::readlink(const std::string &amp;filename) {</span>
+<span class="lineNum">     624 </span>            : 
+<span class="lineNum">     625 </span>            :         struct stat link_stat;
+<span class="lineNum">     626 </span>            : 
+<span class="lineNum">     627 </span>            :         ssize_t res = lstat(filename.c_str(), &amp;link_stat);
+<span class="lineNum">     628 </span><span class="lineNoCov">          0 :         if (res == -1)</span>
+<span class="lineNum">     629 </span><span class="lineNoCov">          0 :                 return &quot;&quot;;</span>
+<span class="lineNum">     630 </span>            : 
+<span class="lineNum">     631 </span>            :         char buff[PATH_MAX];
+<span class="lineNum">     632 </span>            :         res = ::readlink(filename.c_str(), buff, PATH_MAX);
+<span class="lineNum">     633 </span><span class="lineNoCov">          0 :         if (res == -1)</span>
+<span class="lineNum">     634 </span><span class="lineNoCov">          0 :                 return &quot;&quot;;</span>
+<span class="lineNum">     635 </span>            : 
+<span class="lineNum">     636 </span><span class="lineNoCov">          0 :         buff[res] = '\0';</span>
+<span class="lineNum">     637 </span><span class="lineNoCov">          0 :         return buff;</span>
+<span class="lineNum">     638 </span>            : }
+<span class="lineNum">     639 </span>            : 
+<span class="lineNum">     640 </span>            : #endif
+<a name="641"><span class="lineNum">     641 </span>            : </a>
+<span class="lineNum">     642 </span>            : 
+<span class="lineNum">     643 </span><span class="lineNoCov">          0 : std::string erebos::string_from_errno(const int &amp;errn) {</span>
+<span class="lineNum">     644 </span>            : 
+<span class="lineNum">     645 </span>            : #if defined(LINUX)
+<span class="lineNum">     646 </span><span class="lineNoCov">          0 :         return strerror(errn);</span>
+<span class="lineNum">     647 </span>            : 
+<span class="lineNum">     648 </span>            : #elif defined(WINDOWS)
+<span class="lineNum">     649 </span>            : 
+<span class="lineNum">     650 </span>            :         LPSTR target;
+<span class="lineNum">     651 </span>            :         FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER |
+<span class="lineNum">     652 </span>            :                 FORMAT_MESSAGE_FROM_SYSTEM |
+<span class="lineNum">     653 </span>            :                 FORMAT_MESSAGE_IGNORE_INSERTS,
+<span class="lineNum">     654 </span>            :                 NULL, errn, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+<span class="lineNum">     655 </span>            :                 (LPSTR) &amp;target, 0, NULL);
+<span class="lineNum">     656 </span>            : 
+<span class="lineNum">     657 </span>            :         std::string target_stds = static_cast&lt;char*&gt;(target);
+<span class="lineNum">     658 </span>            :         target_stds.erase(target_stds.end() - 2, target_stds.end()); // erase:\r\n
+<span class="lineNum">     659 </span>            : 
+<span class="lineNum">     660 </span>            :         LocalFree(target);
+<span class="lineNum">     661 </span>            : 
+<a name="662"><span class="lineNum">     662 </span>            :         return target_stds;</a>
+<span class="lineNum">     663 </span>            : #endif
+<span class="lineNum">     664 </span><span class="lineCov">         16 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

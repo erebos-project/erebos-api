@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - /home/ssynx/Devel/erebos-api/src/types.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../index.html">top level</a> - <a href="index.html">home/ssynx/Devel/erebos-api/src</a> - types.h<span style="font-size: 80%;"> (source / <a href="types.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">14</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-09-09 19:07:53</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">2</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*!</a>
+<span class="lineNum">       2 </span>            :  * @file types.h
+<span class="lineNum">       3 </span>            :  * @brief framework core data types
+<span class="lineNum">       4 </span>            :  */
+<span class="lineNum">       5 </span>            : #ifndef EREBOS_TYPES_H
+<span class="lineNum">       6 </span>            : #define EREBOS_TYPES_H
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : #include &lt;vector&gt;
+<span class="lineNum">       9 </span>            : #include &lt;string&gt;
+<span class="lineNum">      10 </span>            : #include &lt;cstring&gt;
+<span class="lineNum">      11 </span>            : #include &quot;platform_defs.h&quot;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span>            : namespace erebos {
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            :         /*!
+<span class="lineNum">      16 </span>            :          * @brief This function is used by erebos::Args class and you should not use this
+<span class="lineNum">      17 </span>            :          * @param input : input string 
+<span class="lineNum">      18 </span>            :          * @param [out] output : output vector containing arguments
+<span class="lineNum">      19 </span>            :          */
+<span class="lineNum">      20 </span>            :         ERAPI void parse_arg(const std::string &amp;input, std::vector&lt;std::string&gt; &amp;output);
+<span class="lineNum">      21 </span>            : 
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            :         /*!
+<span class="lineNum">      24 </span>            :          * @brief command line argument parser
+<span class="lineNum">      25 </span>            :          */
+<span class="lineNum">      26 </span>            :         class Args {
+<span class="lineNum">      27 </span>            :         private:
+<span class="lineNum">      28 </span>            :                 std::vector&lt;std::string&gt; list;
+<span class="lineNum">      29 </span>            :                 size_t argsize;
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :         public:
+<span class="lineNum">      32 </span>            :                 /*!
+<span class="lineNum">      33 </span>            :                  * @brief class constructor
+<span class="lineNum">      34 </span>            :                  * @param argc
+<span class="lineNum">      35 </span>            :                  * @param argv
+<span class="lineNum">      36 </span>            :                  */
+<span class="lineNum">      37 </span>            :                 inline Args(const int &amp;argc, char *argv[]) :
+<span class="lineNum">      38 </span>            :                                 list({}), argsize(0) {
+<span class="lineNum">      39 </span>            : 
+<span class="lineNum">      40 </span>            :                         std::string s;
+<span class="lineNum">      41 </span>            :                         for (int i = 0; i &lt; argc; ++i)
+<span class="lineNum">      42 </span>            :                                 s += std::string(argv[i]) + ' ';
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            :                         if (argc)
+<span class="lineNum">      45 </span>            :                                 parse_arg(s, list);
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :                         argsize = list.size();
+<span class="lineNum">      48 </span>            :                 }
+<span class="lineNum">      49 </span>            : 
+<span class="lineNum">      50 </span>            :                 /*!
+<span class="lineNum">      51 </span>            :                  * @brief (may throw exception) gets the i-th argument from parsed arguments
+<span class="lineNum">      52 </span>            :                  * @param i
+<span class="lineNum">      53 </span>            :                  * @return i-th argument
+<span class="lineNum">      54 </span>            :                  */
+<span class="lineNum">      55 </span>            :                 inline const std::string &amp;operator[](const size_t &amp;i) const {
+<span class="lineNum">      56 </span>            :                         return list.at(i);
+<span class="lineNum">      57 </span>            :                 }
+<span class="lineNum">      58 </span>            : 
+<span class="lineNum">      59 </span>            :                 /*!
+<span class="lineNum">      60 </span>            :                  * @brief checks if the s-string is available
+<span class="lineNum">      61 </span>            :                  * @param s
+<span class="lineNum">      62 </span>            :                  * @return true if inside, false otherwise
+<span class="lineNum">      63 </span>            :                  */
+<span class="lineNum">      64 </span>            :                 inline bool contains(const std::string &amp;s) const {
+<span class="lineNum">      65 </span>            :                         for (size_t i = 0; i &lt; argsize; ++i)
+<span class="lineNum">      66 </span>            :                                 if (list[i] == s)
+<span class="lineNum">      67 </span>            :                                         return true;
+<span class="lineNum">      68 </span>            :                         return false;
+<span class="lineNum">      69 </span>            :                 }
+<span class="lineNum">      70 </span>            : 
+<span class="lineNum">      71 </span>            :                 /*!
+<span class="lineNum">      72 </span>            :                  * @brief extended function, checks for shorter versions of the argument
+<span class="lineNum">      73 </span>            :                  * @param s
+<span class="lineNum">      74 </span>            :                  * @return true if s-string is inside, false otherwise
+<span class="lineNum">      75 </span>            :                  */
+<span class="lineNum">      76 </span>            :                 inline bool contains_s(const std::string &amp;s) const {
+<span class="lineNum">      77 </span>            : 
+<span class="lineNum">      78 </span>            :                         for (size_t i = 0; i &lt; argsize; ++i)
+<span class="lineNum">      79 </span>            :                                 if (list[i] == s)
+<span class="lineNum">      80 </span>            :                                         return true;
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            :                         std::string s2;
+<span class="lineNum">      83 </span>            :                         s2 += s[0];
+<span class="lineNum">      84 </span>            :                         s2 += s.at(1);
+<span class="lineNum">      85 </span>            : 
+<span class="lineNum">      86 </span>            :                         for (size_t i = 0; i &lt; argsize; ++i)
+<span class="lineNum">      87 </span>            :                                 if (list[i] == s2)
+<span class="lineNum">      88 </span>            :                                         return true;
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span>            :                         std::string s3 = &quot;-&quot;;
+<span class="lineNum">      91 </span>            :                         s3 += s;
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :                         for (size_t i = 0; i &lt; argsize; ++i)
+<span class="lineNum">      94 </span>            :                                 if (list[i] == s3)
+<span class="lineNum">      95 </span>            :                                         return true;
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            :                         return false;
+<span class="lineNum">      99 </span>            :                 }
+<span class="lineNum">     100 </span>            : 
+<span class="lineNum">     101 </span>            : 
+<span class="lineNum">     102 </span>            :                 /*!
+<span class="lineNum">     103 </span>            :                  * @brief retrieve argument length
+<span class="lineNum">     104 </span>            :                  * @return const-ref to argument size
+<span class="lineNum">     105 </span>            :                  */
+<span class="lineNum">     106 </span>            :                 inline const size_t &amp;size() const noexcept {
+<span class="lineNum">     107 </span>            :                         return argsize;
+<span class="lineNum">     108 </span>            :                 }
+<span class="lineNum">     109 </span>            :         };
+<span class="lineNum">     110 </span>            : 
+<span class="lineNum">     111 </span>            :         /*!
+<span class="lineNum">     112 </span>            :          * @brief hold generic data (dynamic allocated)
+<span class="lineNum">     113 </span>            :          */
+<span class="lineNum">     114 </span>            :         class Data {
+<span class="lineNum">     115 </span>            :         public:
+<span class="lineNum">     116 </span>            :                 /*!
+<span class="lineNum">     117 </span>            :                  * @brief 64-bit unsigned integer
+<span class="lineNum">     118 </span>            :                  */
+<span class="lineNum">     119 </span>            :                 using data_size = unsigned long long;
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span>            :                 /*!
+<span class="lineNum">     122 </span>            :                  * @brief data handled by data_t class
+<span class="lineNum">     123 </span>            :                  */
+<span class="lineNum">     124 </span>            :                 char* data;
+<span class="lineNum">     125 </span>            : 
+<span class="lineNum">     126 </span>            :                 /*!
+<span class="lineNum">     127 </span>            :                  * @brief data size
+<span class="lineNum">     128 </span>            :                  */
+<span class="lineNum">     129 </span>            :                 data_size size;
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            :                 /*!
+<span class="lineNum">     132 </span>            :                  * @brief class constructor, initializes data to nullptr and size to 0
+<span class="lineNum">     133 </span>            :                  */
+<span class="lineNum">     134 </span><span class="lineNoCov">          0 :                 inline Data() : data(nullptr), size(0) {}</span>
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            :                 /*!
+<span class="lineNum">     137 </span>            :                  * @brief class constructor, dynamically allocates, and makes deep copy of data
+<span class="lineNum">     138 </span>            :                  * @param str
+<span class="lineNum">     139 </span>            :                  */
+<span class="lineNum">     140 </span>            :                 inline explicit Data(const std::string &amp;str)
+<span class="lineNum">     141 </span>            :                                 : size(static_cast&lt;data_size&gt;(str.size())) {
+<span class="lineNum">     142 </span>            :                         this-&gt;data = new char[size];
+<span class="lineNum">     143 </span>            :                         memcpy(this-&gt;data, str.c_str(), size);
+<span class="lineNum">     144 </span>            :                 }
+<span class="lineNum">     145 </span>            : 
+<span class="lineNum">     146 </span>            :                 /*!
+<span class="lineNum">     147 </span>            :                  * @brief class deconstructor, this ensures data is freed when object goes out-of-scope
+<span class="lineNum">     148 </span>            :                  */
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :                 inline ~Data() {</span>
+<span class="lineNum">     150 </span>            :                         free();
+<span class="lineNum">     151 </span>            :                 }
+<span class="lineNum">     152 </span>            : 
+<span class="lineNum">     153 </span>            :                 /*!
+<span class="lineNum">     154 </span>            :                  * @brief class constuctor, dynamically allocates, and makes deep copy of data
+<span class="lineNum">     155 </span>            :                  * @param data
+<a name="156"><span class="lineNum">     156 </span>            :                  * @param size</a>
+<span class="lineNum">     157 </span>            :                  */
+<span class="lineNum">     158 </span><span class="lineNoCov">          0 :                 inline Data(const char *data, const data_size &amp;size)</span>
+<span class="lineNum">     159 </span><span class="lineNoCov">          0 :                                 : size(size) {</span>
+<span class="lineNum">     160 </span><span class="lineNoCov">          0 :                         this-&gt;data = new char[size];</span>
+<span class="lineNum">     161 </span><span class="lineNoCov">          0 :                         memcpy(this-&gt;data, data, size);</span>
+<span class="lineNum">     162 </span><span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span>            :                 /*!
+<span class="lineNum">     165 </span>            :                  * @brief class copy-constructor, this allows class copy
+<a name="166"><span class="lineNum">     166 </span>            :                  * @param prev</a>
+<span class="lineNum">     167 </span>            :                  */
+<span class="lineNum">     168 </span><span class="lineNoCov">          0 :                 inline Data(const Data &amp;prev) {</span>
+<span class="lineNum">     169 </span><span class="lineNoCov">          0 :                         this-&gt;data = new char[prev.size];</span>
+<span class="lineNum">     170 </span><span class="lineNoCov">          0 :                         this-&gt;size = prev.size;</span>
+<span class="lineNum">     171 </span><span class="lineNoCov">          0 :                         memcpy(this-&gt;data, prev.data, this-&gt;size);</span>
+<span class="lineNum">     172 </span><span class="lineNoCov">          0 :                 }</span>
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span>            :                 /*!
+<span class="lineNum">     175 </span>            :                  * @brief frees dynamically-allocated region before class gets destroyed.
+<span class="lineNum">     176 </span>            :                  * (Ready for holding other data)
+<span class="lineNum">     177 </span>            :                  */
+<span class="lineNum">     178 </span>            :                 inline void free() {
+<span class="lineNum">     179 </span><span class="lineNoCov">          0 :                         if (data) {</span>
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :                                 delete[] data;</span>
+<span class="lineNum">     181 </span>            :                                 size = 0;
+<span class="lineNum">     182 </span>            :                                 data = nullptr;
+<span class="lineNum">     183 </span>            :                         }
+<span class="lineNum">     184 </span>            :                 }
+<span class="lineNum">     185 </span>            :         };
+<span class="lineNum">     186 </span>            : }
+<span class="lineNum">     187 </span>            : 
+<span class="lineNum">     188 </span>            : #endif
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

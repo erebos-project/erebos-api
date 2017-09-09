@@ -1,0 +1,273 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - /home/ssynx/Devel/erebos-api/src/input.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../index.html">top level</a> - <a href="index.html">home/ssynx/Devel/erebos-api/src</a> - input.cpp<span style="font-size: 80%;"> (source / <a href="input.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">48</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-09-09 19:07:53</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">6</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #include &quot;input.h&quot;</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : #ifdef WINDOWS
+<span class="lineNum">       4 </span>            : #define _WIN32_WINNT 0x0500
+<span class="lineNum">       5 </span>            : #include &quot;windows.h&quot;
+<span class="lineNum">       6 </span>            : #include &quot;winuser.h&quot;
+<span class="lineNum">       7 </span>            : #include &quot;wincon.h&quot;
+<span class="lineNum">       8 </span>            : #elif defined(LINUX)
+<span class="lineNum">       9 </span>            : #include &lt;sys/time.h&gt;
+<span class="lineNum">      10 </span>            : #include &lt;linux/uinput.h&gt;
+<span class="lineNum">      11 </span>            : #include &lt;linux/limits.h&gt;
+<span class="lineNum">      12 </span>            : #include &lt;fcntl.h&gt;
+<span class="lineNum">      13 </span>            : #include &lt;unistd.h&gt;
+<span class="lineNum">      14 </span>            : #include &lt;dirent.h&gt;
+<span class="lineNum">      15 </span>            : #include &lt;cstring&gt;
+<span class="lineNum">      16 </span>            : #include &lt;thread&gt;
+<span class="lineNum">      17 </span>            : #include &lt;chrono&gt;
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #define EVENT_BYPATH &quot;/dev/input/by-path/&quot;
+<span class="lineNum">      20 </span>            : #define NEED_MATCH &quot;-event-kbd&quot;
+<span class="lineNum">      21 </span>            : #define NEED_MATCH_COUNT 10
+<span class="lineNum">      22 </span>            : #define COPY_INPUT_EVENT(from_stream,dest) \
+<span class="lineNum">      23 </span>            :          for(unsigned i=0;i&lt;sizeof(struct input_event);i++) \
+<span class="lineNum">      24 </span>            :                   ((char*)&amp;dest)[i] = fgetc(from_stream)
+<span class="lineNum">      25 </span>            : #endif
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            : using eikey = erebos::input::Key;
+<span class="lineNum">      28 </span>            : 
+<a name="29"><span class="lineNum">      29 </span>            : #ifdef LINUX</a>
+<span class="lineNum">      30 </span>            : //https://gist.github.com/StefanoBelli/c12965643c86044719c75fcaaa7d0178
+<span class="lineNum">      31 </span><span class="lineNoCov">          0 : static int get_keyboard_evpath_s(char* target) {</span>
+<span class="lineNum">      32 </span><span class="lineNoCov">          0 :          DIR* evbp_dir = opendir(EVENT_BYPATH);</span>
+<span class="lineNum">      33 </span><span class="lineNoCov">          0 :          if(!evbp_dir)</span>
+<span class="lineNum">      34 </span>            :                   return -1;
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            :          struct dirent *entry;
+<span class="lineNum">      37 </span>            : 
+<span class="lineNum">      38 </span><span class="lineNoCov">          0 :          while((entry=readdir(evbp_dir))) {</span>
+<span class="lineNum">      39 </span><span class="lineNoCov">          0 :                   if(entry-&gt;d_type == DT_LNK &amp;&amp;</span>
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 :                         !strncmp(entry-&gt;d_name + (strlen(entry-&gt;d_name) - NEED_MATCH_COUNT),</span>
+<span class="lineNum">      41 </span>            :                                                 NEED_MATCH,NEED_MATCH_COUNT))
+<span class="lineNum">      42 </span>            :                                 break;
+<span class="lineNum">      43 </span>            :          }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 :      if(!entry)</span>
+<span class="lineNum">      46 </span>            :          return -1;
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span>            :          char local_target[PATH_MAX];
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :          int evbpfd = dirfd(evbp_dir);</span>
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span><span class="lineNoCov">          0 :          if(readlinkat(evbpfd,entry-&gt;d_name,local_target,sizeof(entry-&gt;d_name)) == -1)</span>
+<span class="lineNum">      52 </span>            :                   return -1;
+<span class="lineNum">      53 </span>            : 
+<span class="lineNum">      54 </span>            :          char current_workdir[PATH_MAX];
+<span class="lineNum">      55 </span><span class="lineNoCov">          0 :          if(!getcwd(current_workdir,PATH_MAX))</span>
+<span class="lineNum">      56 </span>            :                   return -1;
+<span class="lineNum">      57 </span>            : 
+<span class="lineNum">      58 </span><span class="lineNoCov">          0 :          if(fchdir(evbpfd) &lt; 0)</span>
+<span class="lineNum">      59 </span>            :                   return -1;
+<span class="lineNum">      60 </span>            : 
+<span class="lineNum">      61 </span><span class="lineNoCov">          0 :          if(!realpath(local_target,target))</span>
+<span class="lineNum">      62 </span>            :                   return -1;
+<span class="lineNum">      63 </span>            : 
+<span class="lineNum">      64 </span><span class="lineNoCov">          0 :          if(closedir(evbp_dir) &lt; 0)</span>
+<span class="lineNum">      65 </span>            :                   return -1;
+<span class="lineNum">      66 </span>            : 
+<span class="lineNum">      67 </span><span class="lineNoCov">          0 :          if(chdir(current_workdir) &lt; 0)</span>
+<span class="lineNum">      68 </span>            :                   return -1;
+<span class="lineNum">      69 </span>            : 
+<span class="lineNum">      70 </span><span class="lineNoCov">          0 :          return 0;</span>
+<a name="71"><span class="lineNum">      71 </span>            : }</a>
+<span class="lineNum">      72 </span>            : 
+<span class="lineNum">      73 </span><span class="lineNoCov">          0 : FILE* erebos::input::getev_physical_keyboard() {</span>
+<span class="lineNum">      74 </span>            :          char path[PATH_MAX];
+<span class="lineNum">      75 </span><span class="lineNoCov">          0 :          int ret = get_keyboard_evpath_s(path);</span>
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span><span class="lineNoCov">          0 :          return ret ? nullptr : fopen(path,&quot;r&quot;);</span>
+<a name="78"><span class="lineNum">      78 </span>            : }</a>
+<span class="lineNum">      79 </span>            : 
+<span class="lineNum">      80 </span><span class="lineNoCov">          0 : int erebos::input::new_virtual_kb_device(const char* name, const bool&amp; after_wait,</span>
+<span class="lineNum">      81 </span>            :                 const u16&amp; bus_type, const u16&amp; vendor,
+<span class="lineNum">      82 </span>            :                 const u16&amp; product, const u16&amp; version) {
+<span class="lineNum">      83 </span>            :          int fd=open(&quot;/dev/uinput&quot;,O_WRONLY | O_NONBLOCK);
+<span class="lineNum">      84 </span><span class="lineNoCov">          0 :          if(fd &lt; 0)</span>
+<span class="lineNum">      85 </span>            :                   return -1;
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span><span class="lineNoCov">          0 :          if(ioctl(fd,UI_SET_EVBIT,EV_KEY) &lt; 0)</span>
+<span class="lineNum">      88 </span>            :                   return -1;
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span><span class="lineNoCov">          0 :          for(u16 i=0;i&lt;INPUT_KEY_MAX;i++)</span>
+<span class="lineNum">      91 </span><span class="lineNoCov">          0 :                   if(ioctl(fd,UI_SET_KEYBIT,i) &lt; 0)</span>
+<span class="lineNum">      92 </span>            :                                 return -1;
+<span class="lineNum">      93 </span>            : 
+<span class="lineNum">      94 </span>            :          //prepare new device
+<span class="lineNum">      95 </span>            :          struct uinput_user_dev keyboard;
+<span class="lineNum">      96 </span>            :          memset(&amp;keyboard,0,sizeof(struct uinput_user_dev));
+<span class="lineNum">      97 </span><span class="lineNoCov">          0 :          keyboard.id.bustype = bus_type;</span>
+<span class="lineNum">      98 </span><span class="lineNoCov">          0 :          keyboard.id.vendor = vendor;</span>
+<span class="lineNum">      99 </span><span class="lineNoCov">          0 :          keyboard.id.product = product;</span>
+<span class="lineNum">     100 </span><span class="lineNoCov">          0 :          keyboard.id.version = version;</span>
+<span class="lineNum">     101 </span>            :          snprintf(keyboard.name,UINPUT_MAX_NAME_SIZE,&quot;%s&quot;,name);
+<span class="lineNum">     102 </span>            : 
+<span class="lineNum">     103 </span><span class="lineNoCov">          0 :          if(write(fd,&amp;keyboard,sizeof(struct uinput_user_dev)) &lt; 0)</span>
+<span class="lineNum">     104 </span>            :                   return -1;
+<span class="lineNum">     105 </span>            : 
+<span class="lineNum">     106 </span>            :          //create by written data
+<span class="lineNum">     107 </span><span class="lineNoCov">          0 :          if(ioctl(fd,UI_DEV_CREATE) &lt; 0)</span>
+<span class="lineNum">     108 </span>            :                   return -1;
+<span class="lineNum">     109 </span>            : 
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :          if(after_wait)</span>
+<span class="lineNum">     111 </span><span class="lineNoCov">          0 :                   std::this_thread::sleep_for(std::chrono::milliseconds(500));</span>
+<span class="lineNum">     112 </span>            : 
+<span class="lineNum">     113 </span>            :          return fd;
+<a name="114"><span class="lineNum">     114 </span>            : }</a>
+<span class="lineNum">     115 </span>            : 
+<span class="lineNum">     116 </span><span class="lineNoCov">          0 : bool erebos::input::destroy_virtual_kb_device(const int&amp; devfd) {</span>
+<span class="lineNum">     117 </span><span class="lineNoCov">          0 :          if(ioctl(devfd,UI_DEV_DESTROY) &lt; 0)</span>
+<span class="lineNum">     118 </span>            :                   return false;
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span><span class="lineNoCov">          0 :          return close(devfd) &gt;= 0;</span>
+<span class="lineNum">     121 </span>            : }
+<span class="lineNum">     122 </span>            : #endif
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            : 
+<span class="lineNum">     125 </span>            : #ifdef WINDOWS
+<span class="lineNum">     126 </span>            : eikey erebos::input::get_key(const unsigned&amp; delta) {
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span>            :         HWND window = GetConsoleWindow();
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            :         // Wait until a button is pressed
+<span class="lineNum">     131 </span>            :         while(true) {
+<span class="lineNum">     132 </span>            : 
+<span class="lineNum">     133 </span>            :                 // Check if the console window is focused
+<span class="lineNum">     134 </span>            :                 if(GetForegroundWindow() != window)
+<span class="lineNum">     135 </span>            :                         continue;
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span>            :                 for (int i = 1; i &lt; 255; ++i) {
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span>            :                         if(GetAsyncKeyState(i) &amp; 0x07)
+<span class="lineNum">     140 </span>            :                                 return static_cast&lt;Key&gt;(i);
+<span class="lineNum">     141 </span>            : 
+<span class="lineNum">     142 </span>            :                 }
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span>            :                 Sleep(delta);
+<span class="lineNum">     145 </span>            :         }
+<a name="146"><span class="lineNum">     146 </span>            : }</a>
+<span class="lineNum">     147 </span>            : #elif defined(LINUX)
+<span class="lineNum">     148 </span><span class="lineNoCov">          0 : eikey erebos::input::get_key(FILE *physkb) {</span>
+<span class="lineNum">     149 </span>            :          struct input_event current;
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span>            :          while(true) {
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :                   COPY_INPUT_EVENT(physkb,current);</span>
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :                   if(current.type == EV_KEY &amp;&amp; current.value == 1)</span>
+<span class="lineNum">     155 </span><span class="lineNoCov">          0 :                                 return static_cast&lt;Key&gt;(current.code);</span>
+<span class="lineNum">     156 </span>            :          }
+<span class="lineNum">     157 </span>            : }
+<span class="lineNum">     158 </span>            : #endif
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span>            : #ifdef WINDOWS
+<span class="lineNum">     161 </span>            : bool erebos::input::fake_put(const Key&amp; key) {
+<span class="lineNum">     162 </span>            : 
+<span class="lineNum">     163 </span>            :         INPUT input;
+<span class="lineNum">     164 </span>            :         // We want to send a keyboard event
+<span class="lineNum">     165 </span>            :         input.type = 1;
+<span class="lineNum">     166 </span>            :         input.ki.wVk = static_cast&lt;int&gt;(key);
+<span class="lineNum">     167 </span>            :         input.ki.wScan = 0;
+<span class="lineNum">     168 </span>            :         input.ki.dwFlags = 0;
+<span class="lineNum">     169 </span>            :         input.ki.time = 0;
+<span class="lineNum">     170 </span>            :         input.ki.dwExtraInfo = GetMessageExtraInfo();
+<span class="lineNum">     171 </span>            : 
+<span class="lineNum">     172 </span>            :         int res = SendInput(1, &amp;input, sizeof(INPUT));
+<span class="lineNum">     173 </span>            : 
+<span class="lineNum">     174 </span>            :         return res != 0;
+<a name="175"><span class="lineNum">     175 </span>            : }</a>
+<span class="lineNum">     176 </span>            : #elif defined(LINUX)
+<span class="lineNum">     177 </span><span class="lineNoCov">          0 : bool erebos::input::fake_put(const int&amp; devfd, const Key&amp; key,</span>
+<span class="lineNum">     178 </span>            :                 const KeyPressType&amp; type) {
+<span class="lineNum">     179 </span>            :          static struct input_event event;
+<span class="lineNum">     180 </span>            : 
+<span class="lineNum">     181 </span><span class="lineNoCov">          0 :          gettimeofday(&amp;event.time,nullptr);</span>
+<span class="lineNum">     182 </span><span class="lineNoCov">          0 :          event.type = EV_KEY;</span>
+<span class="lineNum">     183 </span><span class="lineNoCov">          0 :          event.code = static_cast&lt;u16&gt;(key);</span>
+<span class="lineNum">     184 </span><span class="lineNoCov">          0 :          event.value = static_cast&lt;u16&gt;(type);</span>
+<span class="lineNum">     185 </span>            : 
+<span class="lineNum">     186 </span><span class="lineNoCov">          0 :          if(write(devfd,&amp;event,sizeof(struct input_event)) &lt; 0)</span>
+<span class="lineNum">     187 </span>            :                   return false;
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :          event.type = EV_SYN;</span>
+<span class="lineNum">     190 </span><span class="lineNoCov">          0 :          event.code = SYN_REPORT;</span>
+<span class="lineNum">     191 </span><span class="lineNoCov">          0 :          event.value = 0;</span>
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :          return write(devfd,&amp;event,sizeof(struct input_event)) &gt;= 0;</span>
+<span class="lineNum">     194 </span>            : }
+<span class="lineNum">     195 </span>            : #endif
+<span class="lineNum">     196 </span>            : 
+<span class="lineNum">     197 </span>            : 
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

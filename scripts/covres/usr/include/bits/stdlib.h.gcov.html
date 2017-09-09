@@ -1,0 +1,231 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - /usr/include/bits/stdlib.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../index.html">top level</a> - <a href="index.html">usr/include/bits</a> - stdlib.h<span style="font-size: 80%;"> (source / <a href="stdlib.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">3</td>
+            <td class="headerCovTableEntryLo">0.0 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-09-09 19:07:53</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntry">0</td>
+            <td class="headerCovTableEntryHi">-</td>
+          </tr>
+          <tr><td><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /* Checking macros for stdlib functions.</a>
+<span class="lineNum">       2 </span>            :    Copyright (C) 2005-2016 Free Software Foundation, Inc.
+<span class="lineNum">       3 </span>            :    This file is part of the GNU C Library.
+<span class="lineNum">       4 </span>            : 
+<span class="lineNum">       5 </span>            :    The GNU C Library is free software; you can redistribute it and/or
+<span class="lineNum">       6 </span>            :    modify it under the terms of the GNU Lesser General Public
+<span class="lineNum">       7 </span>            :    License as published by the Free Software Foundation; either
+<span class="lineNum">       8 </span>            :    version 2.1 of the License, or (at your option) any later version.
+<span class="lineNum">       9 </span>            : 
+<span class="lineNum">      10 </span>            :    The GNU C Library is distributed in the hope that it will be useful,
+<span class="lineNum">      11 </span>            :    but WITHOUT ANY WARRANTY; without even the implied warranty of
+<span class="lineNum">      12 </span>            :    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<span class="lineNum">      13 </span>            :    Lesser General Public License for more details.
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            :    You should have received a copy of the GNU Lesser General Public
+<span class="lineNum">      16 </span>            :    License along with the GNU C Library; if not, see
+<span class="lineNum">      17 </span>            :    &lt;http://www.gnu.org/licenses/&gt;.  */
+<span class="lineNum">      18 </span>            : 
+<span class="lineNum">      19 </span>            : #ifndef _STDLIB_H
+<span class="lineNum">      20 </span>            : # error &quot;Never include &lt;bits/stdlib.h&gt; directly; use &lt;stdlib.h&gt; instead.&quot;
+<span class="lineNum">      21 </span>            : #endif
+<span class="lineNum">      22 </span>            : 
+<span class="lineNum">      23 </span>            : extern char *__realpath_chk (const char *__restrict __name,
+<span class="lineNum">      24 </span>            :                              char *__restrict __resolved,
+<span class="lineNum">      25 </span>            :                              size_t __resolvedlen) __THROW __wur;
+<span class="lineNum">      26 </span>            : extern char *__REDIRECT_NTH (__realpath_alias,
+<span class="lineNum">      27 </span>            :                              (const char *__restrict __name,
+<span class="lineNum">      28 </span>            :                               char *__restrict __resolved), realpath) __wur;
+<span class="lineNum">      29 </span>            : extern char *__REDIRECT_NTH (__realpath_chk_warn,
+<span class="lineNum">      30 </span>            :                              (const char *__restrict __name,
+<span class="lineNum">      31 </span>            :                               char *__restrict __resolved,
+<span class="lineNum">      32 </span>            :                               size_t __resolvedlen), __realpath_chk) __wur
+<span class="lineNum">      33 </span>            :      __warnattr (&quot;second argument of realpath must be either NULL or at &quot;
+<span class="lineNum">      34 </span>            :                  &quot;least PATH_MAX bytes long buffer&quot;);
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span>            : __fortify_function __wur char *
+<span class="lineNum">      37 </span>            : __NTH (realpath (const char *__restrict __name, char *__restrict __resolved))
+<span class="lineNum">      38 </span>            : {
+<span class="lineNum">      39 </span><span class="lineNoCov">          0 :   if (__bos (__resolved) != (size_t) -1)</span>
+<span class="lineNum">      40 </span>            :     {
+<span class="lineNum">      41 </span>            : #if defined _LIBC_LIMITS_H_ &amp;&amp; defined PATH_MAX
+<span class="lineNum">      42 </span>            :       if (__bos (__resolved) &lt; PATH_MAX)
+<span class="lineNum">      43 </span>            :         return __realpath_chk_warn (__name, __resolved, __bos (__resolved));
+<span class="lineNum">      44 </span>            : #endif
+<span class="lineNum">      45 </span><span class="lineNoCov">          0 :       return __realpath_chk (__name, __resolved, __bos (__resolved));</span>
+<span class="lineNum">      46 </span>            :     }
+<span class="lineNum">      47 </span>            : 
+<span class="lineNum">      48 </span><span class="lineNoCov">          0 :   return __realpath_alias (__name, __resolved);</span>
+<span class="lineNum">      49 </span>            : }
+<span class="lineNum">      50 </span>            : 
+<span class="lineNum">      51 </span>            : 
+<span class="lineNum">      52 </span>            : extern int __ptsname_r_chk (int __fd, char *__buf, size_t __buflen,
+<span class="lineNum">      53 </span>            :                             size_t __nreal) __THROW __nonnull ((2));
+<span class="lineNum">      54 </span>            : extern int __REDIRECT_NTH (__ptsname_r_alias, (int __fd, char *__buf,
+<span class="lineNum">      55 </span>            :                                                size_t __buflen), ptsname_r)
+<span class="lineNum">      56 </span>            :      __nonnull ((2));
+<span class="lineNum">      57 </span>            : extern int __REDIRECT_NTH (__ptsname_r_chk_warn,
+<span class="lineNum">      58 </span>            :                            (int __fd, char *__buf, size_t __buflen,
+<span class="lineNum">      59 </span>            :                             size_t __nreal), __ptsname_r_chk)
+<span class="lineNum">      60 </span>            :      __nonnull ((2)) __warnattr (&quot;ptsname_r called with buflen bigger than &quot;
+<span class="lineNum">      61 </span>            :                                  &quot;size of buf&quot;);
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span>            : __fortify_function int
+<span class="lineNum">      64 </span>            : __NTH (ptsname_r (int __fd, char *__buf, size_t __buflen))
+<span class="lineNum">      65 </span>            : {
+<span class="lineNum">      66 </span>            :   if (__bos (__buf) != (size_t) -1)
+<span class="lineNum">      67 </span>            :     {
+<span class="lineNum">      68 </span>            :       if (!__builtin_constant_p (__buflen))
+<span class="lineNum">      69 </span>            :         return __ptsname_r_chk (__fd, __buf, __buflen, __bos (__buf));
+<span class="lineNum">      70 </span>            :       if (__buflen &gt; __bos (__buf))
+<span class="lineNum">      71 </span>            :         return __ptsname_r_chk_warn (__fd, __buf, __buflen, __bos (__buf));
+<span class="lineNum">      72 </span>            :     }
+<span class="lineNum">      73 </span>            :   return __ptsname_r_alias (__fd, __buf, __buflen);
+<span class="lineNum">      74 </span>            : }
+<span class="lineNum">      75 </span>            : 
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span>            : extern int __wctomb_chk (char *__s, wchar_t __wchar, size_t __buflen)
+<span class="lineNum">      78 </span>            :   __THROW __wur;
+<span class="lineNum">      79 </span>            : extern int __REDIRECT_NTH (__wctomb_alias, (char *__s, wchar_t __wchar),
+<span class="lineNum">      80 </span>            :                            wctomb) __wur;
+<span class="lineNum">      81 </span>            : 
+<span class="lineNum">      82 </span>            : __fortify_function __wur int
+<span class="lineNum">      83 </span>            : __NTH (wctomb (char *__s, wchar_t __wchar))
+<span class="lineNum">      84 </span>            : {
+<span class="lineNum">      85 </span>            :   /* We would have to include &lt;limits.h&gt; to get a definition of MB_LEN_MAX.
+<span class="lineNum">      86 </span>            :      But this would only disturb the namespace.  So we define our own
+<span class="lineNum">      87 </span>            :      version here.  */
+<span class="lineNum">      88 </span>            : #define __STDLIB_MB_LEN_MAX     16
+<span class="lineNum">      89 </span>            : #if defined MB_LEN_MAX &amp;&amp; MB_LEN_MAX != __STDLIB_MB_LEN_MAX
+<span class="lineNum">      90 </span>            : # error &quot;Assumed value of MB_LEN_MAX wrong&quot;
+<span class="lineNum">      91 </span>            : #endif
+<span class="lineNum">      92 </span>            :   if (__bos (__s) != (size_t) -1 &amp;&amp; __STDLIB_MB_LEN_MAX &gt; __bos (__s))
+<span class="lineNum">      93 </span>            :     return __wctomb_chk (__s, __wchar, __bos (__s));
+<span class="lineNum">      94 </span>            :   return __wctomb_alias (__s, __wchar);
+<span class="lineNum">      95 </span>            : }
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span>            : 
+<span class="lineNum">      98 </span>            : extern size_t __mbstowcs_chk (wchar_t *__restrict __dst,
+<span class="lineNum">      99 </span>            :                               const char *__restrict __src,
+<span class="lineNum">     100 </span>            :                               size_t __len, size_t __dstlen) __THROW;
+<span class="lineNum">     101 </span>            : extern size_t __REDIRECT_NTH (__mbstowcs_alias,
+<span class="lineNum">     102 </span>            :                               (wchar_t *__restrict __dst,
+<span class="lineNum">     103 </span>            :                                const char *__restrict __src,
+<span class="lineNum">     104 </span>            :                                size_t __len), mbstowcs);
+<span class="lineNum">     105 </span>            : extern size_t __REDIRECT_NTH (__mbstowcs_chk_warn,
+<span class="lineNum">     106 </span>            :                               (wchar_t *__restrict __dst,
+<span class="lineNum">     107 </span>            :                                const char *__restrict __src,
+<span class="lineNum">     108 </span>            :                                size_t __len, size_t __dstlen), __mbstowcs_chk)
+<span class="lineNum">     109 </span>            :      __warnattr (&quot;mbstowcs called with dst buffer smaller than len &quot;
+<span class="lineNum">     110 </span>            :                  &quot;* sizeof (wchar_t)&quot;);
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span>            : __fortify_function size_t
+<span class="lineNum">     113 </span>            : __NTH (mbstowcs (wchar_t *__restrict __dst, const char *__restrict __src,
+<span class="lineNum">     114 </span>            :                  size_t __len))
+<span class="lineNum">     115 </span>            : {
+<span class="lineNum">     116 </span>            :   if (__bos (__dst) != (size_t) -1)
+<span class="lineNum">     117 </span>            :     {
+<span class="lineNum">     118 </span>            :       if (!__builtin_constant_p (__len))
+<span class="lineNum">     119 </span>            :         return __mbstowcs_chk (__dst, __src, __len,
+<span class="lineNum">     120 </span>            :                                __bos (__dst) / sizeof (wchar_t));
+<span class="lineNum">     121 </span>            : 
+<span class="lineNum">     122 </span>            :       if (__len &gt; __bos (__dst) / sizeof (wchar_t))
+<span class="lineNum">     123 </span>            :         return __mbstowcs_chk_warn (__dst, __src, __len,
+<span class="lineNum">     124 </span>            :                                      __bos (__dst) / sizeof (wchar_t));
+<span class="lineNum">     125 </span>            :     }
+<span class="lineNum">     126 </span>            :   return __mbstowcs_alias (__dst, __src, __len);
+<span class="lineNum">     127 </span>            : }
+<span class="lineNum">     128 </span>            : 
+<span class="lineNum">     129 </span>            : 
+<span class="lineNum">     130 </span>            : extern size_t __wcstombs_chk (char *__restrict __dst,
+<span class="lineNum">     131 </span>            :                               const wchar_t *__restrict __src,
+<span class="lineNum">     132 </span>            :                               size_t __len, size_t __dstlen) __THROW;
+<span class="lineNum">     133 </span>            : extern size_t __REDIRECT_NTH (__wcstombs_alias,
+<span class="lineNum">     134 </span>            :                               (char *__restrict __dst,
+<span class="lineNum">     135 </span>            :                                const wchar_t *__restrict __src,
+<span class="lineNum">     136 </span>            :                                size_t __len), wcstombs);
+<span class="lineNum">     137 </span>            : extern size_t __REDIRECT_NTH (__wcstombs_chk_warn,
+<span class="lineNum">     138 </span>            :                               (char *__restrict __dst,
+<span class="lineNum">     139 </span>            :                                const wchar_t *__restrict __src,
+<span class="lineNum">     140 </span>            :                                size_t __len, size_t __dstlen), __wcstombs_chk)
+<span class="lineNum">     141 </span>            :      __warnattr (&quot;wcstombs called with dst buffer smaller than len&quot;);
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span>            : __fortify_function size_t
+<span class="lineNum">     144 </span>            : __NTH (wcstombs (char *__restrict __dst, const wchar_t *__restrict __src,
+<span class="lineNum">     145 </span>            :                  size_t __len))
+<span class="lineNum">     146 </span>            : {
+<span class="lineNum">     147 </span>            :   if (__bos (__dst) != (size_t) -1)
+<span class="lineNum">     148 </span>            :     {
+<span class="lineNum">     149 </span>            :       if (!__builtin_constant_p (__len))
+<span class="lineNum">     150 </span>            :         return __wcstombs_chk (__dst, __src, __len, __bos (__dst));
+<span class="lineNum">     151 </span>            :       if (__len &gt; __bos (__dst))
+<span class="lineNum">     152 </span>            :         return __wcstombs_chk_warn (__dst, __src, __len, __bos (__dst));
+<span class="lineNum">     153 </span>            :     }
+<span class="lineNum">     154 </span>            :   return __wcstombs_alias (__dst, __src, __len);
+<span class="lineNum">     155 </span>            : }
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

@@ -1,0 +1,272 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - /home/ssynx/Devel/erebos-api/src/file.cpp</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../index.html">top level</a> - <a href="index.html">home/ssynx/Devel/erebos-api/src</a> - file.cpp<span style="font-size: 80%;"> (source / <a href="file.cpp.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">40</td>
+            <td class="headerCovTableEntry">68</td>
+            <td class="headerCovTableEntryLo">58.8 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-09-09 19:07:53</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">7</td>
+            <td class="headerCovTableEntry">10</td>
+            <td class="headerCovTableEntryLo">70.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : #include &lt;fstream&gt;</a>
+<span class="lineNum">       2 </span>            : 
+<span class="lineNum">       3 </span>            : #include &quot;file.h&quot;
+<span class="lineNum">       4 </span>            : #include &quot;stringutils.h&quot;
+<a name="5"><span class="lineNum">       5 </span>            : #include &quot;framework.h&quot;</a>
+<span class="lineNum">       6 </span>            : 
+<span class="lineNum">       7 </span><span class="lineCov">          4 : std::string erebos::file::get_path(std::string s) {</span>
+<span class="lineNum">       8 </span>            :         size_t index = 0;
+<span class="lineNum">       9 </span><span class="lineCov">          8 :         s = to_unix_slash(s);</span>
+<span class="lineNum">      10 </span>            :         const size_t size = s.size();
+<span class="lineNum">      11 </span>            :         bool set = false;
+<span class="lineNum">      12 </span>            : 
+<span class="lineNum">      13 </span><span class="lineCov">          4 :         if(!size)</span>
+<span class="lineNum">      14 </span><span class="lineCov">          1 :                 return &quot;&quot;;</span>
+<span class="lineNum">      15 </span>            : 
+<span class="lineNum">      16 </span><span class="lineCov">         27 :         for (size_t i = size - 1; i &gt;= 0; --i) {</span>
+<span class="lineNum">      17 </span><span class="lineCov">         27 :                 if (s[i] == '/') {</span>
+<span class="lineNum">      18 </span><span class="lineCov">          3 :                         index = i + 1;</span>
+<span class="lineNum">      19 </span>            :                         set = true;
+<span class="lineNum">      20 </span>            :                         break;
+<span class="lineNum">      21 </span>            :                 }
+<span class="lineNum">      22 </span>            :         }
+<span class="lineNum">      23 </span>            : 
+<span class="lineNum">      24 </span>            :         if (set)
+<span class="lineNum">      25 </span><span class="lineCov">          6 :                 return strutil::cut(s, 0, index ? index : 1);</span>
+<span class="lineNum">      26 </span>            : 
+<span class="lineNum">      27 </span>            :         return &quot;&quot;;
+<span class="lineNum">      28 </span>            : }
+<a name="29"><span class="lineNum">      29 </span>            : </a>
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span><span class="lineNoCov">          0 : std::string erebos::file::get_extension(const std::string &amp;filename) {</span>
+<span class="lineNum">      32 </span>            :         size_t index = 0;
+<span class="lineNum">      33 </span>            :         const size_t size = filename.size();
+<span class="lineNum">      34 </span>            :         bool set = false;
+<span class="lineNum">      35 </span>            : 
+<span class="lineNum">      36 </span><span class="lineNoCov">          0 :         if(!size)</span>
+<span class="lineNum">      37 </span><span class="lineNoCov">          0 :                 return &quot;&quot;;</span>
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span><span class="lineNoCov">          0 :         for (size_t i = 0; i &lt; size; ++i)</span>
+<span class="lineNum">      40 </span><span class="lineNoCov">          0 :                 if (filename[i] == '.') {</span>
+<span class="lineNum">      41 </span>            :                         index = i;
+<span class="lineNum">      42 </span>            :                         set = true;
+<span class="lineNum">      43 </span>            :                 }
+<span class="lineNum">      44 </span>            : 
+<span class="lineNum">      45 </span>            : 
+<span class="lineNum">      46 </span><span class="lineNoCov">          0 :         if (set)</span>
+<span class="lineNum">      47 </span><span class="lineNoCov">          0 :                 return strutil::cut(filename, index + 1, size - index - 1);</span>
+<span class="lineNum">      48 </span>            : 
+<span class="lineNum">      49 </span><span class="lineNoCov">          0 :         return &quot;&quot;;</span>
+<span class="lineNum">      50 </span>            : }
+<a name="51"><span class="lineNum">      51 </span>            : </a>
+<span class="lineNum">      52 </span>            : 
+<span class="lineNum">      53 </span><span class="lineCov">          5 : std::string erebos::file::get_name(std::string s) {</span>
+<span class="lineNum">      54 </span>            :         size_t index = 0;
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span><span class="lineCov">         10 :         s = to_unix_slash(s);</span>
+<span class="lineNum">      57 </span>            :         const size_t size = s.size();
+<span class="lineNum">      58 </span>            :         bool set = false;
+<span class="lineNum">      59 </span>            : 
+<span class="lineNum">      60 </span><span class="lineCov">          5 :         if(!size)</span>
+<span class="lineNum">      61 </span><span class="lineCov">          1 :                 return &quot;&quot;;</span>
+<span class="lineNum">      62 </span>            : 
+<span class="lineNum">      63 </span><span class="lineCov">         92 :         for (size_t i = 0; i &lt; size; ++i)</span>
+<span class="lineNum">      64 </span><span class="lineCov">         44 :                 if (s[i] == '/') {</span>
+<span class="lineNum">      65 </span>            :                         index = i;
+<span class="lineNum">      66 </span>            :                         set = true;
+<span class="lineNum">      67 </span>            :                 }
+<span class="lineNum">      68 </span>            : 
+<span class="lineNum">      69 </span><span class="lineCov">          4 :         if (set)</span>
+<span class="lineNum">      70 </span><span class="lineCov">          2 :                 return strutil::cut(s, index + 1, size - index);</span>
+<span class="lineNum">      71 </span>            : 
+<span class="lineNum">      72 </span>            :         return s;
+<a name="73"><span class="lineNum">      73 </span>            : }</a>
+<span class="lineNum">      74 </span>            : 
+<span class="lineNum">      75 </span><span class="lineCov">          5 : std::string erebos::file::get_basename(std::string filename) {</span>
+<span class="lineNum">      76 </span>            : 
+<span class="lineNum">      77 </span><span class="lineCov">         15 :         filename = file::get_name(filename);</span>
+<span class="lineNum">      78 </span>            :         const size_t size = filename.size();
+<span class="lineNum">      79 </span>            :         size_t index = 0;
+<span class="lineNum">      80 </span>            : 
+<span class="lineNum">      81 </span><span class="lineCov">          5 :         if(!size)</span>
+<span class="lineNum">      82 </span><span class="lineCov">          1 :                 return &quot;&quot;;</span>
+<span class="lineNum">      83 </span>            : 
+<span class="lineNum">      84 </span><span class="lineCov">         36 :         for (size_t i = 0; i &lt; size; ++i)</span>
+<span class="lineNum">      85 </span><span class="lineCov">         20 :                 if (filename[i] == '.') {</span>
+<span class="lineNum">      86 </span>            :                         index = i;
+<span class="lineNum">      87 </span>            :                         break;
+<span class="lineNum">      88 </span>            :                 }
+<span class="lineNum">      89 </span>            : 
+<span class="lineNum">      90 </span><span class="lineCov">          4 :         if (index)</span>
+<span class="lineNum">      91 </span><span class="lineCov">          8 :                 filename = strutil::cut(filename, 0, index);</span>
+<span class="lineNum">      92 </span>            : 
+<span class="lineNum">      93 </span>            :         return filename;
+<span class="lineNum">      94 </span>            : }
+<a name="95"><span class="lineNum">      95 </span>            : </a>
+<span class="lineNum">      96 </span>            : 
+<span class="lineNum">      97 </span><span class="lineCov">          1 : bool erebos::file::get_exists(const std::string &amp;filename) {</span>
+<span class="lineNum">      98 </span>            :         FILE *file;
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            : #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
+<span class="lineNum">     101 </span><span class="lineCov">          1 :         file = fopen(filename.c_str(), &quot;r&quot;);</span>
+<span class="lineNum">     102 </span>            : #elif defined(_COMPILER_MSVC)
+<span class="lineNum">     103 </span>            :         errno_t err = fopen_s(&amp;file, filename.c_str(), &quot;r&quot;);
+<span class="lineNum">     104 </span>            :         if (err != 0)
+<span class="lineNum">     105 </span>            :                 return false;
+<span class="lineNum">     106 </span>            : #endif
+<span class="lineNum">     107 </span>            : 
+<span class="lineNum">     108 </span><span class="lineCov">          1 :         if (file) {</span>
+<span class="lineNum">     109 </span><span class="lineCov">          1 :                 fclose(file);</span>
+<span class="lineNum">     110 </span><span class="lineCov">          1 :                 return true;</span>
+<span class="lineNum">     111 </span>            :         } else
+<span class="lineNum">     112 </span>            :                 return false;
+<a name="113"><span class="lineNum">     113 </span>            : }</a>
+<span class="lineNum">     114 </span>            : 
+<span class="lineNum">     115 </span><span class="lineCov">          1 : std::string erebos::file::read(const std::string &amp;filename) {</span>
+<span class="lineNum">     116 </span><span class="lineCov">          2 :         std::ifstream stream(filename);</span>
+<span class="lineNum">     117 </span>            : 
+<span class="lineNum">     118 </span><span class="lineCov">          1 :         if (!stream.is_open())</span>
+<span class="lineNum">     119 </span><span class="lineNoCov">          0 :                 return &quot;&quot;;</span>
+<span class="lineNum">     120 </span>            : 
+<span class="lineNum">     121 </span><span class="lineCov">          2 :         std::stringstream ss;</span>
+<span class="lineNum">     122 </span><span class="lineCov">          1 :         ss &lt;&lt; stream.rdbuf();</span>
+<span class="lineNum">     123 </span>            : 
+<span class="lineNum">     124 </span>            :         return ss.str();
+<span class="lineNum">     125 </span>            : }
+<a name="126"><span class="lineNum">     126 </span>            : </a>
+<span class="lineNum">     127 </span>            : 
+<span class="lineNum">     128 </span><span class="lineNoCov">          0 : erebos::Data erebos::file::read_bin(const std::string &amp;filename, std::uint64_t *bytecount) {</span>
+<span class="lineNum">     129 </span>            :         Data data;
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span><span class="lineNoCov">          0 :         data.size = static_cast&lt;Data::data_size&gt;(file::get_size(filename));</span>
+<span class="lineNum">     132 </span><span class="lineNoCov">          0 :         data.data = new char[data.size];</span>
+<span class="lineNum">     133 </span>            : 
+<span class="lineNum">     134 </span>            :         FILE *fd;
+<span class="lineNum">     135 </span>            : 
+<span class="lineNum">     136 </span>            : #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
+<span class="lineNum">     137 </span><span class="lineNoCov">          0 :         fd = fopen(filename.c_str(), &quot;rb&quot;);</span>
+<span class="lineNum">     138 </span>            : #elif defined(_COMPILER_MSVC)
+<span class="lineNum">     139 </span>            :         errno_t err = fopen_s(&amp;fd, filename.c_str(), &quot;rb&quot;);
+<span class="lineNum">     140 </span>            :         if (err != 0)
+<span class="lineNum">     141 </span>            :                 return Data(nullptr, 0);
+<span class="lineNum">     142 </span>            : #endif
+<span class="lineNum">     143 </span>            : 
+<span class="lineNum">     144 </span><span class="lineNoCov">          0 :         if (!fd) {</span>
+<span class="lineNum">     145 </span><span class="lineNoCov">          0 :                 delete[] data.data;</span>
+<span class="lineNum">     146 </span><span class="lineNoCov">          0 :                 return Data(nullptr, 0); // Return an empty data structure.</span>
+<span class="lineNum">     147 </span>            :         }
+<span class="lineNum">     148 </span>            : 
+<span class="lineNum">     149 </span><span class="lineNoCov">          0 :         size_t res = fread(data.data, 1, data.size, fd);</span>
+<span class="lineNum">     150 </span>            : 
+<span class="lineNum">     151 </span><span class="lineNoCov">          0 :         if (bytecount)</span>
+<span class="lineNum">     152 </span><span class="lineNoCov">          0 :                 *bytecount = res;</span>
+<span class="lineNum">     153 </span>            : 
+<span class="lineNum">     154 </span><span class="lineNoCov">          0 :         fclose(fd);</span>
+<span class="lineNum">     155 </span>            : 
+<span class="lineNum">     156 </span><span class="lineNoCov">          0 :         return data;</span>
+<span class="lineNum">     157 </span>            : }
+<a name="158"><span class="lineNum">     158 </span>            : </a>
+<span class="lineNum">     159 </span>            : 
+<span class="lineNum">     160 </span><span class="lineCov">          1 : bool erebos::file::write(const std::string &amp;filename, const std::string &amp;data, bool truncate) {</span>
+<span class="lineNum">     161 </span><span class="lineCov">          2 :         std::ofstream stream;</span>
+<span class="lineNum">     162 </span><span class="lineCov">          1 :         if (truncate)</span>
+<span class="lineNum">     163 </span><span class="lineNoCov">          0 :                 stream.open(filename, std::ofstream::out | std::ofstream::trunc);</span>
+<span class="lineNum">     164 </span>            :         else
+<span class="lineNum">     165 </span><span class="lineCov">          1 :                 stream.open(filename);</span>
+<span class="lineNum">     166 </span>            : 
+<span class="lineNum">     167 </span><span class="lineCov">          1 :         if (!stream.is_open())</span>
+<span class="lineNum">     168 </span>            :                 return false;
+<span class="lineNum">     169 </span>            : 
+<span class="lineNum">     170 </span>            :         stream &lt;&lt; data;
+<span class="lineNum">     171 </span>            :         return true;
+<span class="lineNum">     172 </span>            : }
+<a name="173"><span class="lineNum">     173 </span>            : </a>
+<span class="lineNum">     174 </span>            : 
+<span class="lineNum">     175 </span><span class="lineNoCov">          0 : bool erebos::file::write_bin(const std::string &amp;filename, const Data &amp;data, bool truncate) {</span>
+<span class="lineNum">     176 </span>            : 
+<span class="lineNum">     177 </span>            :         FILE *fd;
+<span class="lineNum">     178 </span>            : 
+<span class="lineNum">     179 </span>            : #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
+<span class="lineNum">     180 </span><span class="lineNoCov">          0 :         fd = fopen(filename.c_str(), (truncate) ? &quot;wb+&quot; : &quot;wb&quot;);</span>
+<span class="lineNum">     181 </span>            : #elif defined(_COMPILER_MSVC)
+<span class="lineNum">     182 </span>            :         errno_t err;
+<span class="lineNum">     183 </span>            :         err = fopen_s(&amp;fd, filename.c_str(), (truncate) ? &quot;wb+&quot; : &quot;wb&quot;);
+<span class="lineNum">     184 </span>            : 
+<span class="lineNum">     185 </span>            :         if (err != 0)
+<span class="lineNum">     186 </span>            :                 return false;
+<span class="lineNum">     187 </span>            : #endif
+<span class="lineNum">     188 </span>            : 
+<span class="lineNum">     189 </span><span class="lineNoCov">          0 :         if (!fd)</span>
+<span class="lineNum">     190 </span>            :                 return false;
+<span class="lineNum">     191 </span>            : 
+<span class="lineNum">     192 </span><span class="lineNoCov">          0 :         fwrite(data.data, 1, data.size, fd);</span>
+<span class="lineNum">     193 </span><span class="lineNoCov">          0 :         fclose(fd);</span>
+<a name="194"><span class="lineNum">     194 </span>            : </a>
+<span class="lineNum">     195 </span><span class="lineNoCov">          0 :         return true;</span>
+<span class="lineNum">     196 </span><span class="lineCov">         16 : }</span>
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>

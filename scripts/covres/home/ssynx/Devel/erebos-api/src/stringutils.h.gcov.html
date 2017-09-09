@@ -1,0 +1,446 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <title>LCOV - coverage.info - /home/ssynx/Devel/erebos-api/src/stringutils.h</title>
+  <link rel="stylesheet" type="text/css" href="../../../../../gcov.css">
+</head>
+
+<body>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="title">LCOV - code coverage report</td></tr>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+
+    <tr>
+      <td width="100%">
+        <table cellpadding=1 border=0 width="100%">
+          <tr>
+            <td width="10%" class="headerItem">Current view:</td>
+            <td width="35%" class="headerValue"><a href="../../../../../index.html">top level</a> - <a href="index.html">home/ssynx/Devel/erebos-api/src</a> - stringutils.h<span style="font-size: 80%;"> (source / <a href="stringutils.h.func-sort-c.html">functions</a>)</span></td>
+            <td width="5%"></td>
+            <td width="15%"></td>
+            <td width="10%" class="headerCovTableHead">Hit</td>
+            <td width="10%" class="headerCovTableHead">Total</td>
+            <td width="15%" class="headerCovTableHead">Coverage</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Test:</td>
+            <td class="headerValue">coverage.info</td>
+            <td></td>
+            <td class="headerItem">Lines:</td>
+            <td class="headerCovTableEntry">44</td>
+            <td class="headerCovTableEntry">45</td>
+            <td class="headerCovTableEntryHi">97.8 %</td>
+          </tr>
+          <tr>
+            <td class="headerItem">Date:</td>
+            <td class="headerValue">2017-09-09 19:07:53</td>
+            <td></td>
+            <td class="headerItem">Functions:</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntry">12</td>
+            <td class="headerCovTableEntryHi">100.0 %</td>
+          </tr>
+          <tr><td><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+  </table>
+
+  <table cellpadding=0 cellspacing=0 border=0>
+    <tr>
+      <td><br></td>
+    </tr>
+    <tr>
+      <td>
+<pre class="sourceHeading">          Line data    Source code</pre>
+<pre class="source">
+<a name="1"><span class="lineNum">       1 </span>            : /*!</a>
+<span class="lineNum">       2 </span>            :  * @file stringutils.h
+<span class="lineNum">       3 </span>            :  * @brief string utilities
+<span class="lineNum">       4 </span>            :  */
+<span class="lineNum">       5 </span>            : #ifndef EREBOS_STRINGUTILS_H
+<span class="lineNum">       6 </span>            : #define EREBOS_STRINGUTILS_H
+<span class="lineNum">       7 </span>            : 
+<span class="lineNum">       8 </span>            : #include &quot;platform_defs.h&quot;
+<span class="lineNum">       9 </span>            : 
+<span class="lineNum">      10 </span>            : #include &lt;string&gt;
+<span class="lineNum">      11 </span>            : #include &lt;sstream&gt;
+<span class="lineNum">      12 </span>            : #include &lt;vector&gt;
+<span class="lineNum">      13 </span>            : #include &lt;cstring&gt;
+<span class="lineNum">      14 </span>            : 
+<span class="lineNum">      15 </span>            : namespace erebos {
+<span class="lineNum">      16 </span>            :         /*!
+<span class="lineNum">      17 </span>            :          * @brief contains string manipulation utils
+<span class="lineNum">      18 </span>            :          */
+<span class="lineNum">      19 </span>            :         namespace strutil {
+<span class="lineNum">      20 </span>            : 
+<span class="lineNum">      21 </span>            :                 /*!
+<span class="lineNum">      22 </span>            :                  * @brief defines a 64 bit signed integer
+<span class="lineNum">      23 </span>            :                  */
+<span class="lineNum">      24 </span>            :                 using ssize = long long;
+<span class="lineNum">      25 </span>            : 
+<span class="lineNum">      26 </span>            :                 /*!
+<span class="lineNum">      27 </span>            :                  * @brief defines a 32 bit signed integer
+<span class="lineNum">      28 </span>            :                  */
+<span class="lineNum">      29 </span>            :                 using ssize32 = long;
+<span class="lineNum">      30 </span>            : 
+<span class="lineNum">      31 </span>            :                 /*!
+<span class="lineNum">      32 </span>            :                  * @brief erase newline at the end of the string
+<span class="lineNum">      33 </span>            :                  * @param [out]target : string to be chomp-ed
+<a name="34"><span class="lineNum">      34 </span>            :                  * @return true if newline was found and erased, false otherwise</a>
+<span class="lineNum">      35 </span>            :                  */
+<span class="lineNum">      36 </span><span class="lineCov">          2 :                 inline bool chomp(std::string &amp;target) {</span>
+<span class="lineNum">      37 </span><span class="lineCov">          2 :                         const size_t end_pos = target.size() - 1;</span>
+<span class="lineNum">      38 </span>            : 
+<span class="lineNum">      39 </span><span class="lineCov">          2 :                         if (target.at(end_pos) == '\n') {</span>
+<span class="lineNum">      40 </span><span class="lineCov">          2 :                                 target.erase(end_pos);</span>
+<span class="lineNum">      41 </span><span class="lineCov">          2 :                                 return true;</span>
+<span class="lineNum">      42 </span>            :                         }
+<span class="lineNum">      43 </span>            : 
+<span class="lineNum">      44 </span>            :                         return false;
+<span class="lineNum">      45 </span>            :                 }
+<span class="lineNum">      46 </span>            : 
+<span class="lineNum">      47 </span>            :                 /*!
+<span class="lineNum">      48 </span>            :                  * @brief check if character is literal
+<span class="lineNum">      49 </span>            :                  * @param c
+<a name="50"><span class="lineNum">      50 </span>            :                  * @return true if c is literal, false otherwise</a>
+<span class="lineNum">      51 </span>            :                  */
+<span class="lineNum">      52 </span><span class="lineCov">          6 :                 inline bool is_literal(const char &amp;c) {</span>
+<span class="lineNum">      53 </span><span class="lineCov">         28 :                         return (c &gt;= 'a' &amp;&amp; c &lt;= 'z') || (c &gt;= 'A' &amp;&amp; c &lt;= 'Z');</span>
+<span class="lineNum">      54 </span>            :                 }
+<span class="lineNum">      55 </span>            : 
+<span class="lineNum">      56 </span>            :                 /*!
+<span class="lineNum">      57 </span>            :                  * @brief check if character is numeric
+<span class="lineNum">      58 </span>            :                  * @param c
+<a name="59"><span class="lineNum">      59 </span>            :                  * @return true if c is numeric, false otherwise</a>
+<span class="lineNum">      60 </span>            :                  */
+<span class="lineNum">      61 </span><span class="lineCov">          6 :                 inline bool is_numeral(const char &amp;c) {</span>
+<span class="lineNum">      62 </span><span class="lineCov">         30 :                         return (c &gt;= '0') &amp;&amp; (c &lt;= '9');</span>
+<span class="lineNum">      63 </span>            :                 }
+<span class="lineNum">      64 </span>            : 
+<span class="lineNum">      65 </span>            :                 /*!
+<span class="lineNum">      66 </span>            :                  * @brief check if char is double/single quote
+<span class="lineNum">      67 </span>            :                  * @param c
+<a name="68"><span class="lineNum">      68 </span>            :                  * @return true if the char 'c' is a single/double quote, false otherwise</a>
+<span class="lineNum">      69 </span>            :                  */
+<span class="lineNum">      70 </span><span class="lineCov">          6 :                 inline bool is_quotes(const char &amp;c) {</span>
+<span class="lineNum">      71 </span><span class="lineCov">         60 :                         return c == '\'' || c == '\&quot;';</span>
+<span class="lineNum">      72 </span>            :                 }
+<span class="lineNum">      73 </span>            : 
+<span class="lineNum">      74 </span>            :                 /*!
+<span class="lineNum">      75 </span>            :                  * @brief check if string is literal
+<span class="lineNum">      76 </span>            :                  * @param s
+<span class="lineNum">      77 </span>            :                  * @return true if string is literal, false otherwise
+<span class="lineNum">      78 </span>            :                  */
+<span class="lineNum">      79 </span><span class="lineCov">          4 :                 inline bool is_literal(const std::string &amp;s) {</span>
+<span class="lineNum">      80 </span><span class="lineCov">         44 :                         for (size_t i = 0; i &lt; s.size(); ++i) {</span>
+<span class="lineNum">      81 </span><span class="lineCov">         22 :                                 if (!is_literal(s[i]))</span>
+<span class="lineNum">      82 </span>            :                                         return false;
+<span class="lineNum">      83 </span>            :                         }
+<span class="lineNum">      84 </span>            :                         return true;
+<span class="lineNum">      85 </span>            :                 }
+<span class="lineNum">      86 </span>            : 
+<span class="lineNum">      87 </span>            :                 /*!
+<span class="lineNum">      88 </span>            :                  * @brief check if string is numeric
+<span class="lineNum">      89 </span>            :                  * @param s
+<span class="lineNum">      90 </span>            :                  * @return true if string is numeric, false otherwise
+<span class="lineNum">      91 </span>            :                  */
+<span class="lineNum">      92 </span><span class="lineCov">          4 :                 inline bool is_numeral(const std::string &amp;s) {</span>
+<span class="lineNum">      93 </span><span class="lineCov">         48 :                         for (size_t i = 0; i &lt; s.size(); ++i) {</span>
+<span class="lineNum">      94 </span><span class="lineCov">         24 :                                 if (!is_numeral(s[i]))</span>
+<span class="lineNum">      95 </span>            :                                         return false;
+<span class="lineNum">      96 </span>            :                         }
+<span class="lineNum">      97 </span>            :                         return true;
+<span class="lineNum">      98 </span>            :                 }
+<span class="lineNum">      99 </span>            : 
+<span class="lineNum">     100 </span>            :                 /*!
+<span class="lineNum">     101 </span>            :                  * @brief cut a string
+<span class="lineNum">     102 </span>            :                  * @param s : string to be cutted
+<span class="lineNum">     103 </span>            :                  * @param offset : offset at
+<span class="lineNum">     104 </span>            :                  * @param size : size of the cut
+<a name="105"><span class="lineNum">     105 </span>            :                  * @return new cutted string</a>
+<span class="lineNum">     106 </span>            :                  */
+<span class="lineNum">     107 </span><span class="lineCov">         18 :                 inline std::string cut(const std::string &amp;s, const size_t &amp;offset, size_t size = 0) {</span>
+<span class="lineNum">     108 </span>            :                         std::string res;
+<span class="lineNum">     109 </span><span class="lineCov">         18 :                         if (!size)</span>
+<span class="lineNum">     110 </span><span class="lineNoCov">          0 :                                 size = s.size() - offset;</span>
+<span class="lineNum">     111 </span>            : 
+<span class="lineNum">     112 </span><span class="lineCov">         18 :                         res.reserve(size);</span>
+<span class="lineNum">     113 </span>            : 
+<span class="lineNum">     114 </span><span class="lineCov">        104 :                         for (size_t i = offset; i &lt; offset + size; ++i)</span>
+<span class="lineNum">     115 </span><span class="lineCov">         86 :                                 res += s[i];</span>
+<span class="lineNum">     116 </span>            : 
+<span class="lineNum">     117 </span><span class="lineCov">         18 :                         return res;</span>
+<span class="lineNum">     118 </span>            :                 }
+<span class="lineNum">     119 </span>            : 
+<span class="lineNum">     120 </span>            :                 /*!
+<span class="lineNum">     121 </span>            :                  * @brief replace substring in string
+<span class="lineNum">     122 </span>            :                  * @param [out]target : string for replacement
+<span class="lineNum">     123 </span>            :                  * @param replaced : substring TO BE replaced
+<span class="lineNum">     124 </span>            :                  * @param replacement : replacement for 'replaced'
+<span class="lineNum">     125 </span>            :                  * @param n : how many times
+<span class="lineNum">     126 </span>            :                  */
+<span class="lineNum">     127 </span><span class="lineCov">          4 :                 inline void replace(std::string &amp;target, const std::string &amp;replaced,</span>
+<span class="lineNum">     128 </span>            :                                                         const std::string &amp;replacement, const size_t &amp;n = 0) {
+<span class="lineNum">     129 </span>            :                         const size_t replaced_length = replaced.length();
+<span class="lineNum">     130 </span>            : 
+<span class="lineNum">     131 </span>            : #if defined(WINDOWS)
+<span class="lineNum">     132 </span>            :                         ssize32 position = -1;
+<span class="lineNum">     133 </span>            : #elif defined(LINUX)
+<span class="lineNum">     134 </span>            :                         ssize position = -1;
+<span class="lineNum">     135 </span>            : #endif
+<span class="lineNum">     136 </span>            : 
+<span class="lineNum">     137 </span>            :                         size_t iterations = 0;
+<span class="lineNum">     138 </span>            : 
+<span class="lineNum">     139 </span><span class="lineCov">         12 :                         while ((position = target.find(replaced, position + 1)) != std::string::npos) {</span>
+<span class="lineNum">     140 </span>            :                                 target.replace(position, replaced_length, replacement);
+<span class="lineNum">     141 </span><span class="lineCov">          6 :                                 iterations++;</span>
+<span class="lineNum">     142 </span>            : 
+<span class="lineNum">     143 </span><span class="lineCov">          6 :                                 if (iterations == n)</span>
+<span class="lineNum">     144 </span>            :                                         break;
+<span class="lineNum">     145 </span>            :                         }
+<span class="lineNum">     146 </span><span class="lineCov">          4 :                 }</span>
+<span class="lineNum">     147 </span>            : 
+<span class="lineNum">     148 </span>            :                 /*!
+<span class="lineNum">     149 </span>            :                  * @brief replace character in string
+<span class="lineNum">     150 </span>            :                  * @param [out]target : string for replacement
+<span class="lineNum">     151 </span>            :                  * @param replaced : char to be replaced
+<span class="lineNum">     152 </span>            :                  * @param replacement : replacement for 'replaced'
+<span class="lineNum">     153 </span>            :                  * @param n : how many times
+<span class="lineNum">     154 </span>            :                  */
+<span class="lineNum">     155 </span>            :                 inline void replace(std::string &amp;target, const char &amp;replaced,
+<span class="lineNum">     156 </span>            :                                                         const char &amp;replacement, const size_t &amp;n = 0) {
+<span class="lineNum">     157 </span>            :                         size_t iterations = 0;
+<span class="lineNum">     158 </span><span class="lineCov">        508 :                         for (size_t i = 0; i &lt; target.size(); ++i) {</span>
+<span class="lineNum">     159 </span><span class="lineCov">        240 :                                 if (target[i] == replaced) {</span>
+<span class="lineNum">     160 </span><span class="lineCov">         14 :                                         target[i] = replacement;</span>
+<span class="lineNum">     161 </span>            :                                         iterations++;
+<span class="lineNum">     162 </span>            :                                 }
+<span class="lineNum">     163 </span>            : 
+<span class="lineNum">     164 </span>            :                                 if (iterations == n &amp;&amp; n &gt; 0)
+<span class="lineNum">     165 </span>            :                                         break;
+<span class="lineNum">     166 </span>            :                         }
+<span class="lineNum">     167 </span>            :                 }
+<span class="lineNum">     168 </span>            : 
+<span class="lineNum">     169 </span>            :                 /*!
+<span class="lineNum">     170 </span>            :                  * @brief ruby-style string multiply
+<span class="lineNum">     171 </span>            :                  * @param s : string to be multiplied
+<span class="lineNum">     172 </span>            :                  * @param times : how many times the multiplication has to be repeated
+<span class="lineNum">     173 </span>            :                  * @return new multiplied string
+<span class="lineNum">     174 </span>            :                  */
+<span class="lineNum">     175 </span>            :                 inline std::string mul(const std::string &amp;s, const size_t &amp;times) {
+<span class="lineNum">     176 </span>            :                         std::string res;
+<span class="lineNum">     177 </span>            :                         for (size_t i = 0; i &lt; times; ++i)
+<span class="lineNum">     178 </span>            :                                 res += s;
+<span class="lineNum">     179 </span>            :                         return res;
+<span class="lineNum">     180 </span>            :                 }
+<span class="lineNum">     181 </span>            : 
+<span class="lineNum">     182 </span>            :                 /*!
+<span class="lineNum">     183 </span>            :                  * @brief split a string by 'splchr' and put it into 'output' vector
+<span class="lineNum">     184 </span>            :                  * @param str : string to be splitted
+<span class="lineNum">     185 </span>            :                  * @param splchr : split character
+<span class="lineNum">     186 </span>            :                  * @param [out]output : target vector
+<span class="lineNum">     187 </span>            :                  */
+<span class="lineNum">     188 </span><span class="lineCov">          4 :                 inline void split(const std::string &amp;str, const char &amp;splchr, std::vector&lt;std::string&gt; &amp;output) {</span>
+<span class="lineNum">     189 </span>            : 
+<span class="lineNum">     190 </span><span class="lineCov">          8 :                         std::stringstream ss(str);</span>
+<span class="lineNum">     191 </span>            :                         std::string item;
+<span class="lineNum">     192 </span>            : 
+<span class="lineNum">     193 </span><span class="lineCov">         24 :                         while (getline(ss, item, splchr))</span>
+<span class="lineNum">     194 </span><span class="lineCov">          8 :                                 output.emplace_back(std::move(item));</span>
+<span class="lineNum">     195 </span><span class="lineCov">          4 :                 }</span>
+<span class="lineNum">     196 </span>            :                 
+<span class="lineNum">     197 </span>            :                 /*!
+<span class="lineNum">     198 </span>            :                  * @brief find an element into an array of bytes (should be null-terminated in order to work the right way)
+<span class="lineNum">     199 </span>            :                  * @param raw_array : the array
+<span class="lineNum">     200 </span>            :                  * @param element : the element
+<a name="201"><span class="lineNum">     201 </span>            :                  * @return array index, -1 if not found</a>
+<span class="lineNum">     202 </span>            :                  */
+<span class="lineNum">     203 </span><span class="lineCov">          6 :                 inline ssize index_of(const char *raw_array, const char &amp;element) {</span>
+<span class="lineNum">     204 </span><span class="lineCov">         38 :                         for (ssize i = 0; i &lt; static_cast&lt;ssize&gt;(strlen(raw_array)); i++)</span>
+<span class="lineNum">     205 </span><span class="lineCov">         20 :                                 if (raw_array[i] == element)</span>
+<span class="lineNum">     206 </span>            :                                         return i;
+<span class="lineNum">     207 </span>            : 
+<span class="lineNum">     208 </span>            :                         return -1;
+<span class="lineNum">     209 </span>            :                 }
+<span class="lineNum">     210 </span>            : 
+<span class="lineNum">     211 </span>            :                 /*!
+<span class="lineNum">     212 </span>            :                  * @brief find an element into an array of bytes
+<span class="lineNum">     213 </span>            :                  * @param raw_array : the array
+<span class="lineNum">     214 </span>            :                  * @param element : the element
+<span class="lineNum">     215 </span>            :                  * @param len : array length
+<a name="216"><span class="lineNum">     216 </span>            :                  * @return array index, -1 if not found</a>
+<span class="lineNum">     217 </span>            :                  */
+<span class="lineNum">     218 </span><span class="lineCov">          6 :                 inline ssize index_of(const char *raw_array, const char &amp;element, const ssize &amp;len) {</span>
+<span class="lineNum">     219 </span><span class="lineCov">         38 :                         for(ssize i = 0; i &lt; len; i++)</span>
+<span class="lineNum">     220 </span><span class="lineCov">         20 :                                 if(raw_array[i] == element)</span>
+<span class="lineNum">     221 </span>            :                                         return i;
+<span class="lineNum">     222 </span>            : 
+<span class="lineNum">     223 </span>            :                         return -1;
+<span class="lineNum">     224 </span>            :                 }
+<span class="lineNum">     225 </span>            : 
+<span class="lineNum">     226 </span>            :                 /*!
+<span class="lineNum">     227 </span>            :                  * @brief encode a string using base64 cipher
+<span class="lineNum">     228 </span>            :                  * @param str : your string
+<span class="lineNum">     229 </span>            :                  * @param characters : (already set)
+<span class="lineNum">     230 </span>            :                  * @return new encoded string
+<span class="lineNum">     231 </span>            :                  */
+<span class="lineNum">     232 </span>            :                 inline std::string encode_base64(const std::string &amp;str,
+<span class="lineNum">     233 </span>            :                                                                                  const char *characters = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;) {
+<span class="lineNum">     234 </span>            : 
+<span class="lineNum">     235 </span>            :                         std::string string_encoded = &quot;&quot;;
+<span class="lineNum">     236 </span>            : 
+<span class="lineNum">     237 </span>            :                         const size_t str_len = str.length();
+<span class="lineNum">     238 </span>            :                         size_t index = 0;
+<span class="lineNum">     239 </span>            : 
+<span class="lineNum">     240 </span>            :                         while (index &lt; str_len) {
+<span class="lineNum">     241 </span>            : 
+<span class="lineNum">     242 </span>            :                                 uint8_t ch1 = str[index];
+<span class="lineNum">     243 </span>            :                                 uint8_t ch2 = ((index + 1) &lt; str_len) ? str[index + 1] : 0;
+<span class="lineNum">     244 </span>            :                                 uint8_t ch3 = ((index + 2) &lt; str_len) ? str[index + 2] : 0;
+<span class="lineNum">     245 </span>            : 
+<span class="lineNum">     246 </span>            :                                 uint8_t ch1_temp = (ch1 &gt;&gt; 0x02);
+<span class="lineNum">     247 </span>            :                                 uint8_t ch2_temp = ((ch1 &amp; 0x03) &lt;&lt; 0x04) | (ch2 &gt;&gt; 0x04);
+<span class="lineNum">     248 </span>            :                                 uint8_t ch3_temp = ((ch2 &amp; 0x0F) &lt;&lt; 0x02) | (ch3 &gt;&gt; 0x06);
+<span class="lineNum">     249 </span>            :                                 uint8_t ch4_temp = (ch3 &amp; 0x3F);
+<span class="lineNum">     250 </span>            : 
+<span class="lineNum">     251 </span>            :                                 string_encoded += characters[ch1_temp];
+<span class="lineNum">     252 </span>            :                                 string_encoded += characters[ch2_temp];
+<span class="lineNum">     253 </span>            :                                 string_encoded += characters[ch3_temp];
+<span class="lineNum">     254 </span>            :                                 string_encoded += characters[ch4_temp];
+<span class="lineNum">     255 </span>            : 
+<span class="lineNum">     256 </span>            :                                 index += 3;
+<span class="lineNum">     257 </span>            :                         }
+<span class="lineNum">     258 </span>            : 
+<span class="lineNum">     259 </span>            :                         size_t padding;
+<span class="lineNum">     260 </span>            :                         if (str_len % 3 == 0)
+<span class="lineNum">     261 </span>            :                                 padding = 0;
+<span class="lineNum">     262 </span>            :                         else if (str_len % 3 == 1)
+<span class="lineNum">     263 </span>            :                                 padding = 2;
+<span class="lineNum">     264 </span>            :                         else
+<span class="lineNum">     265 </span>            :                                 padding = 1;
+<span class="lineNum">     266 </span>            : 
+<span class="lineNum">     267 </span>            :                         string_encoded.erase(string_encoded.end() - padding, string_encoded.end());
+<span class="lineNum">     268 </span>            :                         while (padding--)
+<span class="lineNum">     269 </span>            :                                 string_encoded += &quot;=&quot;;
+<span class="lineNum">     270 </span>            : 
+<span class="lineNum">     271 </span>            :                         return string_encoded;
+<span class="lineNum">     272 </span>            :                 }
+<span class="lineNum">     273 </span>            : 
+<span class="lineNum">     274 </span>            :                 /*!
+<span class="lineNum">     275 </span>            :                  * @brief decode a previously encoded base64 string
+<span class="lineNum">     276 </span>            :                  * @param str : base64-encoded string
+<span class="lineNum">     277 </span>            :                  * @param characters : (already set)
+<span class="lineNum">     278 </span>            :                  * @return new decoded string
+<span class="lineNum">     279 </span>            :                  */
+<span class="lineNum">     280 </span>            :                 inline std::string decode_base64(const std::string &amp;str,
+<span class="lineNum">     281 </span>            :                                                                                  const char *characters = &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;) {
+<span class="lineNum">     282 </span>            : 
+<span class="lineNum">     283 </span>            :                         ssize ch1_code;
+<span class="lineNum">     284 </span>            :                         ssize ch2_code;
+<span class="lineNum">     285 </span>            :                         ssize ch3_code;
+<span class="lineNum">     286 </span>            : 
+<span class="lineNum">     287 </span>            :                         std::string string_decoded = &quot;&quot;;
+<span class="lineNum">     288 </span>            : 
+<span class="lineNum">     289 </span>            :                         const size_t str_len = str.length();
+<span class="lineNum">     290 </span>            :                         size_t index = 0;
+<span class="lineNum">     291 </span>            : 
+<span class="lineNum">     292 </span>            :                         while (index &lt; str_len) {
+<span class="lineNum">     293 </span>            : 
+<span class="lineNum">     294 </span>            :                                 ssize index1_temp = index_of(characters, str[index + 0]);
+<span class="lineNum">     295 </span>            :                                 ssize index2_temp = index_of(characters, str[index + 1]);
+<span class="lineNum">     296 </span>            :                                 ssize index3_temp = index_of(characters, str[index + 2]);
+<span class="lineNum">     297 </span>            :                                 ssize index4_temp = index_of(characters, str[index + 3]);
+<span class="lineNum">     298 </span>            : 
+<span class="lineNum">     299 </span>            :                                 // First char code
+<span class="lineNum">     300 </span>            :                                 ch1_code = index1_temp &lt;&lt; 0x02 | index2_temp &gt;&gt; 0x04;
+<span class="lineNum">     301 </span>            :                                 string_decoded += static_cast&lt;char&gt;(ch1_code);
+<span class="lineNum">     302 </span>            : 
+<span class="lineNum">     303 </span>            :                                 if (index3_temp &amp; 0x80 || index4_temp &amp; 0x80)
+<span class="lineNum">     304 </span>            :                                         break; // char not found (ie. '=', or not valid char)
+<span class="lineNum">     305 </span>            : 
+<span class="lineNum">     306 </span>            :                                 // Second char code
+<span class="lineNum">     307 </span>            :                                 ch2_code = (index2_temp &lt;&lt; 0x04) | (index3_temp &gt;&gt; 0x02);
+<span class="lineNum">     308 </span>            :                                 string_decoded += static_cast&lt;char&gt;(ch2_code);
+<span class="lineNum">     309 </span>            : 
+<span class="lineNum">     310 </span>            :                                 // Third char code
+<span class="lineNum">     311 </span>            :                                 ch3_code = (index3_temp &amp; 0x03) &lt;&lt; 0x06 | (index4_temp &amp; 0x3F);
+<span class="lineNum">     312 </span>            :                                 string_decoded += static_cast&lt;char&gt;(ch3_code);
+<span class="lineNum">     313 </span>            : 
+<span class="lineNum">     314 </span>            :                                 index += 4;
+<span class="lineNum">     315 </span>            :                         }
+<span class="lineNum">     316 </span>            : 
+<span class="lineNum">     317 </span>            :                         return string_decoded;
+<span class="lineNum">     318 </span>            :                 }
+<span class="lineNum">     319 </span>            : 
+<span class="lineNum">     320 </span>            : #if defined(LINUX)
+<span class="lineNum">     321 </span>            : 
+<span class="lineNum">     322 </span>            :                 /*!
+<span class="lineNum">     323 </span>            :                  *
+<span class="lineNum">     324 </span>            :                  * @param command
+<span class="lineNum">     325 </span>            :                  * @return new string command with stderr to stdout, useful with erebos::cmd()
+<span class="lineNum">     326 </span>            :                  */
+<span class="lineNum">     327 </span><span class="lineCov">          2 :                 inline std::string stderr_to_stdout(const std::string &amp;command) {</span>
+<span class="lineNum">     328 </span><span class="lineCov">          4 :                         return std::string(command).append(&quot; 2&gt;&amp;1&quot;);</span>
+<span class="lineNum">     329 </span>            :                 }
+<span class="lineNum">     330 </span>            : 
+<span class="lineNum">     331 </span>            : #endif
+<span class="lineNum">     332 </span>            : 
+<span class="lineNum">     333 </span>            :                 /*!
+<span class="lineNum">     334 </span>            :                  * @brief encode a string to base64 mime
+<span class="lineNum">     335 </span>            :                  * @param str : string to be encoded
+<span class="lineNum">     336 </span>            :                  * @return new encoded string
+<span class="lineNum">     337 </span>            :                  */
+<span class="lineNum">     338 </span>            :                 inline std::string encode_base64_mime(const std::string &amp;str) {
+<span class="lineNum">     339 </span>            :                         return encode_base64(str, &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;);
+<span class="lineNum">     340 </span>            :                 }
+<span class="lineNum">     341 </span>            : 
+<span class="lineNum">     342 </span>            :                 /*!
+<span class="lineNum">     343 </span>            :                  * @brief decode a string from base64 mime
+<span class="lineNum">     344 </span>            :                  * @param str : your encoded string
+<span class="lineNum">     345 </span>            :                  * @return new decoded string
+<span class="lineNum">     346 </span>            :                  */
+<span class="lineNum">     347 </span>            :                 inline std::string decode_base64_mime(const std::string &amp;str) {
+<span class="lineNum">     348 </span>            :                         return decode_base64(str, &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&quot;);
+<span class="lineNum">     349 </span>            :                 }
+<span class="lineNum">     350 </span>            : 
+<span class="lineNum">     351 </span>            :                 /*!
+<span class="lineNum">     352 </span>            :                  * @brief encode an URL to base64
+<span class="lineNum">     353 </span>            :                  * @param str : your url
+<span class="lineNum">     354 </span>            :                  * @return new encoded URL
+<span class="lineNum">     355 </span>            :                  */
+<span class="lineNum">     356 </span>            :                 inline std::string encode_base64_url(const std::string &amp;str) {
+<span class="lineNum">     357 </span>            :                         return encode_base64(str, &quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_&quot;);
+<span class="lineNum">     358 </span>            :                 }
+<span class="lineNum">     359 </span>            : 
+<span class="lineNum">     360 </span>            :                 /*
+<span class="lineNum">     361 </span>            :                 * std::string string_decode_base64_url(std::string str)
+<span class="lineNum">     362 </span>            :                 * Converts the given Base64 URL string to ASCII.
+<span class="lineNum">     363 </span>            :                 wtfit
+<span class="lineNum">     364 </span>            :                 inline std::string decode_base64_url(const std::string&amp; str) {
+<span class="lineNum">     365 </span>            :                         return decode_base64_url(&quot;ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_&quot;);
+<span class="lineNum">     366 </span>            :                 }*/
+<span class="lineNum">     367 </span>            :         }
+<span class="lineNum">     368 </span>            : }
+<span class="lineNum">     369 </span>            : 
+<span class="lineNum">     370 </span>            : #endif
+</pre>
+      </td>
+    </tr>
+  </table>
+  <br>
+
+  <table width="100%" border=0 cellspacing=0 cellpadding=0>
+    <tr><td class="ruler"><img src="../../../../../glass.png" width=3 height=3 alt=""></td></tr>
+    <tr><td class="versionInfo">Generated by: <a href="http://ltp.sourceforge.net/coverage/lcov.php" target="_parent">LCOV version 1.11</a></td></tr>
+  </table>
+  <br>
+
+</body>
+</html>
