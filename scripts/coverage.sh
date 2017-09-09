@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 BUILD_DIRECTORY=$1
 COVERAGE_DEST=$2
