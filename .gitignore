@@ -28,3 +28,11 @@ scripts/lib
 scripts/README.md
 scripts/LICENSE
 build/
+test/test-file
+test/test-framework
+test/test-input
+test/test-logger
+test/test-misc
+test/test-native
+test/test-strutils
+test/test-time

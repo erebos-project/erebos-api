@@ -41,4 +41,9 @@ if (DOXYGEN_EXISTS)
 	message("-- Doxygen is available, use 'make docs' to generate docs")
 endif ()
 
+if(MAKE_TESTS AND CMAKE_CXX_COMPILER_ID MATCHES "GNU")
+	set(TESTING 1)
+	include(cmake/Test.cmake)
+endif()
+
 add_subdirectory(src)
