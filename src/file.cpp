@@ -127,10 +127,7 @@ std::string erebos::file::read(const std::string &filename) {
 
 
 erebos::Data erebos::file::read_bin(const std::string &filename, std::uint64_t *bytecount) {
-	Data data;
-
-	data.size = static_cast<Data::data_size>(file::get_size(filename));
-	data.data = new char[data.size];
+	Data data { filename };
 
 	FILE *fd;
 
@@ -142,10 +139,8 @@ erebos::Data erebos::file::read_bin(const std::string &filename, std::uint64_t *
 		return Data(nullptr, 0);
 #endif
 
-	if (!fd) {
-		delete[] data.data;
+	if (!fd)
 		return Data(nullptr, 0); // Return an empty data structure.
-	}
 
 	size_t res = fread(data.data, 1, data.size, fd);
 

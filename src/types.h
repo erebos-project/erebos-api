@@ -171,6 +171,19 @@ namespace erebos {
 			memcpy(this->data, prev.data, this->size);
 		}
 
+		inline Data(Data&& rdata_prev) {
+			this->data = new char[rdata_prev.size];
+			this->size = rdata_prev.size;
+			memcpy(this->data, rdata_prev.data, this->size);
+		}
+
+		inline Data& operator=(const Data &prev) {
+			this->data = new char[prev.size];
+			this->size = prev.size;
+			memcpy(this->data, prev.data,this->size);
+			return *this;
+		}
+		
 		/*!
 		 * @brief frees dynamically-allocated region before class gets destroyed.
 		 * (Ready for holding other data)

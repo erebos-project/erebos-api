@@ -119,8 +119,6 @@ int main(int argc, char const *argv[]) {
 	
 	END_TEST();
 
-	//double free
-	//FAILURE
 	BEGIN_TEST PRE_CALL(file::read_bin);
 
 		WITH_RETV CALLBACK("testbinary.bin",nullptr);
