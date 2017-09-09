@@ -108,6 +108,11 @@ namespace erebos {
 		}
 	};
 
+	class DataException : public std::exception {
+	public:
+		virtual const char* what() const noexcept;
+	};
+
 	/*!
 	 * @brief hold generic data (dynamic allocated)
 	 */
@@ -171,12 +176,20 @@ namespace erebos {
 			memcpy(this->data, prev.data, this->size);
 		}
 
+		/*!
+		 * @brief class move constructor
+		 * @param rdata_prev
+		 */
 		inline Data(Data&& rdata_prev) {
 			this->data = new char[rdata_prev.size];
 			this->size = rdata_prev.size;
 			memcpy(this->data, rdata_prev.data, this->size);
 		}
 
+		/*!
+		 * @brief copy-assignment operator overload
+		 * @param prev
+		 */
 		inline Data& operator=(const Data &prev) {
 			this->data = new char[prev.size];
 			this->size = prev.size;
@@ -194,6 +207,17 @@ namespace erebos {
 				size = 0;
 				data = nullptr;
 			}
+		}
+
+		/*!
+		 * @brief comparsion operator overload, compares two memory blocks (may throw DataException)
+		 * @param other: another data structure holding *SOMETHING*
+		 */
+		inline bool operator==(const Data& other) const {
+			if(!data || !other.data)
+				throw DataException();
+
+			return memcmp(other.data,data,size); 
 		}
 	};
 }

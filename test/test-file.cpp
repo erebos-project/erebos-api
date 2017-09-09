@@ -114,7 +114,7 @@ int main(int argc, char const *argv[]) {
 
 	BEGIN_TEST PRE_CALL(file::write_bin);
 		
-		WITH_RETV CALLBACK("testbinary.bin",Data("gettingbinaryy"),false);
+		WITH_RETV CALLBACK("testbinary.bin",Data("lol"),false);
 		TEST_EQUALS(true);
 	
 	END_TEST();
@@ -122,7 +122,8 @@ int main(int argc, char const *argv[]) {
 	BEGIN_TEST PRE_CALL(file::read_bin);
 
 		WITH_RETV CALLBACK("testbinary.bin",nullptr);
-	
+		/*Data d { "lol" };
+		TEST_EQUALS(d);*/
 	END_TEST();
 
 	BEGIN_TEST PRE_CALL(file::remove);

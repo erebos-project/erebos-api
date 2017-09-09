@@ -80,3 +80,7 @@ void erebos::parse_arg(const std::string &input, std::vector<std::string> &outpu
 		output.emplace_back(curr);
 	}
 }
+
+const char* erebos::DataException::what() const noexcept {
+	return "Comparing one or more null pointers";
+}
