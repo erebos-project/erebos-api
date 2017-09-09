@@ -1,4 +1,5 @@
 message("-- Test.cmake")
+
 set(EREBOS_TESTS_LOCATION "${CMAKE_SOURCE_DIR}/test")
 set(EREBOS_STATIC_LIBRARY "${CMAKE_SOURCE_DIR}/lib/liberebos.a")
 include_directories(${CMAKE_SOURCE_DIR}/src)
@@ -24,5 +25,3 @@ foreach(TEST ${EREBOS_TESTS})
 
 	add_test(${TEST} ${EREBOS_TESTS_LOCATION}/${TEST})
 endforeach()
-
-

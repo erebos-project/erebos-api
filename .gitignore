@@ -39,3 +39,4 @@ test/test-time
 *.gcno
 *.gcov
 *.gcda
+coverage-results/
