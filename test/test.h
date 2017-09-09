@@ -8,7 +8,7 @@ should be used with erebos framework only!
 #include <iostream>
 
 
-//Very thanks to Matth :) :) :)
+// Type extraction by Matth
 template<typename _ReturnType>
 struct Function {
 	typedef _ReturnType Type;

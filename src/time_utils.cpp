@@ -33,12 +33,21 @@ erebos::Time erebos::get_localtime() {
 	const std::time_t time_now = std::time(nullptr);
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
-    std::tm now;
-	localtime_r(&time_now,&now);
+
+#ifdef WINDOWS
+	std::tm* now;
+	now = localtime(nullptr);
+	return erebos::Time(now);
+#else
+	std::tm now;
+	localtime_r(&time_now, &now);
 	return erebos::Time(&now);
+#endif
+
 #elif defined(_COMPILER_MSVC)
 	std::tm* now = nullptr;
 	localtime_s(now, &time_now);
     return erebos::Time(now);
 #endif
+
 }

@@ -14,7 +14,7 @@ namespace erebos {
 
 	/*!
 	 * @brief This function is used by erebos::Args class and you should not use this
-	 * @param input : input string 
+	 * @param input : input string
 	 * @param [out] output : output vector containing arguments
 	 */
 	ERAPI void parse_arg(const std::string &input, std::vector<std::string> &output);
@@ -196,7 +196,7 @@ namespace erebos {
 			memcpy(this->data, prev.data,this->size);
 			return *this;
 		}
-		
+
 		/*!
 		 * @brief frees dynamically-allocated region before class gets destroyed.
 		 * (Ready for holding other data)
@@ -210,15 +210,34 @@ namespace erebos {
 		}
 
 		/*!
-		 * @brief comparsion operator overload, compares two memory blocks (may throw DataException)
+		 * @brief comparison operator overload, compares two memory blocks (may throw DataException)
 		 * @param other: another data structure holding *SOMETHING*
 		 */
 		inline bool operator==(const Data& other) const {
+
 			if(!data || !other.data)
 				throw DataException();
 
-			return memcmp(other.data,data,size); 
+			return memcmp(other.data, data, size);
 		}
+
+		/*!
+		* @brief comparison operator overload, compares two memory blocks (may throw DataException)
+		* @param other: another data structure holding *SOMETHING*
+		*/
+		inline bool operator!=(const Data& other) const {
+
+			return !((*this) == other);
+		}
+
+
+		std::ostream& operator<<(std::ostream &out) {
+
+			out << data;
+			return out;
+		}
+
+
 	};
 }
 
