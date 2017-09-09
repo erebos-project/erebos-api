@@ -42,7 +42,6 @@ if (DOXYGEN_EXISTS)
 endif ()
 
 if(MAKE_TESTS AND CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-	set(TESTING 1)
 	include(cmake/Test.cmake)
 endif()
 
