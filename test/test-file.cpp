@@ -24,7 +24,6 @@ int main(int argc, char const *argv[]) {
 
 	END_TEST();
 
-	/* 
 	BEGIN_TEST PRE_CALL(file::get_extension);
 
 		WITH_RETV CALLBACK("");
@@ -61,7 +60,7 @@ int main(int argc, char const *argv[]) {
 		WITH_RETV CALLBACK("/file.ext");
 		TEST_EQUALS("file.ext");
 
-	END_TEST();*/
+	END_TEST();
 
 	BEGIN_TEST PRE_CALL(file::get_basename);
 
@@ -98,14 +97,12 @@ int main(int argc, char const *argv[]) {
 
 	END_TEST();
 
-
 	BEGIN_TEST PRE_CALL(file::get_exists);
 
 		WITH_RETV CALLBACK("testfile.txt");
 		TEST_EQUALS(true);
 
 	END_TEST();
-
 
 	BEGIN_TEST PRE_CALL(file::remove);
 
@@ -114,6 +111,28 @@ int main(int argc, char const *argv[]) {
 
 	END_TEST();
 
+
+	BEGIN_TEST PRE_CALL(file::write_bin);
+		
+		WITH_RETV CALLBACK("testbinary.bin",Data("gettingbinaryy"),false);
+		TEST_EQUALS(true);
+	
+	END_TEST();
+
+	//double free
+	//FAILURE
+	BEGIN_TEST PRE_CALL(file::read_bin);
+
+		WITH_RETV CALLBACK("testbinary.bin",nullptr);
+	
+	END_TEST();
+
+	BEGIN_TEST PRE_CALL(file::remove);
+		
+		WITH_RETV CALLBACK("testbinary.bin");
+		TEST_EQUALS(true);
+	
+	END_TEST();
 
 	END_MODULE_TEST();
 

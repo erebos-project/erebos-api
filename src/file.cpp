@@ -36,12 +36,12 @@ std::string erebos::file::get_extension(const std::string &filename) {
 	if(!size)
 		return "";
 
-	for (size_t i = 0; i < size; ++i)
+	for (size_t i = 0; i < size; ++i) {
 		if (filename[i] == '.') {
 			index = i;
 			set = true;
 		}
-
+	}
 
 	if (set)
 		return strutil::cut(filename, index + 1, size - index - 1);
@@ -60,14 +60,15 @@ std::string erebos::file::get_name(std::string s) {
 	if(!size)
 		return "";
 
-	for (size_t i = 0; i < size; ++i)
+	for (size_t i = 0; i < size; ++i) {
 		if (s[i] == '/') {
 			index = i;
 			set = true;
 		}
+	}
 
 	if (set)
-		return strutil::cut(s, index + 1, size - index);
+		return strutil::cut(s, index + 1, size - index - 1);
 
 	return s;
 }

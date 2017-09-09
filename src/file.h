@@ -61,7 +61,7 @@ namespace erebos {
 		 * erebos::data_t class
 		 * @param filename
 		 * @param [out]bytecount : how many read bytes? nullptr if not interested (set by default)
-		 * @return an erebos::data_t structure holding binary data
+		 * @return an erebos::Data structure holding binary data
 		 */
 		ERAPI Data read_bin(const std::string &filename, std::uint64_t *bytecount = nullptr);
 
@@ -77,7 +77,7 @@ namespace erebos {
 		/*!
 		 * @brief write data hold by erebos::data_t class to binary file
 		 * @param filename
-		 * @param data : erebos::data_t class holding data
+		 * @param data : erebos::Data class holding data
 		 * @param truncate : true by default
 		 * @return true if function succeed, false otherwise
 		 */
