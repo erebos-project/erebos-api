@@ -10,7 +10,6 @@ addons:
     packages:
       - cmake
       - doxygen
-      - gcov
   sonarcloud:
     organization: "stefanobelli-github"
     token:
