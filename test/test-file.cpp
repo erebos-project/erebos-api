@@ -24,7 +24,7 @@ int main(int argc, char const *argv[]) {
 
 	END_TEST();
 
-
+	/* 
 	BEGIN_TEST PRE_CALL(file::get_extension);
 
 		WITH_RETV CALLBACK("");
@@ -42,8 +42,7 @@ int main(int argc, char const *argv[]) {
 		WITH_RETV CALLBACK("/file.ext1.ext2");
 		TEST_EQUALS("ext2");
 
-	END_TEST();
-
+	END_TEST();*/
 
 	BEGIN_TEST PRE_CALL(file::get_name);
 
