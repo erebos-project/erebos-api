@@ -122,9 +122,9 @@ int main(int argc, char const *argv[]) {
 	BEGIN_TEST PRE_CALL(file::read_bin);
 
 		WITH_RETV CALLBACK("testbinary.bin", nullptr);
-		Data d { "test" };
-		bool cmp = (d == retv);
-		CUSTOM_TEST_EQUALS(true, cmp);
+		Data d("test");
+		bool test = (d == retv);
+		CUSTOM_TEST_EQUALS(true, test);
 
 	END_TEST();
 

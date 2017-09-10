@@ -200,34 +200,49 @@ namespace erebos {
 		/*!
 		 * @brief frees dynamically-allocated region before class gets destroyed.
 		 * (Ready for holding other data)
+		 * @returns true if correctly freed, false if data is a null pointer
 		 */
-		inline void free() {
+		inline bool free() {
 			if (data) {
 				delete[] data;
 				size = 0;
 				data = nullptr;
+				return true;
 			}
+
+			return false;
 		}
 
 		/*!
 		 * @brief comparison operator overload, compares two memory blocks (may throw DataException)
 		 * @param other: another data structure holding *SOMETHING*
+		 * @return true if equals, false otherwise
 		 */
 		inline bool operator==(const Data& other) const {
 
 			if(!data || !other.data)
 				throw DataException();
 
-			return memcmp(other.data, data, size);
+			if(size != other.size)
+				return false;
+
+			return !memcmp(other.data, data, size);
 		}
 
 		/*!
 		* @brief comparison operator overload, compares two memory blocks (may throw DataException)
 		* @param other: another data structure holding *SOMETHING*
+		* @return true if not equal, false otherwise
 		*/
 		inline bool operator!=(const Data& other) const {
 
-			return !((*this) == other);
+			if(!data || !other.data)
+				throw DataException();
+			
+			if(size != other.size)
+				return true;
+
+			return memcmp(other.data, data, size);
 		}
 
 	};
