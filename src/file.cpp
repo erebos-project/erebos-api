@@ -3,6 +3,7 @@
 #include "file.h"
 #include "stringutils.h"
 #include "framework.h"
+#include "smart_ptr.h"
 
 std::string erebos::file::get_path(std::string s) {
 	size_t index = 0;
@@ -126,28 +127,34 @@ std::string erebos::file::read(const std::string &filename) {
 }
 
 
-erebos::Data erebos::file::read_bin(const std::string &filename, std::uint64_t *bytecount) {
-	Data data { filename };
-
-	FILE *fd;
+std::shared_ptr<char> erebos::file::read_bin(const std::string &filename, std::uint64_t *bytecount) {
+	FILE *fp;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
-	fd = fopen(filename.c_str(), "rb");
+	fp = fopen(filename.c_str(), "rb");
 #elif defined(_COMPILER_MSVC)
-	errno_t err = fopen_s(&fd, filename.c_str(), "rb");
-	if (err != 0)
-		return Data(nullptr, 0);
+	if(fopen_s(&fp, filename.c_str(), "rb"))
+		fp = nullptr;
 #endif
 
-	if (!fd)
-		return Data(nullptr, 0); // Return an empty data structure.
+	if (!fp) {
+		std::shared_ptr<char> data = smart_ptr::make_shared<char>(1);
+		data.get()[0] = 0;
+		return data;
+	}
 
-	size_t res = fread(data.data, 1, data.size, fd);
+	fseek(fp, 0, SEEK_END);
+	long total_size = ftell(fp);
+	fseek(fp, 0, SEEK_SET);
+
+	std::shared_ptr<char> data = smart_ptr::make_shared<char>(total_size + 1);
+	size_t res = fread(data.get(), 1, total_size, fp);
+	data.get()[total_size] = 0;
 
 	if (bytecount)
 		*bytecount = res;
 
-	fclose(fd);
+	fclose(fp);
 
 	return data;
 }
@@ -168,25 +175,28 @@ bool erebos::file::write(const std::string &filename, const std::string &data, b
 }
 
 
-bool erebos::file::write_bin(const std::string &filename, const Data &data, bool truncate) {
+size_t erebos::file::write_bin(const std::string &filename, const char* data, size_t len, bool truncate) {
 
-	FILE *fd;
+	FILE *fp;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
-	fd = fopen(filename.c_str(), (truncate) ? "wb+" : "wb");
+	fp = fopen(filename.c_str(), (truncate) ? "wb+" : "wb");
 #elif defined(_COMPILER_MSVC)
 	errno_t err;
-	err = fopen_s(&fd, filename.c_str(), (truncate) ? "wb+" : "wb");
+	err = fopen_s(&fp, filename.c_str(), (truncate) ? "wb+" : "wb");
 
 	if (err != 0)
-		return false;
+		return 0;
 #endif
 
-	if (!fd)
-		return false;
+	if (!fp)
+		return 0;
 
-	fwrite(data.data, 1, data.size, fd);
-	fclose(fd);
+	if(!len)
+		len = strlen(data);
 
-	return true;
+	size_t bytes_written = fwrite(data, 1, len, fp);
+	fclose(fp);
+
+	return bytes_written;
 }

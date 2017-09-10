@@ -5,6 +5,8 @@
 #ifndef EREBOS_FILE_H
 #define EREBOS_FILE_H
 
+#include <memory>
+
 #include "types.h"
 
 namespace erebos {
@@ -57,13 +59,12 @@ namespace erebos {
 		ERAPI std::string read(const std::string &filename);
 
 		/*!
-		 * @brief read an entire binary file, then store result in holding
-		 * erebos::data_t class
+		 * @brief read an entire binary file, then store result in a shared_ptr. Guaranteed to be NUL terminated
 		 * @param filename
-		 * @param [out]bytecount : how many read bytes? nullptr if not interested (set by default)
-		 * @return an erebos::Data structure holding binary data
+		 * @param [out]bytecount : read N bytes. nullptr if not interested (set by default)
+		 * @return a shared_ptr<char> smart pointer, holding binary data. 
 		 */
-		ERAPI Data read_bin(const std::string &filename, std::uint64_t *bytecount = nullptr);
+		ERAPI std::shared_ptr<char> read_bin(const std::string &filename, std::uint64_t *bytecount = nullptr);
 
 		/*!
 		 * @brief write bytes to a file
@@ -75,13 +76,14 @@ namespace erebos {
 		ERAPI bool write(const std::string &filename, const std::string &data, bool truncate = true);
 
 		/*!
-		 * @brief write data hold by erebos::data_t class to binary file
+		 * @brief write data hold by erebos::data_t class to binary file (see len parameter, important)
 		 * @param filename
-		 * @param data : erebos::Data class holding data
+		 * @param data : your data
+		 * @param len : data size in bytes, by default 0, will determine itself, BUT will stop at NUL character
 		 * @param truncate : true by default
-		 * @return true if function succeed, false otherwise
+		 * @return 0 if failure, a positive integer representing bytes written otherwise
 		 */
-		ERAPI bool write_bin(const std::string &filename, const Data &data, bool truncate = true);
+		ERAPI size_t write_bin(const std::string &filename, const char* data, size_t len = 0, bool truncate = true);
 	}
 }
 
