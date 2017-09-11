@@ -9,7 +9,7 @@ init:
 before_build:
   - md build
   - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="/O2 /W3" -DMAKE_TESTS="yes"
+  - cmake .. -DCMAKE_BUILD_TYPE="Release" -G "Visual Studio 15 2017" -DCMAKE_CXX_FLAGS="/O2 /W2 /EHsc" -DMAKE_TESTS="yes"
 
 after_build:
   - ctest
