@@ -6,8 +6,8 @@ using namespace erebos;
 int main(int argc, char const *argv[]) {
 
 	NEW_MODULE_TEST("file");
-
-
+	
+	
 	BEGIN_TEST PRE_CALL(file::get_path);
 
 		WITH_RETV CALLBACK("");
@@ -23,7 +23,7 @@ int main(int argc, char const *argv[]) {
 		TEST_EQUALS("/");
 
 	END_TEST();
-
+	
 	BEGIN_TEST PRE_CALL(file::get_extension);
 
 		WITH_RETV CALLBACK("");
@@ -80,8 +80,7 @@ int main(int argc, char const *argv[]) {
 		TEST_EQUALS("file");
 
 	END_TEST();
-
-
+	
 	BEGIN_TEST PRE_CALL(file::write);
 
 		WITH_RETV CALLBACK("testfile.txt", "Test", false);
@@ -110,8 +109,8 @@ int main(int argc, char const *argv[]) {
 		TEST_EQUALS(true);
 
 	END_TEST();
-
-
+	
+	
 	BEGIN_TEST PRE_CALL(file::write_bin);
 
 		WITH_RETV CALLBACK("testbinary.bin", "test", 0, false);
