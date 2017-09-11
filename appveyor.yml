@@ -2,9 +2,6 @@ version: "{build}-{branch}"
 
 image: Visual Studio 2015
 
-platform:
-  - x86
-
 configuration:
   - Release
  
