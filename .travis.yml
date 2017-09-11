@@ -19,7 +19,7 @@ addons:
 script:
    - cmake . -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="-Wall -Wextra -W -finline-functions -funroll-loops -O2" -DMAKE_TESTS="yes"
    - build-wrapper-linux-x86-64 --out-dir build_wrapper make -j3
-   - env CTEST_OUTPUT_ON_FAILURE=1 ctest
+   - env CTEST_OUTPUT_ON_FAILURE=1 make test
    - ./scripts/coverage.sh . coverage-results
    - sonar-scanner
 
