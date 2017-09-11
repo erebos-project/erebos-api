@@ -16,7 +16,8 @@ concatenated printing to the screen (`println`), an easy to use Logger class and
 
 ### Compiling from source
 
-We advice you to use MinGW instead of Visual C++, at this time, more testing needed!
+**WINDOWS NOTE: you should use NMake generator, or build the project inside Visual Studio 2017 with CMake support, or use MinGW.
+Do not use solution files**
 
 Clang currently untested
 
