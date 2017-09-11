@@ -1,7 +1,14 @@
 version: "{build}-{branch}"
 
+image: Visual Studio 2015
+
 platform:
-  - Win32
+  - x86
+
+configuration:
+  - Release
+ 
+matrix: fast_finish: true
 
 init:
   - cmake --version
@@ -9,5 +16,4 @@ init:
 before_build:
   - md build
   - cd build
-  - call "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat" x86
-  - cmake .. -G "NMake Makefiles" -DMAKE_TESTS="yes" -DCMAKE_CXX_FLAGS="/O2 /EHsc /W2" -DCMAKE_BUILD_TYPE="Release"
+  - cmake .. -DMAKE_TESTS="yes" -DCMAKE_CXX_FLAGS="/O2 /EHsc /W2" -DCMAKE_BUILD_TYPE="Release" -G "Visual Studio 14 2015"
