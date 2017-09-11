@@ -158,9 +158,29 @@ int main()
 
 	END_TEST();
 
+	BEGIN_TEST PRE_CALL_VOID(erebos::strutil::replace,
+								std::string&, const char&,
+								const char&, const size_t&);
+
+	std::string str = "replace MeM";
+
+	WITHOUT_RETV CALLBACK(str, 'M',' ',0);
+	CUSTOM_TEST_EQUALS(str,"replace  e ");
+
+	str = "replace AeA";
+	WITHOUT_RETV CALLBACK(str, 'A','m',1);
+	CUSTOM_TEST_EQUALS(str,"replace meA");
+
+
+	str = "replace AeA";
+	WITHOUT_RETV CALLBACK(str,'A','m',2);
+	CUSTOM_TEST_EQUALS(str,"replace mem");
+
+	END_TEST();
+
 	//remaining
+	//
 	//cut
-	//replace overload
 	//mul
 	//encode_base64_*
 	//decode_base64_*
