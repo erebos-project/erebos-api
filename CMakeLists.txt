@@ -44,7 +44,7 @@ endif ()
 message("-- Can make tests?")
 
 find_program(GCOV_EXISTS "gcov")
-if(GCOV_EXISTS AND MAKE_TESTS AND COMPILER STREQUAL "GCC-CLANG")
+if(GCOV_EXISTS AND MAKE_TESTS AND CMAKE_CXX_COMPILER_ID MATCHES "GNU")
 	message("  Tests can be built :)")
 	include(cmake/Test.cmake)
 else()
