@@ -144,6 +144,9 @@ int main(int argc, char const *argv[]) {
 		CUSTOM_TEST_DISEQUALS(retv.get(),static_cast<char*>(nullptr));
 		CUSTOM_TEST_EQUALS(bytes, 8);
 
+		WITH_RETV CALLBACK("this-file-does-not-exist",nullptr);
+		CUSTOM_TEST_EQUALS(retv.get()[0],0);
+		
 	END_TEST();
 
 	BEGIN_TEST PRE_CALL(file::remove);
