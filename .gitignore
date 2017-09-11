@@ -40,3 +40,4 @@ test/test-time
 *.gcov
 *.gcda
 coverage-results/
+CMakeSettings.json

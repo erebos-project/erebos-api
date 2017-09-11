@@ -9,4 +9,7 @@ init:
 before_build:
   - md build
   - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="/O2 /W3"
+  - cmake .. -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="/O2 /W3" -DMAKE_TESTS="yes"
+
+after_build:
+  - ctest

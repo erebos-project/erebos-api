@@ -41,14 +41,6 @@ set(SOURCES
 		file.cpp
 		input.cpp)
 
-if (NOT LIBRARY)
-	if(COMPILER STREQUAL "VCXX")
-		set(LIBRARY "shared")
-	else()
-		set(LIBRARY "static")
-	endif()
-endif ()
-
 if (LIBRARY STREQUAL "shared")
 	message("-- Shared library")
 	add_library(erebos SHARED ${SOURCES})
