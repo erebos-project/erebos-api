@@ -138,8 +138,8 @@ int main(int argc, char const *argv[]) {
 
 		WITH_RETV CALLBACK("testbinary.bin", nullptr);
 		CUSTOM_TEST_DISEQUALS(retv.get(),static_cast<char*>(nullptr));
-
-		std::uint64_t bytes;
+		
+		std::size_t bytes;
 		WITH_RETV CALLBACK("testbinary.bin", &bytes);
 		CUSTOM_TEST_DISEQUALS(retv.get(),static_cast<char*>(nullptr));
 		CUSTOM_TEST_EQUALS(bytes, 8);

@@ -41,14 +41,9 @@ if (DOXYGEN_EXISTS)
 	message("-- Doxygen is available, use 'make docs' to generate docs")
 endif ()
 
-message("-- Can make tests?")
-
-find_program(GCOV_EXISTS "gcov")
-if(GCOV_EXISTS AND MAKE_TESTS AND CMAKE_CXX_COMPILER_ID MATCHES "GNU")
-	message("  Tests can be built :)")
+if(MAKE_TESTS)
+	message("-- Will build tests, use \"test\" target to run tests")
 	include(cmake/Test.cmake)
-else()
-	message("  Tests cannot be built :/")
 endif()
 
 add_subdirectory(src)
