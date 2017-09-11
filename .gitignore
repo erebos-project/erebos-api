@@ -45,3 +45,4 @@ CMakeSettings.json
 *.pdb
 test/Debug/
 test/Release/
+erebos.cppcheck
