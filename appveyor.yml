@@ -8,7 +8,8 @@ platform:
 configuration:
   - Release
  
-matrix: fast_finish: true
+matrix: 
+  fast_finish: true
 
 init:
   - cmake --version
