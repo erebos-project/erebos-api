@@ -114,13 +114,35 @@ int main(int argc, char const *argv[]) {
 
 	BEGIN_TEST PRE_CALL(file::write_bin);
 
-		WITH_RETV CALLBACK("testbinary.bin", "test", 0,false);
+		WITH_RETV CALLBACK("testbinary.bin", "test", 0, false);
+		TEST_EQUALS(4);
+
+		WITH_RETV CALLBACK("testbinary.bin", "testaa", 6, false);
+		TEST_EQUALS(6);
+
+		WITH_RETV CALLBACK("testbinary.bin", "testaa", 5, false);
+		TEST_EQUALS(5);
+
+		WITH_RETV CALLBACK("testbinary.bin", "test\0aa", 7, false);
+		TEST_EQUALS(7);
+
+		WITH_RETV CALLBACK("testbinary.bin", "test\0aa",0, false);
+		TEST_EQUALS(4);
+
+		WITH_RETV CALLBACK("testbinary.bin", "test\0aab", 8, true);
+		TEST_EQUALS(8);
 
 	END_TEST();
 
 	BEGIN_TEST PRE_CALL(file::read_bin);
 
 		WITH_RETV CALLBACK("testbinary.bin", nullptr);
+		CUSTOM_TEST_DISEQUALS(retv.get(),static_cast<char*>(nullptr));
+
+		std::uint64_t bytes;
+		WITH_RETV CALLBACK("testbinary.bin", &bytes);
+		CUSTOM_TEST_DISEQUALS(retv.get(),static_cast<char*>(nullptr));
+		CUSTOM_TEST_EQUALS(bytes, 8);
 
 	END_TEST();
 

@@ -127,7 +127,7 @@ std::string erebos::file::read(const std::string &filename) {
 }
 
 
-std::shared_ptr<char> erebos::file::read_bin(const std::string &filename, std::uint64_t *bytecount) {
+std::shared_ptr<char> erebos::file::read_bin(const std::string &filename, std::size_t *bytecount) {
 	FILE *fp;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
@@ -148,7 +148,7 @@ std::shared_ptr<char> erebos::file::read_bin(const std::string &filename, std::u
 	fseek(fp, 0, SEEK_SET);
 
 	std::shared_ptr<char> data = smart_ptr::make_shared<char>(total_size + 1);
-	size_t res = fread(data.get(), 1, total_size, fp);
+	const std::size_t res = fread(data.get(), 1, total_size, fp);
 	data.get()[total_size] = 0;
 
 	if (bytecount)
@@ -175,17 +175,14 @@ bool erebos::file::write(const std::string &filename, const std::string &data, b
 }
 
 
-size_t erebos::file::write_bin(const std::string &filename, const char* data, size_t len, bool truncate) {
+std::size_t erebos::file::write_bin(const std::string &filename, const char* data, std::size_t len, bool truncate) {
 
 	FILE *fp;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
 	fp = fopen(filename.c_str(), (truncate) ? "wb+" : "wb");
 #elif defined(_COMPILER_MSVC)
-	errno_t err;
-	err = fopen_s(&fp, filename.c_str(), (truncate) ? "wb+" : "wb");
-
-	if (err != 0)
+	if(fopen_s(&fp, filename.c_str(), (truncate) ? "wb+" : "wb"))
 		return 0;
 #endif
 
@@ -195,7 +192,7 @@ size_t erebos::file::write_bin(const std::string &filename, const char* data, si
 	if(!len)
 		len = strlen(data);
 
-	size_t bytes_written = fwrite(data, 1, len, fp);
+	const std::size_t bytes_written = fwrite(data, 1, len, fp);
 	fclose(fp);
 
 	return bytes_written;

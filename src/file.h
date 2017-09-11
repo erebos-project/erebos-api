@@ -64,7 +64,7 @@ namespace erebos {
 		 * @param [out]bytecount : read N bytes. nullptr if not interested (set by default)
 		 * @return a shared_ptr<char> smart pointer, holding binary data. 
 		 */
-		ERAPI std::shared_ptr<char> read_bin(const std::string &filename, std::uint64_t *bytecount = nullptr);
+		ERAPI std::shared_ptr<char> read_bin(const std::string &filename, std::size_t *bytecount = nullptr);
 
 		/*!
 		 * @brief write bytes to a file
@@ -83,7 +83,7 @@ namespace erebos {
 		 * @param truncate : true by default
 		 * @return 0 if failure, a positive integer representing bytes written otherwise
 		 */
-		ERAPI size_t write_bin(const std::string &filename, const char* data, size_t len = 0, bool truncate = true);
+		ERAPI std::size_t write_bin(const std::string &filename, const char* data, std::size_t len = 0, bool truncate = true);
 	}
 }
 
