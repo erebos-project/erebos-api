@@ -153,6 +153,9 @@ int main()
 	WITHOUT_RETV CALLBACK(str, "A", "B", 2);
 	CUSTOM_TEST_EQUALS(str, "BaBaAa");
 
+	WITHOUT_RETV CALLBACK(str, "B", "A", 0);
+	CUSTOM_TEST_EQUALS(str,"AaAaAa");
+
 	END_TEST();
 
 	//remaining
