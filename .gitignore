@@ -41,3 +41,7 @@ test/test-time
 *.gcda
 coverage-results/
 CMakeSettings.json
+*.exe.manifest
+*.pdb
+test/Debug/
+test/Release/

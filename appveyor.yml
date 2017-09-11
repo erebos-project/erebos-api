@@ -9,4 +9,4 @@ init:
 before_build:
   - md build
   - cd build
-  - cmake .. -G "NMake Makefiles" -DMAKE_TESTS="yes" -DCMAKE_CXX_FLAGS="/O2 /EHsc /W2" -DCMAKE_BUILD_TYPE="Release"
+  - cmake .. -DCMAKE_CXX_FLAGS="/O2 /EHsc /W2" -DCMAKE_BUILD_TYPE="Release"
