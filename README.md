@@ -15,6 +15,11 @@ We support file operations (like writing, reading and deleting files and folders
 concatenated printing to the screen (`println`), an easy to use Logger class and functions to work on processes.
 
 ### Compiling from source
+
+We advice you to use MinGW instead of Visual C++, at this time, more testing needed!
+
+Clang currently untested
+
 This project uses CMake as build system.
 
 You can setup by command line with the following commands:
