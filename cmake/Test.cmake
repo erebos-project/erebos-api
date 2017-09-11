@@ -14,7 +14,7 @@ if(COMPILER STREQUAL "GCC-CLANG")
 	endif()
 	set(EREBOS_LINK "-Wl,--whole-archive ${EREBOS_STATIC_LIBRARY} -Wl,--no-whole-archive")
 else()
-	set(CMAKE_CXX_FLAGS "/W2")
+	set(CMAKE_CXX_FLAGS "/MD ${CMAKE_CXX_FLAGS}")
 	set(EREBOS_LINK "${EREBOS_STATIC_LIBRARY}")
 endif()
 

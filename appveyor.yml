@@ -9,4 +9,4 @@ init:
 before_build:
   - md build
   - cd build
-  - cmake .. -DCMAKE_BUILD_TYPE="Release" -G "Visual Studio 14 2015" -DCMAKE_CXX_FLAGS="/O2 /W2 /EHsc"
+  - cmake .. -G "NMake Makefiles" -DMAKE_TESTS="yes" -DCMAKE_CXX_FLAGS="/O2 /EHsc /W2" -DCMAKE_BUILD_TYPE="Release"
