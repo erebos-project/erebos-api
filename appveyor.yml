@@ -15,3 +15,6 @@ before_build:
   - md build
   - cd build
   - cmake .. -DMAKE_TESTS="yes" -DCMAKE_CXX_FLAGS="/O2 /EHsc /W2" -DCMAKE_BUILD_TYPE="Release" -G "Visual Studio 14 2015"
+
+after_build
+  - ctest
