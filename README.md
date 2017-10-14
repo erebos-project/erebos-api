@@ -6,29 +6,6 @@
 # erebos-api
 A C++ library providing cross-platform low-level functions.
 
-### NOTE for Windows users
-So, you decide to build this library on a Windows platform, right? Then, read below.
-
-Basically, I tried to do the following:
-
-~~~
-erebos-api/build> cmake .. -G "Visual Studio 14 2015" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="/O2 /EHsc /W2" -DMAKE_TESTS="yes"
-erebos-api/build> msbuild ALL_TESTS.vcsxproj
-~~~
-
-At the end, I got very strange errors, about some debugging features, I DID NOT REQUEST.
-
-This will not work.
-
-At this point, you have 4 ways:
-
-  * Use **MinGW** (I would not on Windows, but anyway...)
-  * Use **NMake** (My own preferred way)
-  * Use directly a Visual Studio **15 2017** (important) environment with **CMAKE**!!!
-  * Always use MSBuild, but specifying _/p:Configuration=Release_
-
-I would prefer the NMake method (less bloat, less output shit), as shown below.
-
 ### Why use Erebos
 Erebos provides simple to use and cross-platform utilities that many programs need to use and usually re-implement or use giant libraries that take in more dependencies and slow down compilation time (and sometimes performance).
 This library solves this problem, as it is light-weight and really easy and straightforward to use.
@@ -47,15 +24,12 @@ You can setup by command line with the following commands:
  * `cd` into the new directory
  * Run the following commands based on your compiler
 
-**Note:** you may want to run tests? *See below*
-**Note:** you may want to specify your own flags for compilation, right?
+**Note:** to specify your own flags you may use
 ~~~
 -DCMAKE_CXX_FLAGS:string=""
 ~~~
 
-Is what you are looking for ;)
-
-*See reccomended compilation flags below*
+*See recommended compilation flags below*
 
 #### Linux/GCC
 
@@ -84,6 +58,28 @@ erebos-api/build> nmake
 To compile as a shared library add the `-DLIBRARY="shared"` argument to CMake.
 
 If you want to enable colored output on Windows add the `-D_WINDOWS_SHELL_COLOR` argument to CMake.
+
+### Note for Windows users
+If you want to compile on Windows, read the following.
+Basically, I tried to do the following:
+
+~~~
+erebos-api/build> cmake .. -G "Visual Studio 14 2015" -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="/O2 /EHsc /W2" -DMAKE_TESTS="yes"
+erebos-api/build> msbuild ALL_TESTS.vcsxproj
+~~~
+
+At the end, I got very strange errors, about some debugging features, **I did not request**.
+
+This will not work.
+
+At this point, you have 4 ways:
+
+  * Use **MinGW**
+  * Use **NMake**
+  * Use directly a **Visual Studio 15 2017** environment with **CMake**
+  * Always use MSBuild, but specifying _/p:Configuration=Release_
+
+I would prefer the NMake method (less bloat), as shown up.
 
 ### Reccomended compilation flags
 
