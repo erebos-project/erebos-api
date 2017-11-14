@@ -7,7 +7,6 @@ int main(int argc, char const *argv[]) {
 
 	NEW_MODULE_TEST("file");
 	
-	
 	BEGIN_TEST PRE_CALL(file::get_path);
 
 		WITH_RETV CALLBACK("");
@@ -110,7 +109,6 @@ int main(int argc, char const *argv[]) {
 
 	END_TEST();
 	
-	
 	BEGIN_TEST PRE_CALL(file::write_bin);
 
 		WITH_RETV CALLBACK("testbinary.bin", "test", 0, false);
@@ -135,17 +133,23 @@ int main(int argc, char const *argv[]) {
 
 	BEGIN_TEST PRE_CALL(file::read_bin);
 
+	{
 		WITH_RETV CALLBACK("testbinary.bin", nullptr);
-		CUSTOM_TEST_DISEQUALS(retv.get(),static_cast<char*>(nullptr));
-		
+		CUSTOM_TEST_EQUALS(retv.operator bool(), true);
+	}
+
+	{
 		std::size_t bytes;
 		WITH_RETV CALLBACK("testbinary.bin", &bytes);
-		CUSTOM_TEST_DISEQUALS(retv.get(),static_cast<char*>(nullptr));
+		CUSTOM_TEST_EQUALS(retv.operator bool(), true);
 		CUSTOM_TEST_EQUALS(bytes, 8);
+	}
 
-		WITH_RETV CALLBACK("this-file-does-not-exist",nullptr);
-		CUSTOM_TEST_EQUALS(retv.get()[0],0);
-		
+	{
+		WITH_RETV CALLBACK("this-file-does-not-exist", nullptr);
+		CUSTOM_TEST_EQUALS(retv.operator bool(), false);
+	}
+
 	END_TEST();
 
 	BEGIN_TEST PRE_CALL(file::remove);
@@ -155,6 +159,13 @@ int main(int argc, char const *argv[]) {
 
 	END_TEST();
 
+	BEGIN_TEST PRE_CALL(file::remove);
+
+		WITH_RETV CALLBACK("non-existant-file.test");
+		TEST_EQUALS(false);
+
+	END_TEST();
+	
 	END_MODULE_TEST();
 
 	return 0;

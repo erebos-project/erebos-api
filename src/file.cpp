@@ -137,19 +137,15 @@ std::shared_ptr<char> erebos::file::read_bin(const std::string &filename, std::s
 		fp = nullptr;
 #endif
 
-	if (!fp) {
-		std::shared_ptr<char> data = smart_ptr::make_shared<char>(1);
-		data.get()[0] = 0;
-		return data;
-	}
+	if (!fp)
+		return nullptr;
 
 	fseek(fp, 0, SEEK_END);
 	long total_size = ftell(fp);
 	fseek(fp, 0, SEEK_SET);
 
-	std::shared_ptr<char> data = smart_ptr::make_shared<char>(total_size + 1);
-	const std::size_t res = fread(data.get(), 1, total_size, fp);
-	data.get()[total_size] = 0;
+	const std::shared_ptr<char>&& data = smart_ptr::make_shared<char>(total_size);
+	const std::size_t& res = fread(data.get(), 1, total_size, fp);
 
 	if (bytecount)
 		*bytecount = res;
