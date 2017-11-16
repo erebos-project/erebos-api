@@ -16,7 +16,7 @@ before_script:
 
 ###
 script:
-   - cmake . -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="-Wall -Wextra -W -O0" -DMAKE_TESTS="yes"
+   - cmake . -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="-Wall -Wextra -W -O0 --coverage" -DMAKE_TESTS="yes"
    - make -j3
    - env CTEST_OUTPUT_ON_FAILURE=1 make test
 
