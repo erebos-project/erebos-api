@@ -16,13 +16,14 @@ before_script:
 
 ###
 script:
-   - cmake . -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="-Wall -Wextra -W -finline-functions -funroll-loops -O2" -DMAKE_TESTS="yes"
+   - cmake . -DCMAKE_BUILD_TYPE="Release" -DCMAKE_CXX_FLAGS="-Wall -Wextra -W -O0" -DMAKE_TESTS="yes"
    - make -j3
    - env CTEST_OUTPUT_ON_FAILURE=1 make test
 
 after_success:
    - ./scripts/coverage.sh . coverage-results
    - cd coverage-results
+   - lcov --directory . --zerocounters
    - lcov --directory . -c -o coverage.info
    - lcov --list coverage.info
    - coveralls-lcov --repo-token $COVERALLS_REPO_TOKEN coverage.info
