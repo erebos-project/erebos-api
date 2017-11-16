@@ -44,7 +44,7 @@ int main(int argc, char const *argv[]) {
 #else
 	std::tm* now = nullptr;
 	localtime_s(now, &time_now);
-	t = Time(now);
+	//t = Time(now);
 #endif
 
 	END_TEST();
