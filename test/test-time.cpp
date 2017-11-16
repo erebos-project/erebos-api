@@ -34,11 +34,16 @@ int main(int argc, char const *argv[]) {
 	CUSTOM_TEST_EQUALS(t.min,0);
 	CUSTOM_TEST_EQUALS(t.sec,0);
 
-	std::time_t time_now = std::time(nullptr);
+	const std::time_t time_now = std::time(nullptr);
+#ifndef _COMPILER_MSVC
 	std::tm now;
 	localtime_r(&time_now, &now);
-	t = erebos::Time(&now);
-
+	t = Time(&now);
+#else
+	std::tm* now = nullptr;
+	localtime_s(now, &time_now);
+	t = Time(now);
+#endif
 	END_TEST();
 
 	END_MODULE_TEST();
