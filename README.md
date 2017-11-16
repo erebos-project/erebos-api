@@ -3,6 +3,7 @@
 [![Travis](https://img.shields.io/travis/erebos-project/erebos-api.svg)](https://travis-ci.org/erebos-project/erebos-api)
 [![AppVeyor](https://img.shields.io/appveyor/ci/erebos/erebos-api.svg)](https://ci.appveyor.com/project/erebos/erebos-api)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/371dbc485a0345f3956bb9632728cd4a)](https://www.codacy.com/app/StefanoBelli/erebos-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=erebos-project/erebos-api&amp;utm_campaign=Badge_Grade)
+[![Coverage Status](https://coveralls.io/repos/github/erebos-project/erebos-api/badge.svg?branch=master)](https://coveralls.io/github/erebos-project/erebos-api?branch=master)
 
 # erebos-api
 A C++ library providing cross-platform low-level functions.
