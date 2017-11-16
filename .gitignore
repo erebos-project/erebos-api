@@ -46,3 +46,4 @@ CMakeSettings.json
 test/Debug/
 test/Release/
 erebos.cppcheck
+*.user
