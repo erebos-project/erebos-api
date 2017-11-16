@@ -10,6 +10,7 @@ int main(int argc, char const *argv[]) {
 	
 	BEGIN_TEST PRE_CALL(erebos::get_localtime);
 
+	/*
 	WITH_RETV CALLBACK();
 	CUSTOM_TEST_DISEQUALS(retv.year,0);
 	CUSTOM_TEST_DISEQUALS(retv.month,0);
@@ -24,7 +25,8 @@ int main(int argc, char const *argv[]) {
 		<< ":" << retv.sec;
 
 	CUSTOM_TEST_EQUALS(retv.to_string("YY/MM/DD @ hh:mm:ss"), expected.str());
-	
+	*/
+
 	Time t = Time();
 
 	CUSTOM_TEST_EQUALS(t.year,0);
@@ -33,7 +35,7 @@ int main(int argc, char const *argv[]) {
 	CUSTOM_TEST_EQUALS(t.hour,0);
 	CUSTOM_TEST_EQUALS(t.min,0);
 	CUSTOM_TEST_EQUALS(t.sec,0);
-	/*
+	
 	const std::time_t time_now = std::time(nullptr);
 #ifndef _COMPILER_MSVC
 	std::tm now;
@@ -44,7 +46,7 @@ int main(int argc, char const *argv[]) {
 	localtime_s(now, &time_now);
 	t = Time(now);
 #endif
-*/
+
 	END_TEST();
 
 	END_MODULE_TEST();
