@@ -180,12 +180,57 @@ int main()
 
 	//remaining
 	//
-	//cut
-	//mul
 	//encode_base64_*
 	//decode_base64_*
-	
 
+	//cut
+	BEGIN_TEST PRE_CALL(erebos::strutil::cut);
+	
+	std::string str = "cut.ted";
+	WITH_RETV CALLBACK(str,4,2);
+	CUSTOM_TEST_EQUALS("te",retv);
+	
+	WITH_RETV CALLBACK(str,0,5);
+	CUSTOM_TEST_EQUALS("cut.t",retv);
+	
+	WITH_RETV CALLBACK(str,4,0);
+	CUSTOM_TEST_EQUALS("ted",retv);
+	
+	END_TEST();
+	
+	//mul
+	BEGIN_TEST PRE_CALL(erebos::strutil::mul);
+	
+	std::string str = "Multiply";
+	WITH_RETV CALLBACK(str,0);
+	CUSTOM_TEST_EQUALS("",retv);
+	
+	WITH_RETV CALLBACK(str,1);
+	CUSTOM_TEST_EQUALS("Multiply",retv);
+	
+	WITH_RETV CALLBACK(str,2);
+	CUSTOM_TEST_EQUALS("MultiplyMultiply",retv);
+	
+	END_TEST();
+	
+	//base64::encode
+	BEGIN_TEST PRE_CALL(erebos::strutil::base64::encode);
+	
+	std::string str = "porco dio";
+	WITH_RETV CALLBACK(str,"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
+	CUSTOM_TEST_EQUALS("cG9yY28gZGlv",retv);
+	
+	END_TEST();
+	
+	//base64::decode
+	BEGIN_TEST PRE_CALL(erebos::strutil::base64::decode);
+	
+	std::string str = "cG9yY28gZGlv";
+	WITH_RETV CALLBACK(str,"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/");
+	CUSTOM_TEST_EQUALS("porco dio", retv);
+	
+	END_TEST();
+	
 	END_MODULE_TEST();
 }
 
