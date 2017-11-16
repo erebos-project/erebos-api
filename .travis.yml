@@ -22,7 +22,7 @@ script:
 after_success:
    - ./scripts/coverage.sh . coverage-results
    - cd coverage-results
-   - coveralls --no-gcov 
+   - coveralls
 
 ###
 before_deploy:
