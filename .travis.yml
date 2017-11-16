@@ -23,8 +23,8 @@ script:
 after_success:
    - ./scripts/coverage.sh . coverage-results
    - cd coverage-results
-   - lcov --directory . --zerocounters
    - lcov --directory . -c -o coverage.info
+   - lcov --remove coverage.info '/usr/include/*'
    - lcov --list coverage.info
    - coveralls-lcov --repo-token $COVERALLS_REPO_TOKEN coverage.info
 
