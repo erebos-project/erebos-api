@@ -7,7 +7,7 @@
 
 #include <memory>
 
-#include "types.h"
+#include "platform_defs.h"
 
 namespace erebos {
 
