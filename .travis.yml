@@ -9,9 +9,10 @@ addons:
     packages:
       - cmake
       - doxygen
+      - lcov
 
-before_install:
-    - pip install --user cpp-coveralls
+before_script:
+  - gem install coveralls-lcov 
 
 ###
 script:
@@ -22,7 +23,9 @@ script:
 after_success:
    - ./scripts/coverage.sh . coverage-results
    - cd coverage-results
-   - coveralls
+   - lcov --directory . -o coverage.info
+   - lcov --list coverage.info
+   - coveralls-lcov --repo-token $COVERALLS_REPO_TOKEN coverage.info
 
 ###
 before_deploy:
