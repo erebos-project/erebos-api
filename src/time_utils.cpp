@@ -45,9 +45,9 @@ erebos::Time erebos::get_localtime() {
 #endif
 
 #elif defined(_COMPILER_MSVC)
-	std::tm* now = nullptr;
-	localtime_s(now, &time_now);
-    return erebos::Time(now);
+	std::tm now;
+	localtime_s(&now, &time_now);
+    return erebos::Time(&now);
 #endif
 
 }

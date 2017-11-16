@@ -10,7 +10,6 @@ int main(int argc, char const *argv[]) {
 	
 	BEGIN_TEST PRE_CALL(erebos::get_localtime);
 
-	/*
 	WITH_RETV CALLBACK();
 	CUSTOM_TEST_DISEQUALS(retv.year,0);
 	CUSTOM_TEST_DISEQUALS(retv.month,0);
@@ -25,7 +24,6 @@ int main(int argc, char const *argv[]) {
 		<< ":" << retv.sec;
 
 	CUSTOM_TEST_EQUALS(retv.to_string("YY/MM/DD @ hh:mm:ss"), expected.str());
-	*/
 
 	Time t = Time();
 
@@ -44,7 +42,7 @@ int main(int argc, char const *argv[]) {
 #else
 	std::tm now;
 	localtime_s(&now, &time_now);
-	//t = Time(now);
+	t = Time(&now);
 #endif
 
 	END_TEST();
