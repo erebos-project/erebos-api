@@ -34,10 +34,6 @@ int main(int argc, char const *argv[]) {
 	CUSTOM_TEST_EQUALS(t.min,0);
 	CUSTOM_TEST_EQUALS(t.sec,0);
 
-	std::tm now;
-	localtime_r(&time_now, &now);
-	erebos::Time(&now);
-
 	END_TEST();
 
 	END_MODULE_TEST();
