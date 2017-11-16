@@ -9,14 +9,9 @@ int main(int argc, char const *argv[]) {
 	NEW_MODULE_TEST("time");
 	
 	BEGIN_TEST PRE_CALL(erebos::get_localtime);
-
+	
+	//Unapplyable checks
 	WITH_RETV CALLBACK();
-	CUSTOM_TEST_DISEQUALS(retv.year,0);
-	CUSTOM_TEST_DISEQUALS(retv.month,0);
-	CUSTOM_TEST_DISEQUALS(retv.day,0);
-	CUSTOM_TEST_DISEQUALS(retv.hour,0);
-	CUSTOM_TEST_DISEQUALS(retv.min,0);
-	CUSTOM_TEST_DISEQUALS(retv.sec,0);
 	
 	std::stringstream expected;
 	expected << retv.year << "/" << retv.month << "/"
