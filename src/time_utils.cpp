@@ -46,6 +46,7 @@ erebos::Time erebos::get_localtime() {
 	std::tm now;
 	localtime_s(&now, &time_now);
     return erebos::Time(&now);
-#endif
+#else
 	return erebos::Time();
+#endif
 }
