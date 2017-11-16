@@ -42,8 +42,8 @@ int main(int argc, char const *argv[]) {
 	localtime_r(&time_now, &now);
 	t = Time(&now);
 #else
-	std::tm* now = nullptr;
-	localtime_s(now, &time_now);
+	std::tm now;
+	localtime_s(&now, &time_now);
 	//t = Time(now);
 #endif
 
