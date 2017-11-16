@@ -26,7 +26,7 @@ public:
   /*!
    * @brief Creates empty Time instance
    */
-  ERAPI inline Time() {}
+  ERAPI inline Time() : year(0), month(0), day(0), hour(0), min(0), sec(0) {}
 
   /*!
    * @param right_now : tm structure
