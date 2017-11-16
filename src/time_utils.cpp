@@ -35,9 +35,7 @@ erebos::Time erebos::get_localtime() {
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
 
 #ifdef WINDOWS
-	std::tm* now;
-	now = localtime(nullptr);
-	return erebos::Time(now);
+	return erebos::Time(localtime(&time_now));
 #else
 	std::tm now;
 	localtime_r(&time_now, &now);
@@ -49,5 +47,5 @@ erebos::Time erebos::get_localtime() {
 	localtime_s(&now, &time_now);
     return erebos::Time(&now);
 #endif
-
+	return erebos::Time();
 }
