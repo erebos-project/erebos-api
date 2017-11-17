@@ -55,28 +55,3 @@ std::string erebos::parse_quotes(const std::string &s) {
 
 	return res;
 }
-
-
-void erebos::parse_arg(const std::string &input, std::vector<std::string> &output) {
-	for (size_t i = 0; i < input.size(); ++i) {
-		std::string curr;
-
-		if (input[i] == '\n')
-			break;
-
-		if (is_quotes(input[i])) {
-			i++;
-			while (!is_quotes(input[i]) && input[i] != '\n' && input[i]) {
-				curr += input[i];
-				i++;
-			}
-		} else {
-			while (!is_quotes(input[i]) && input[i] != ' ' && input[i] != '\n' && input[i]) {
-				curr += input[i];
-				i++;
-			}
-		}
-
-		output.emplace_back(curr);
-	}
-}

@@ -428,13 +428,6 @@ namespace erebos {
 						   		 const bool &exit_on_error = true);
 
 	/*!
-	 * @brief divide the passed string based on spaces and quotes
-	 * @param input : the input string
-	 * @param output : the output list to store arguments
-	 */
-	ERAPI void parse_arg(const std::string &input, std::vector<std::string> &output);
-
-	/*!
 	 * @brief return the text between two quotes
 	 * @param s : quoted string
 	 * @return text between quotes
