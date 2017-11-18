@@ -123,25 +123,6 @@ int main(int argc, char const *argv[]) {
 
 	END_TEST();
 
-
-	BEGIN_TEST PRE_CALL_VOID(parse_arg, const std::string&, std::vector<std::string>&);
-
-		std::vector<std::string> res;
-
-		WITHOUT_RETV CALLBACK("Param1 Param2 \"Param 3\" ", res);
-
-		// TEST_CHECK_EQUAL(res[0], "Param1");
-		// TEST_CHECK_EQUAL(res[1], "Param2");
-		// TEST_CHECK_EQUAL(res[2], "Param 3");
-
-		std::vector<std::string> res_2;
-
-		WITHOUT_RETV CALLBACK("", res_2);
-		// TEST_CHECK_EQUAL(res_2.size(), 0);
-
-	END_TEST();
-
-
 	// BEGIN_TEST PRE_CALL_OVERLOAD(cmd, int, std::string, int*);
 
 	// 	// Special case
