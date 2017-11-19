@@ -566,6 +566,7 @@ namespace erebos {
 		};
 
 #if defined(WINDOWS)
+
 		/*!
 		 * @brief wait until a key is pressed
 		 * @param delta : the milliseconds to wait for updating (default is 66)
@@ -579,11 +580,13 @@ namespace erebos {
 		 * @return true in case of success
 		 */
 		ERAPI bool fake_put(const Key& key);
+
 #elif defined(LINUX)
+
 		  /*!
 			* @brief determine which kind of event, see fake_put
 			*/
-		  enum class KeyPressType : u16 {
+		enum class KeyPressType : u16 {
 			KEY_RELEASE = 0,
 			KEY_PRESS = 1
 		};
@@ -611,7 +614,7 @@ namespace erebos {
 			* @return a new file descriptor, representing the virtual keyboard, -1 otherwise
 			*/
 		int new_virtual_kb_device(const char* name,
-											 const bool& after_wait = true,
+								  const bool& after_wait = true,
 								  const u16& bus_type = 0x03, //USB
 								  const u16& vendor = 0x01,
 								  const u16& product = 0x02,
@@ -645,8 +648,8 @@ namespace erebos {
 		}
 
 		//we only want to use keys in Key enum
-		bool fake_put(int,int) = delete;
-		bool fake_put(int,int,KeyPressType) = delete;
+		bool fake_put(int, int) = delete;
+		bool fake_put(int, int, KeyPressType) = delete;
 #endif
 
 	}

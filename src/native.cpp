@@ -488,10 +488,6 @@ bool erebos::file::remove(const std::string &filename) {
 #ifdef LINUX
 
 int remove_callback(const char *filepath, const struct stat *st, int flag, struct FTW *buffer) {
-	SUPPRESS_UNUSED(filepath);
-	SUPPRESS_UNUSED(st);
-	SUPPRESS_UNUSED(flag);
-	SUPPRESS_UNUSED(buffer);
 
 	return ::remove(filepath);
 }

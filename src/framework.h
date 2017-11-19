@@ -13,9 +13,7 @@
 #include <utility>
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
-
 #include <cstdlib>
-
 #endif
 
 #include "version.h"
@@ -66,20 +64,6 @@
 	}
 
 /*!
- * @brief (pre-c++17)
- * @param xparam
- */
-#define SUPPRESS_UNUSED(xparam) \
-	((void) xparam)
-
-/*!
- * @brief get whatever you want to a C string literal
- * @param what
- */
-#define WHATEVER_TO_CSTR(what) \
-    #what
-
-/*!
  * @brief main erebos namespace
  */
 namespace erebos {
@@ -119,13 +103,9 @@ namespace erebos {
 	inline std::string byte_to_hex(unsigned char c) {
 
 		constexpr char hex_c[17] = "0123456789abcdef";
-
 		std::string output;
-		unsigned char nibble1 = c >> 4;
-		unsigned char nibble2 = c & 0x0F;
-
-		output += hex_c[nibble1];
-		output += hex_c[nibble2];
+		output += hex_c[c >> 4];
+		output += hex_c[c & 0x0F];
 
 		return output;
 	}
@@ -277,18 +257,10 @@ namespace erebos {
 	}
 
 	/*!
-	 * @brief gets program executable
+	 * @brief returns the path to the program's executable
 	 * @return program executable string
 	 */
 	ERAPI std::string get_exe_path();
-
-	/*!
-	 * @return "-help Get help for this program."
-	 */
-	inline const std::string get_help_string() {
-
-		return "-help Get help for this program.";
-	}
 
 	/*!
 	 * @brief converts backslash to slash
@@ -424,7 +396,8 @@ namespace erebos {
 	 * @param exit_on_error : should exit on wrong input by user? (default = true)
 	 * @return user chosen Y or N ?
 	 */
-	ERAPI bool get_prompt_answer(const std::string &message, const std::string &error_message = "",
+	ERAPI bool get_prompt_answer(const std::string &message,
+								 const std::string &error_message = "",
 						   		 const bool &exit_on_error = true);
 
 	/*!
