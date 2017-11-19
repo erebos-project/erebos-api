@@ -36,7 +36,6 @@ endif ()
 set(SOURCES
 		framework.cpp
 		native.cpp
-		logger.cpp
 		time_utils.cpp
 		file.cpp
 		input.cpp)
