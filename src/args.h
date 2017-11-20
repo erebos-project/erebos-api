@@ -17,9 +17,7 @@ namespace erebos {
 
         using supplied = std::map<std::string, std::string>;
 
-        args(int argc,
-             char** argv,
-             bool exit_fail = true,
+        args(bool exit_fail = true,
              bool show_message_fail = true,
              bool show_help_fail = false);
 
@@ -29,7 +27,7 @@ namespace erebos {
                  const bool& value_required = false,
                  const bool& required = false);
 
-        supplied parse() const;
+        supplied parse(const int& argc, char** argv) const;
 
         inline const std::string& help() const {
             return helpString;
