@@ -7,6 +7,10 @@ int main(int argc, char const *argv[]) {
 
 	NEW_MODULE_TEST("framework");
 
+	BEGIN_TEST PRE_CALL(get_api_version);
+		// Empty test
+	END_TEST();
+
 
 	BEGIN_TEST PRE_CALL(hex_to_int);
 
@@ -87,6 +91,36 @@ int main(int argc, char const *argv[]) {
 	// END_TEST();
 
 
+	BEGIN_TEST PRE_CALL(set_shell_color);
+		// Empty test
+	END_TEST();
+
+
+	BEGIN_TEST PRE_CALL(get_color_string);
+		// Empty test
+	END_TEST();
+
+
+	BEGIN_TEST PRE_CALL(make_rainbow_string);
+		// Empty test
+	END_TEST();
+
+
+	BEGIN_TEST PRE_CALL(get_exe_path);
+		// Empty test
+	END_TEST();
+
+
+	BEGIN_TEST PRE_CALL(print_logo);
+		// Empty test
+	END_TEST();
+
+
+	BEGIN_TEST PRE_CALL(get_prompt_answer);
+		// Empty test
+	END_TEST();
+
+
 	BEGIN_TEST PRE_CALL(to_unix_slash);
 
 		WITH_RETV CALLBACK("");
@@ -122,19 +156,6 @@ int main(int argc, char const *argv[]) {
 		TEST_EQUALS("some quotes");
 
 	END_TEST();
-
-	// BEGIN_TEST PRE_CALL_OVERLOAD(cmd, int, std::string, int*);
-
-	// 	// Special case
-
-	// END_TEST();
-
-
-	// BEGIN_TEST PRE_CALL(cmd, int, std::string, std::string&, int*);
-
-	// 	// Special case
-
-	// END_TEST();
 
 
 	BEGIN_TEST PRE_CALL(get_random_secure);

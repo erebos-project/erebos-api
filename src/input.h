@@ -641,10 +641,10 @@ namespace erebos {
 			* @return true if key event emitted, false otherwise
 			*/
 		inline bool fake_put(const int& devfd, const Key& key) {
-			if(!fake_put(devfd,key,KeyPressType::KEY_PRESS))
+			if(!fake_put(devfd, key, KeyPressType::KEY_PRESS))
 				return false;
 
-			return fake_put(devfd,key,KeyPressType::KEY_RELEASE);
+			return fake_put(devfd, key, KeyPressType::KEY_RELEASE);
 		}
 
 		//we only want to use keys in Key enum
