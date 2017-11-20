@@ -38,7 +38,8 @@ set(SOURCES
 		native.cpp
 		time_utils.cpp
 		file.cpp
-		input.cpp)
+                input.cpp
+                args.cpp)
 
 if (LIBRARY STREQUAL "shared")
 	message("-- Shared library")
