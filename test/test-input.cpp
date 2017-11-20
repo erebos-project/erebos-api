@@ -30,11 +30,11 @@ int main(int argc, char const *argv[]) {
 		// Empty test
 	END_TEST();
 
-	BEGIN_TEST PRE_CALL_OVERLOAD(input::fake_put, bool, const int&, const Key&, const KeyPressType&);
+	BEGIN_TEST PRE_CALL_OVERLOAD(input::fake_put, bool, const int&, const input::Key&, const input::KeyPressType&);
 		// Empty test
 	END_TEST();
 
-	BEGIN_TEST PRE_CALL_OVERLOAD(input::fake_put, bool, const int&, const Key&);
+	BEGIN_TEST PRE_CALL_OVERLOAD(input::fake_put, bool, const int&, const input::Key&);
 		// Empty test
 	END_TEST();
 
