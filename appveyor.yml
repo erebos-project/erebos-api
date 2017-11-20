@@ -6,8 +6,7 @@ configuration:
   - Release
   
 platform:
-  - x86
-  - x64
+  - Any CPU
   
 matrix: 
   fast_finish: true
