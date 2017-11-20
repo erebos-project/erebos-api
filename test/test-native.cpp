@@ -82,17 +82,7 @@ int main(int argc, char const *argv[]) {
 #endif
 
 
-	BEGIN_TEST PRE_CALL_OVERLOAD(cmd, const std::string&, int*);
-		// Empty test
-	END_TEST();
-
-
 	BEGIN_TEST PRE_CALL_OVERLOAD(cmd, const std::string&, std::string&, int*);
-		// Empty test
-	END_TEST();
-
-
-	BEGIN_TEST PRE_CALL(get_cwd);
 		// Empty test
 	END_TEST();
 
