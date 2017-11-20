@@ -91,7 +91,7 @@ int main(int argc, char const *argv[]) {
 	// END_TEST();
 
 
-	BEGIN_TEST PRE_CALL(set_shell_color);
+	BEGIN_TEST PRE_CALL_VOID(set_shell_color);
 		// Empty test
 	END_TEST();
 
@@ -111,7 +111,7 @@ int main(int argc, char const *argv[]) {
 	END_TEST();
 
 
-	BEGIN_TEST PRE_CALL(print_logo);
+	BEGIN_TEST PRE_CALL_VOID(print_logo);
 		// Empty test
 	END_TEST();
 
