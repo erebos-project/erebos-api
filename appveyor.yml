@@ -4,10 +4,7 @@ image: Visual Studio 2017
 
 configuration:
   - Release
-  
-platform:
-  - x86
-  
+
 matrix: 
   fast_finish: true
 
@@ -17,7 +14,7 @@ init:
 before_build:
   - md build
   - cd build
-  - cmake .. -DMAKE_TESTS="yes" -DCMAKE_CXX_FLAGS="/O2 /EHsc /W2" -DCMAKE_BUILD_TYPE="Release" -G "Visual Studio 15 2017"
+  - cmake .. -DMAKE_TESTS="yes" -DCMAKE_CXX_FLAGS="/O0 /EHsc /W2" -DCMAKE_BUILD_TYPE="Release" -G "Visual Studio 15 2017"
 
 after_build:
   - ctest --output-on-failure
