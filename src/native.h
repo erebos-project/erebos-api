@@ -155,7 +155,7 @@ namespace erebos {
 	 * @return The result of the pipe usage: 0 if successful, -1 if popen failed, -2 if pclose failed
 	 * @brief Executes a command and writes the exit code to [retval]
 	 */
-	ERAPI int cmd(const std::string &command, int *retval = nullptr);
+	ERAPI int pipe_open(const std::string &command, int *retval = nullptr);
 
 	/*!
 	 * @param command
@@ -164,7 +164,7 @@ namespace erebos {
 	 * @return The result of the pipe usage: 0 if successful, -1 if popen failed, -2 if pclose failed
 	 * @brief Executes a command and writes the output to [output] and the exit code to [retval]
 	 */
-	ERAPI int cmd(const std::string &command, std::string &output, int *retval = nullptr);
+	ERAPI int pipe_open(const std::string &command, std::string &output, int *retval = nullptr);
 
 	/*!
 	 * @return The Current Working Directory

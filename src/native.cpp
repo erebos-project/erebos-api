@@ -529,7 +529,7 @@ bool erebos::file::remove_dir(const std::string &dirname) {
 }
 
 
-int erebos::cmd(const std::string& command, int* retval) {
+int erebos::pipe_open(const std::string& command, int* retval) {
 
 	FILE *open_pipe = POPEN_F(command.c_str(), "r");
 	if (!open_pipe)
@@ -547,7 +547,7 @@ int erebos::cmd(const std::string& command, int* retval) {
 }
 
 
-int erebos::cmd(const std::string& command, std::string& output, int* retval) {
+int erebos::pipe_open(const std::string& command, std::string& output, int* retval) {
 
 	FILE *open_pipe = POPEN_F(command.c_str(), "r");
 	if (!open_pipe)
