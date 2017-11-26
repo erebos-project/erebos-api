@@ -82,12 +82,12 @@ int main(int argc, char const *argv[]) {
 #endif
 
 
-	BEGIN_TEST PRE_CALL_OVERLOAD(cmd, int, const std::string&, int*);
+	BEGIN_TEST PRE_CALL_OVERLOAD(pipe_open, int, const std::string&, int*);
 		// Empty test
 	END_TEST();
 
 
-	BEGIN_TEST PRE_CALL_OVERLOAD(cmd, int, const std::string&, std::string&, int*);
+	BEGIN_TEST PRE_CALL_OVERLOAD(pipe_open, int, const std::string&, std::string&, int*);
 		// Empty test
 	END_TEST();
 
