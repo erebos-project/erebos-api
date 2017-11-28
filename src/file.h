@@ -16,6 +16,11 @@ namespace erebos {
 	 */
 	namespace file {
 
+        /*!
+         * @typedef alias for unique_ptr<char[]>
+         */
+        using bytes_type = std::unique_ptr<char[]>;
+
 		/*!
 		 * @brief gets full path to s
 		 * @param s : relative path
@@ -62,9 +67,9 @@ namespace erebos {
 		 * @brief read an entire binary file, then store result in a shared_ptr. Guaranteed to be NUL terminated
 		 * @param filename
 		 * @param [out]bytecount : read N bytes. nullptr if not interested (set by default)
-		 * @return a shared_ptr<char> smart pointer, holding binary data. 
+         * @return refer to file::bytes_type
 		 */
-		ERAPI std::shared_ptr<char> read_bin(const std::string &filename, std::size_t *bytecount = nullptr);
+        ERAPI bytes_type read_bin(const std::string &filename, std::size_t *bytecount = nullptr);
 
 		/*!
 		 * @brief write bytes to a file

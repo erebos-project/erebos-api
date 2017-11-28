@@ -5,6 +5,8 @@
 #include "framework.h"
 #include "smart_ptr.h"
 
+using _Bytes_Type = erebos::file::bytes_type;
+
 std::string erebos::file::get_path(std::string s) {
 	size_t index = 0;
 	s = to_unix_slash(s);
@@ -127,7 +129,7 @@ std::string erebos::file::read(const std::string &filename) {
 }
 
 
-std::shared_ptr<char> erebos::file::read_bin(const std::string &filename, std::size_t *bytecount) {
+_Bytes_Type erebos::file::read_bin(const std::string &filename, std::size_t *bytecount) {
 	FILE *fp;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
@@ -144,15 +146,18 @@ std::shared_ptr<char> erebos::file::read_bin(const std::string &filename, std::s
 	const long&& total_size = ftell(fp);
 	fseek(fp, 0, SEEK_SET);
 
-	const std::shared_ptr<char>&& data = smart_ptr::make_shared<char>(total_size);
-	const std::size_t& res = fread(data.get(), 1, total_size, fp);
+    if(!total_size)
+        return nullptr;
+
+    auto data = bytes_type(new char[total_size]);
+    const std::size_t& res = fread(data.get(), 1, total_size, fp);
 
 	if (bytecount)
 		*bytecount = res;
 
 	fclose(fp);
 
-	return data;
+    return data;
 }
 
 
