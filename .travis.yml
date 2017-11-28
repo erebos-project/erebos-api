@@ -27,6 +27,7 @@ after_success:
    - lcov --remove coverage.info '/usr/include/*' '/home/travis/build/erebos-project/erebos-api/test/*' -o coverage.info
    - lcov --list coverage.info
    - coveralls-lcov --repo-token $COVERALLS_REPO_TOKEN coverage.info
+   - cd ..
 
 ###
 before_deploy:

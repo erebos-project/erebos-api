@@ -84,7 +84,7 @@ int main(int argc, char const *argv[]) {
 
 		WITH_RETV CALLBACK("testfile.txt", "Test", false);
 		TEST_EQUALS(true);
-
+		
 	END_TEST();
 
 
@@ -129,6 +129,9 @@ int main(int argc, char const *argv[]) {
 		WITH_RETV CALLBACK("testbinary.bin", "test\0aab", 8, true);
 		TEST_EQUALS(8);
 
+		WITH_RETV CALLBACK("testbinary-empty.bin","",0, false);
+		TEST_EQUALS(0);
+
 	END_TEST();
 
 	BEGIN_TEST PRE_CALL(file::read_bin);
@@ -149,7 +152,12 @@ int main(int argc, char const *argv[]) {
 		WITH_RETV CALLBACK("this-file-does-not-exist", nullptr);
 		CUSTOM_TEST_EQUALS(retv.operator bool(), false);
 	}
-
+	{
+		std::size_t bytes;
+		WITH_RETV CALLBACK("testbinary-empty.bin", &bytes);
+		CUSTOM_TEST_EQUALS(retv.operator bool(), true);
+		CUSTOM_TEST_EQUALS(bytes, 0);
+	}
 	END_TEST();
 
 	BEGIN_TEST PRE_CALL(file::remove);
@@ -157,9 +165,8 @@ int main(int argc, char const *argv[]) {
 		WITH_RETV CALLBACK("testbinary.bin");
 		TEST_EQUALS(true);
 
-	END_TEST();
-
-	BEGIN_TEST PRE_CALL(file::remove);
+		WITH_RETV CALLBACK("testbinary-empty.bin");
+		TEST_EQUALS(true);
 
 		WITH_RETV CALLBACK("non-existant-file.test");
 		TEST_EQUALS(false);

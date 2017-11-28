@@ -146,10 +146,7 @@ _Bytes_Type erebos::file::read_bin(const std::string &filename, std::size_t *byt
 	const long&& total_size = ftell(fp);
 	fseek(fp, 0, SEEK_SET);
 
-    if(!total_size)
-        return nullptr;
-
-    auto data = bytes_type(new char[total_size]);
+    auto data = bytes_type(new char[total_size + 1]);
     const std::size_t& res = fread(data.get(), 1, total_size, fp);
 
 	if (bytecount)
