@@ -19,7 +19,7 @@ namespace erebos {
         /*!
          * @typedef alias for unique_ptr<char[]>
          */
-        using bytes_type = std::unique_ptr<char[]>;
+        using bytes_t = std::unique_ptr<char[]>;
 
 		/*!
 		 * @brief gets full path to s
@@ -67,9 +67,9 @@ namespace erebos {
 		 * @brief read an entire binary file, then store result in a shared_ptr. Guaranteed to be NUL terminated
 		 * @param filename
 		 * @param [out]bytecount : read N bytes. nullptr if not interested (set by default)
-         * @return refer to file::bytes_type
+         * @return refer to file::bytes_t
 		 */
-        ERAPI bytes_type read_bin(const std::string &filename, std::size_t *bytecount = nullptr);
+        ERAPI bytes_t read_bin(const std::string &filename, std::size_t *bytecount = nullptr);
 
 		/*!
 		 * @brief write bytes to a file

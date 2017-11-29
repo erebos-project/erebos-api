@@ -6,7 +6,9 @@
 #include <map>
 
 namespace erebos {
+
     class args {
+
     public:
         struct __expected_args {
             std::string longopt;
@@ -32,10 +34,12 @@ namespace erebos {
         inline const std::string& help() const {
             return helpString;
         }
+
     private:
         std::vector <__expected_args> _Args;
         std::string helpString; //update this on each add()
     };
+
 } //namespace erebos
 
 #endif //EREBOS_EARGS_H

@@ -30,6 +30,7 @@ std::string erebos::etime::to_string(std::string format) const {
 }
 
 erebos::etime erebos::get_localtime() {
+
 	const std::time_t time_now = std::time(nullptr);
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)

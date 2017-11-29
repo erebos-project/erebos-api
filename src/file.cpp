@@ -5,7 +5,7 @@
 #include "misc.h"
 #include "smart_ptr.h"
 
-using _Bytes_Type = erebos::file::bytes_type;
+using namespace erebos;
 
 std::string erebos::file::get_path(std::string s) {
 	size_t index = 0;
@@ -129,7 +129,7 @@ std::string erebos::file::read(const std::string &filename) {
 }
 
 
-_Bytes_Type erebos::file::read_bin(const std::string &filename, std::size_t *bytecount) {
+file::bytes_t erebos::file::read_bin(const std::string &filename, std::size_t *bytecount) {
 	FILE *fp;
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
@@ -146,7 +146,7 @@ _Bytes_Type erebos::file::read_bin(const std::string &filename, std::size_t *byt
 	const long&& total_size = ftell(fp);
 	fseek(fp, 0, SEEK_SET);
 
-    auto data = bytes_type(new char[total_size + 1]);
+    auto data = file::bytes_t(new char[total_size + 1]);
     const std::size_t& res = fread(data.get(), 1, total_size, fp);
 
 	if (bytecount)

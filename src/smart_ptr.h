@@ -8,6 +8,7 @@
 #include <memory>
 
 namespace erebos {
+
     namespace smart_ptr {
         /*!
 	     * @tparam UniqueType : the type for unique_ptr

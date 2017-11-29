@@ -62,7 +62,8 @@
  * @brief main erebos namespace
  */
 namespace erebos {
-	constexpr char const* logo = 
+
+	constexpr char const* logo =
 				"                       .-/+oossso+/-\n"
 				"                   `:ohmNMMMMMMMMMMMMNds:\n"
 				"                 `/yNMMmdyso+/////+shmMMMMm.\n"
@@ -248,8 +249,8 @@ namespace erebos {
 	 * @brief prints out to stderr your message, then exits with 'code'
 	 */
 	inline void printerr_exit(const std::string &message, const int &code = -1) {
-		printerrln(color(shell_color::SHELL_RED), 
-				message, 
+		printerrln(color(shell_color::SHELL_RED),
+				message,
 				color(shell_color::SHELL_RESET));
 		exit(code);
 	}
@@ -261,7 +262,7 @@ namespace erebos {
 		println(color(shell_color::SHELL_BLUE),
 				logo,
 				color(shell_color::SHELL_RESET)
-			);
+				);
 	}
 
     /*!

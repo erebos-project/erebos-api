@@ -18,6 +18,7 @@ namespace erebos {
 	 * @brief input handling
 	 */
 	namespace input {
+
 #ifdef LINUX
 		  /*!
 			* @typedef unsigned short (16 bit) data type, used for enum Key with Linux

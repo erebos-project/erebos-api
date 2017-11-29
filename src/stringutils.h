@@ -34,6 +34,7 @@ namespace erebos {
 		 * @return true if newline was found and erased, false otherwise
 		 */
 		inline bool chomp(std::string &target) {
+
 			const size_t end_pos = target.size() - 1;
 
 			if (target.at(end_pos) == '\n') {
@@ -77,10 +78,12 @@ namespace erebos {
 		 * @return true if string is literal, false otherwise
 		 */
 		inline bool is_literal(const std::string &s) {
+
 			for (size_t i = 0; i < s.size(); ++i) {
 				if (!is_literal(s[i]))
 					return false;
 			}
+
 			return true;
 		}
 
@@ -90,10 +93,12 @@ namespace erebos {
 		 * @return true if string is numeric, false otherwise
 		 */
 		inline bool is_numeral(const std::string &s) {
+
 			for (size_t i = 0; i < s.size(); ++i) {
 				if (!is_numeral(s[i]))
 					return false;
 			}
+
 			return true;
 		}
 
@@ -105,6 +110,7 @@ namespace erebos {
 		 * @return new cutted string
 		 */
 		inline std::string cut(const std::string &s, const size_t &offset, size_t size = 0) {
+
 			std::string res;
 			if (!size)
 				size = s.size() - offset;
@@ -126,6 +132,7 @@ namespace erebos {
 		 */
 		inline void replace(std::string &target, const std::string &replaced,
 				const std::string &replacement, const size_t &n = 0) {
+
 			const size_t replaced_length = replaced.length();
 
 #if defined(WINDOWS)
@@ -154,6 +161,7 @@ namespace erebos {
 		 */
 		inline void replace(std::string &target, const char &replaced,
 				const char &replacement, const size_t &n = 0) {
+
 			size_t iterations = 0;
 			for (size_t i = 0; i < target.size(); ++i) {
 				if (target[i] == replaced) {
@@ -173,9 +181,11 @@ namespace erebos {
 		 * @return new multiplied string
 		 */
 		inline std::string mul(const std::string &s, const size_t &times) {
+
 			std::string res;
 			for (size_t i = 0; i < times; ++i)
 				res += s;
+
 			return res;
 		}
 
@@ -201,6 +211,7 @@ namespace erebos {
 		 * @return array index, -1 if not found
 		 */
 		inline ssize index_of(const char *raw_array, const char &element) {
+
 			for (ssize i = 0; i < static_cast<ssize>(strlen(raw_array)); i++)
 				if (raw_array[i] == element)
 					return i;
@@ -262,28 +273,16 @@ namespace erebos {
             return res;
         }
 
-#if defined(LINUX)
-
-		/*!
-		 *
-		 * @param command
-		 * @return new string command with stderr to stdout, useful with erebos::cmd()
-		 */
-		inline std::string stderr_to_stdout(const std::string &command) {
-			return std::string(command).append(" 2>&1");
-		}
-
-#endif
-
 		/*!
 		 * @brief base64 class
 		 */
 		class base64 {
+
 		public:
 			/*!
 			 * @brief encode a string using base64 cipher
 			 * @param str : your string
-			 * @param characters : (already set)
+			 * @param characters : (already set to MIME standard)
 			 * @return new encoded string
 			 */
 			static inline std::string encode(const std::string &str,
@@ -331,7 +330,7 @@ namespace erebos {
 			/*!
 			 * @brief decode a previously encoded base64 string
 			 * @param str : base64-encoded string
-			 * @param characters : (already set)
+			 * @param characters : (already set to MIME standard)
 			 * @return new decoded string
 			 */
 			static inline std::string decode(const std::string &str,

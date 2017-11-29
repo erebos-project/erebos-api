@@ -11,10 +11,11 @@
 
 namespace erebos {
 
-/*!
- * @brief contains year, month, day, hour, min, sec, refer to the constructor
- */
-struct etime {
+	/*!
+	 * @brief contains year, month, day, hour, min, sec, refer to the constructor
+	 */
+	struct etime {
+
 		public:
 			int year;
 			int month;
