@@ -230,7 +230,25 @@ int main()
 	CUSTOM_TEST_EQUALS("porco dio", retv);
 	
 	END_TEST();
-	
+
+	//to_unix_slash
+	BEGIN_TEST PRE_CALL(erebos::strutil::to_unix_slash);
+
+	std::string str = "C:\\Some\\Windows\\Path";
+	WITH_RETV CALLBACK(str);
+	TEST_EQUALS("C:/Some/Windows/Path");
+
+	END_TEST();
+
+	//parse_quotes
+	BEGIN_TEST PRE_CALL(erebos::strutil::parse_quotes);
+
+	std::string str = "\"my text\"";
+	WITH_RETV CALLBACK(str);
+	TEST_EQUALS("my text");
+
+	END_TEST();
+
 	END_MODULE_TEST();
 }
 
