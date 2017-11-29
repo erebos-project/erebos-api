@@ -21,9 +21,7 @@ endif()
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${EREBOS_TESTS_LOCATION}")
 set(EREBOS_SOURCE_EXT "cpp")
 set(EREBOS_TESTS "test-file"
-					  "test-framework"
 					  "test-input"
-					  "test-misc"
 					  "test-native"
 					  "test-strutils"
 					  "test-time")

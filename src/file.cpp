@@ -2,14 +2,14 @@
 
 #include "file.h"
 #include "stringutils.h"
-#include "framework.h"
+#include "misc.h"
 #include "smart_ptr.h"
 
 using _Bytes_Type = erebos::file::bytes_type;
 
 std::string erebos::file::get_path(std::string s) {
 	size_t index = 0;
-	s = to_unix_slash(s);
+    s = strutil::to_unix_slash(s);
 	const size_t size = s.size();
 	bool set = false;
 
@@ -56,7 +56,7 @@ std::string erebos::file::get_extension(const std::string &filename) {
 std::string erebos::file::get_name(std::string s) {
 	size_t index = 0;
 
-	s = to_unix_slash(s);
+    s = strutil::to_unix_slash(s);
 	const size_t size = s.size();
 	bool set = false;
 

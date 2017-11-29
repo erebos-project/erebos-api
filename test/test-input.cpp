@@ -1,5 +1,5 @@
 #include "test.h"
-#include "framework.h"
+#include "misc.h"
 #include "input.h"
 
 using namespace erebos;

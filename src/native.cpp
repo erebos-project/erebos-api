@@ -1,4 +1,6 @@
 #include "native.h"
+#include "file.h"
+#include "stringutils.h"
 
 #if defined(WINDOWS)
 #define WINDOWS_LEAN_AND_MEAN 1

@@ -1,5 +1,5 @@
 #include "test.h"
-#include "framework.h"
+#include "native.h"
 
 using namespace erebos;
 

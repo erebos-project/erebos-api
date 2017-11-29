@@ -1,10 +1,10 @@
 #include "platform_defs.h"
 #include "time_utils.h"
 #include "stringutils.h"
-#include "framework.h"
+#include "misc.h"
 
 
-erebos::Time::Time(std::tm *right_now) :
+erebos::etime::etime(std::tm *right_now) :
 		year(0), month(0), day(0),
 		hour(0), min(0), sec(0) {
 
@@ -18,35 +18,35 @@ erebos::Time::Time(std::tm *right_now) :
 	}
 }
 
-std::string erebos::Time::to_string(std::string format) const {
-	strutil::replace(format, "YY", var_to_string(year));
-	strutil::replace(format, "MM", var_to_string(month));
-	strutil::replace(format, "DD", var_to_string(day));
-	strutil::replace(format, "hh", var_to_string(hour));
-	strutil::replace(format, "mm", var_to_string(min));
-	strutil::replace(format, "ss", var_to_string(sec));
+std::string erebos::etime::to_string(std::string format) const {
+    strutil::replace(format, "YY", std::to_string(year));
+    strutil::replace(format, "MM", std::to_string(month));
+    strutil::replace(format, "DD", std::to_string(day));
+    strutil::replace(format, "hh", std::to_string(hour));
+    strutil::replace(format, "mm", std::to_string(min));
+    strutil::replace(format, "ss", std::to_string(sec));
 
 	return format;
 }
 
-erebos::Time erebos::get_localtime() {
+erebos::etime erebos::get_localtime() {
 	const std::time_t time_now = std::time(nullptr);
 
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
 
 #ifdef WINDOWS
-	return erebos::Time(localtime(&time_now));
+    return erebos::etime(localtime(&time_now));
 #else
 	std::tm now;
 	localtime_r(&time_now, &now);
-	return erebos::Time(&now);
+    return erebos::etime(&now);
 #endif
 
 #elif defined(_COMPILER_MSVC)
 	std::tm now;
 	localtime_s(&now, &time_now);
-    return erebos::Time(&now);
+    return erebos::etime(&now);
 #else
-	return erebos::Time();
+    return erebos::etime();
 #endif
 }

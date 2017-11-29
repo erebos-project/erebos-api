@@ -5,11 +5,10 @@
 #ifndef _NATIVE_H
 #define _NATIVE_H
 
-#include "framework.h"
 #include "platform_defs.h"
 
-#include <vector>
 #include <string>
+#include <vector>
 
 namespace erebos {
 

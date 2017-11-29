@@ -223,6 +223,45 @@ namespace erebos {
 			return -1;
 		}
 
+        /*!
+         * @brief converts backslash to slash
+         * @param s : windows-like path
+         * @return new string containing unix-like path
+         */
+        inline std::string to_unix_slash(const std::string &s) {
+            std::string from = s;
+            replace(from, '\\', '/');
+            return from;
+        }
+
+        /*!
+         * @brief return the text between two quotes
+         * @param s : quoted string
+         * @return text between quotes
+         */
+        inline std::string parse_quotes(const std::string &s) {
+
+            if(s == "")
+                return "";
+
+            const char &target = s.at(0);
+            if (target != '\"' && target != '\'')
+                return s;
+
+            std::string res;
+
+            const size_t size = s.size();
+            for (size_t i = 1; i < size; ++i) {
+                const char &target = s[i];
+                if (target != '\"' && target != '\'')
+                    res += target;
+                else
+                    break;
+            }
+
+            return res;
+        }
+
 #if defined(LINUX)
 
 		/*!

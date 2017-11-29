@@ -1,9 +1,9 @@
 /*!
- * @file framework.h
- * @brief core framework header
+ * @file misc.h
+ * @brief Misc utilities
  */
-#ifndef EREBOS_FRAMEWORK_H
-#define EREBOS_FRAMEWORK_H
+#ifndef EREBOS_MISC_H
+#define EREBOS_MISC_H
 
 #include "platform_defs.h"
 
@@ -15,11 +15,6 @@
 #if defined(_COMPILER_GCC) || defined(_COMPILER_CLANG)
 #include <cstdlib>
 #endif
-
-#include "version.h"
-#include "native.h"
-#include "file.h"
-#include "stringutils.h"
 
 /*!
  * @brief define your own program version
@@ -67,102 +62,33 @@
  * @brief main erebos namespace
  */
 namespace erebos {
-	/*!
-	 * @brief Erebos API version
-	 * @return Erebos API version in the form:
-	 * ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
-	 */
-	inline std::string get_api_version() {
-		std::stringstream ss;
-		ss << API_VERSION_MAJOR << "." << API_VERSION_MINOR << "." << API_VERSION_PATCH;
-		return ss.str();
-	}
-
-	/*!
-	 * @brief hex from string to int
-	 * @param str: a string containing hex value
-	 * @return the hex value as integer
-	 */
-	inline int hex_to_int(const std::string &str) {
-
-		if(str.size() == 0)
-			return 0;
-
-		int res;
-		std::stringstream ss(str);
-		ss >> std::hex >> res;
-		return res;
-	}
-
-
-	/*!
-	 * @brief converts a byte into a hex string
-	 * @param c : the byte to convert
-	 * @return a string containing the hex representation of c
-	 */
-	inline std::string byte_to_hex(unsigned char c) {
-
-		constexpr char hex_c[17] = "0123456789abcdef";
-		std::string output;
-		output += hex_c[c >> 4];
-		output += hex_c[c & 0x0F];
-
-		return output;
-	}
-
-
-	/*!
-	 * @brief converts a byte array into a hex string
-	 * @param array : the array to convert
-	 * @return a string containing the hex representation of the array data
-	 */
-	inline std::string byte_to_hex(unsigned char* array, unsigned int size) {
-
-		std::string output;
-
-		for (int i = 0; i < size; ++i)
-			output += byte_to_hex(array[i]);
-
-		return output;
-	}
-
-
-	/*!
-	 * @brief converts any variable into a hex string
-	 * @param variable : the variable to convert
-	 * @return a string containing the hex representation of the variable data
-	 */
-	template<typename T>
-	inline std::string byte_to_hex(T t) {
-
-		std::string output;
-
-		unsigned char* t_ptr = (unsigned char*) &t;
-
-		for (int i = 0; i < sizeof(T); ++i)
-			output += byte_to_hex(t_ptr[i]);
-
-		return output;
-	}
-
-
-	/*!
-	 * @brief converts whatever type to string
-	 * @tparam T
-	 * @param var: parameter to be converted
-	 * @return new string with converted var
-	 */
-	template<typename T>
-	inline std::string var_to_string(const T &var) {
-		std::stringstream ss;
-		ss << var;
-		return ss.str();
-	}
+	constexpr char const* logo = 
+				"                       .-/+oossso+/-\n"
+				"                   `:ohmNMMMMMMMMMMMMNds:\n"
+				"                 `/yNMMmdyso+/////+shmMMMMm.\n"
+				"               '+mMms`             `-sdms`\n"
+				"             `hMh:`                    ``\n"
+				"            -sMy`\n"
+				"            dM:\n"
+				"           +Mhs`\n"
+				"            +mmo:/syhhhhh`..\n"
+				"           .+NNdNMNhyssssymMmMm.\n"
+				"           .smdommM-/++oo++/`\n"
+				"         `+Nd/`\n"
+				"        `yMs`\n"
+				"         sMs\n"
+				"        `NMn.\n"
+				"        `MMm:                        :/\n"
+				"         sMm:`                    .sNs\n"
+				"         `yMMdo-``.         .``-/ymm/\n"
+				"           :hNMMNmdhyyyyyyyhdmNMNh/`\n"
+				"             .+ymNNMMMMMMMNNmho:`\n"
+				"                  `.-::/::-.`\n";
 
 	/*!
 	 * @brief contains colors integer constants
 	 */
-	enum shell_color : int {
+    enum shell_color {
 		SHELL_GREY = 90,
 		SHELL_RED = 91,
 		SHELL_BLACK = 92,
@@ -214,7 +140,7 @@ namespace erebos {
 	 */
 	inline void set_shell_color(const shell_color &color) {
 #if defined(LINUX) || defined(_WINDOWS_SHELL_COLOR)
-		std::cout << std::string("\033[" + var_to_string(color) + "m");
+        std::cout << std::string("\033[" + std::to_string(color) + "m");
 #endif
 	}
 
@@ -225,7 +151,7 @@ namespace erebos {
 	 */
 	inline std::string get_color_string(const shell_color &color) {
 #if defined(LINUX) || defined(_WINDOWS_SHELL_COLOR)
-		return "\033[" + var_to_string(color) + "m";
+        return "\033[" + std::to_string(color) + "m";
 #else
 		return "";
 #endif
@@ -235,39 +161,6 @@ namespace erebos {
 	 * @brief alias for get_color_string
 	 */
 	FUNCALIAS(color, get_color_string);
-
-	/*!
-	 * @brief returns a string with each character colored differently
-	 * @param input string
-	 * @return
-	 */
-	inline std::string make_rainbow_string(const std::string& s) {
-
-		std::string res;
-		for (std::size_t i = 0; i < s.size(); ++i) {
-			char c = s[i];
-			if(c > 32)
-				res += get_color_string((shell_color) ((i % 8) + 90));
-			res += c;
-		}
-
-		res += get_color_string(SHELL_RESET);
-
-		return res;
-	}
-
-	/*!
-	 * @brief returns the path to the program's executable
-	 * @return program executable string
-	 */
-	ERAPI std::string get_exe_path();
-
-	/*!
-	 * @brief converts backslash to slash
-	 * @param s : windows-like path
-	 * @return new string containing unix-like path
-	 */
-	ERAPI std::string to_unix_slash(const std::string &s);
 
 	/*!
 	 * @brief prints newline
@@ -354,8 +247,10 @@ namespace erebos {
 	 * @param code : exit code, -1 by default
 	 * @brief prints out to stderr your message, then exits with 'code'
 	 */
-	inline void ferror(const std::string &message, const int &code = -1) {
-		printerrln(color(SHELL_RED), message, color(SHELL_RESET));
+	inline void printerr_exit(const std::string &message, const int &code = -1) {
+		printerrln(color(shell_color::SHELL_RED), 
+				message, 
+				color(shell_color::SHELL_RESET));
 		exit(code);
 	}
 
@@ -363,31 +258,31 @@ namespace erebos {
 	 * @brief Prints erebos logo
 	 */
 	inline void print_logo() {
-		println(color(SHELL_BLUE),
-				"                       .-/+oossso+/-\n"
-				"                   `:ohmNMMMMMMMMMMMMNds:\n"
-				"                 `/yNMMmdyso+/////+shmMMMMm.\n"
-				"               '+mMms`             `-sdms`\n"
-				"             `hMh:`                    ``\n"
-				"            -sMy`\n"
-				"            dM:\n"
-				"           +Mhs`\n"
-				"            +mmo:/syhhhhh`..\n"
-				"           .+NNdNMNhyssssymMmMm.\n"
-				"           .smdommM-/++oo++/`\n"
-				"         `+Nd/`\n"
-				"        `yMs`\n"
-				"         sMs\n"
-				"        `NMn.\n"
-				"        `MMm:                        :/\n"
-				"         sMm:`                    .sNs\n"
-				"         `yMMdo-``.         .``-/ymm/\n"
-				"           :hNMMNmdhyyyyyyyhdmNMNh/`\n"
-				"             .+ymNNMMMMMMMNNmho:`\n"
-				"                  `.-::/::-.`\n",
-				color(SHELL_RESET)
+		println(color(shell_color::SHELL_BLUE),
+				logo,
+				color(shell_color::SHELL_RESET)
 			);
 	}
+
+    /*!
+     * @brief returns a string with each character colored differently
+     * @param input string
+     * @return
+     */
+    inline std::string make_rainbow_string(const std::string& s) {
+
+        std::string res;
+        for (std::size_t i = 0; i < s.size(); ++i) {
+            char c = s[i];
+            if(c > 32)
+                res += get_color_string((shell_color)((i % 8) + 90));
+            res += c;
+        }
+
+        res += get_color_string(shell_color::SHELL_RESET);
+
+        return res;
+    }
 
 	/*!
 	 * @brief prompt menu facility
@@ -399,13 +294,6 @@ namespace erebos {
 	ERAPI bool get_prompt_answer(const std::string &message,
 								 const std::string &error_message = "",
 						   		 const bool &exit_on_error = true);
-
-	/*!
-	 * @brief return the text between two quotes
-	 * @param s : quoted string
-	 * @return text between quotes
-	 */
-	ERAPI std::string parse_quotes(const std::string &s);
 }
 
 #endif

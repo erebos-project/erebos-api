@@ -24,4 +24,15 @@ constexpr int API_VERSION_MAJOR = @API_VERSION_MAJOR@;
 constexpr int API_VERSION_MINOR = @API_VERSION_MINOR@;
 constexpr int API_VERSION_PATCH = @API_VERSION_PATCH@;
 
+/*!
+ * @brief Erebos API version
+ * @return Erebos API version in the form:
+ * ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}
+ */
+inline std::string get_api_version() {
+    std::stringstream ss;
+    ss << API_VERSION_MAJOR << "." << API_VERSION_MINOR << "." << API_VERSION_PATCH;
+    return ss.str();
+}
+
 #endif //VERSION_H

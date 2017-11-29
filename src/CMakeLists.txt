@@ -34,12 +34,12 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
 endif ()
 
 set(SOURCES
-		framework.cpp
+		misc.cpp
 		native.cpp
 		time_utils.cpp
 		file.cpp
-                input.cpp
-                args.cpp)
+		input.cpp
+		args.cpp)
 
 if (LIBRARY STREQUAL "shared")
 	message("-- Shared library")
