@@ -285,6 +285,7 @@ namespace erebos {
         return res;
     }
 
+#ifndef EREBOS_HEADERONLY
 	/*!
 	 * @brief prompt menu facility
 	 * @param message : your question
@@ -295,6 +296,8 @@ namespace erebos {
 	ERAPI bool get_prompt_answer(const std::string &message,
 								 const std::string &error_message = "",
 						   		 const bool &exit_on_error = true);
+#endif
+
 }
 
 #endif
