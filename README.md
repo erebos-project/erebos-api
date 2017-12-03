@@ -5,8 +5,8 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/371dbc485a0345f3956bb9632728cd4a)](https://www.codacy.com/app/StefanoBelli/erebos-api?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=erebos-project/erebos-api&amp;utm_campaign=Badge_Grade)
 [![Coverage Status](https://coveralls.io/repos/github/erebos-project/erebos-api/badge.svg?branch=master)](https://coveralls.io/github/erebos-project/erebos-api?branch=master)
 
-# erebos-api
-A C++ library providing cross-platform low-level functions.
+# Erebos
+A C++ library providing cross-platform low-level functions for string manipulation, file handling, working with processes, networking and keyboard input through command line interface.
 
 ### Why use Erebos
 Erebos provides simple to use and cross-platform utilities that many programs need to use and usually re-implement or use giant libraries that take in more dependencies and slow down compilation time (and sometimes performance).
@@ -80,7 +80,16 @@ At this point, you have 4 ways:
 
 I would prefer the NMake method (less bloat), as shown up.
 
-### Reccomended compilation flags
+### Header-only
+If you just need simple functionality and don't want to link the library, you can use a header-only version.
+All you have to do is including `erebos.h` like this:
+~~~
+#define EREBOS_HEADERONLY
+#include "erebos.h"
+~~~
+This will give you access to inline functions defined in headers without the need to compile the library.
+
+### Recommended compilation flags
 
  * Under GCC/LLVM (ignoring platform)
 

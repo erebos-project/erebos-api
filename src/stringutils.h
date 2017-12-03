@@ -274,18 +274,16 @@ namespace erebos {
         }
 
 		/*!
-		 * @brief base64 class
+		 * @brief base64 namespace
 		 */
-		class base64 {
-
-		public:
+		namespace base64 {
 			/*!
 			 * @brief encode a string using base64 cipher
 			 * @param str : your string
 			 * @param characters : (already set to MIME standard)
 			 * @return new encoded string
 			 */
-			static inline std::string encode(const std::string &str,
+			inline std::string encode(const std::string &str,
 					const char *characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") {
 
 				std::string string_encoded = "";
@@ -333,7 +331,7 @@ namespace erebos {
 			 * @param characters : (already set to MIME standard)
 			 * @return new decoded string
 			 */
-			static inline std::string decode(const std::string &str,
+			inline std::string decode(const std::string &str,
 					const char *characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/") {
 
 				ssize ch1_code;
@@ -372,7 +370,8 @@ namespace erebos {
 
 				return string_decoded;
 			}
-		};
+
+		}
 	}
 }
 
