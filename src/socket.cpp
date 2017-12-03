@@ -2,8 +2,6 @@
 #include <string>
 #include <vector>
 
-#include "misc.h"
-
 
 using namespace erebos::socket;
 
@@ -14,7 +12,6 @@ using namespace erebos::socket;
 #include <windows.h>
 #include <Winsock2.h>
 #include <Ws2tcpip.h>
-#include <ws2tcpip.h>
 
 #elif defined(LINUX)
 //
@@ -154,7 +151,7 @@ int TCPSocket::read(char* buffer, unsigned int packetsize) {
 			return -1;
 		}
 
-		data.emplace_back(packet);
+		data.push_back(packet);
 		packet = new char[packetsize];
 		totalsize += size;
 
