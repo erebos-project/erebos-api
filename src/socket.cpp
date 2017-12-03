@@ -68,12 +68,15 @@ TCPSocket::~TCPSocket() {
 
 	close();
 
-	if(host_entity)
+	if(host_entity) {
+
 #ifdef WINDOWS
 		delete (SOCKET*) host_entity;
 #elif defined(LINUX)
-		delete (hostent*) host_entity;
+		//delete (hostent*) host_entity;
 #endif
+
+	}
 }
 
 
