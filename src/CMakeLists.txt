@@ -39,7 +39,8 @@ set(SOURCES
 		time_utils.cpp
 		file.cpp
 		input.cpp
-		args.cpp)
+		args.cpp
+		socket.cpp)
 
 if (LIBRARY STREQUAL "shared")
 	message("-- Shared library")
