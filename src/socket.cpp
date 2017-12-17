@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 
+#include "misc.h"
+
 
 using namespace erebos::socket;
 
@@ -12,9 +14,17 @@ using namespace erebos::socket;
 #include <windows.h>
 #include <Winsock2.h>
 #include <Ws2tcpip.h>
+#include <ws2tcpip.h>
 
 #elif defined(LINUX)
-//
+#include <iostream>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
+#include <unistd.h>
+#include <strings.h>
 #endif
 
 
@@ -45,8 +55,22 @@ void erebos::socket::destroy() {
 #endif
 }
 
-std::string forge_http_packet(HTTPRequest request) {
+std::string erebos::socket::forge_http_packet(HTTPRequest request) {
 
+	std::string packet = "";
+	packet += request.method + " " + request.URL + " HTTP/" +
+				std::to_string(request.version_major) +
+				"." +
+				std::to_string(request.version_minor) + "\n";
+	packet += "Host: " + request.host + "\n";
+	packet += "User-Agent: " + request.user_agent + "\n";
+	packet += "Accept-Language: " + request.language + "\n";
+	packet += "Accept-Encoding: " + request.encoding + "\n";
+	packet += "Connection: " + request.connection + "\n";
+	packet += "Keep-Alive: " + request.keepalive + "\n";
+	packet += "Cache-Control: " + request.cache + "\n";
+
+	return packet;
 }
 
 
@@ -58,6 +82,7 @@ TCPSocket::TCPSocket() {
 
 	open = false;
 	host_entity = nullptr;
+	address = nullptr;
 }
 
 
@@ -126,7 +151,7 @@ int TCPSocket::connect(std::string hostname, unsigned int port) {
 }
 
 
-int TCPSocket::read(char* buffer, unsigned int packetsize) {
+int TCPSocket::read(char** buffer, unsigned int packetsize) {
 
 	if(!initialized || !open)
 		return -2;
@@ -135,7 +160,7 @@ int TCPSocket::read(char* buffer, unsigned int packetsize) {
 
 	SOCKET sock = *((SOCKET*) host_entity);
 
-	std::vector<char*> data;
+	std::vector<char> data;
 	char* packet = new char[packetsize];
 	unsigned int totalsize = 0;
 	int size = 0;
@@ -145,14 +170,11 @@ int TCPSocket::read(char* buffer, unsigned int packetsize) {
 		size = recv(sock, packet, packetsize, 0);
 
 		if(size < 0) {
-
-			for (unsigned int i = 0; i < data.size(); ++i)
-				delete data[i];
+			data.clear();
 			return -1;
 		}
 
-		data.push_back(packet);
-		packet = new char[packetsize];
+		data.insert(data.begin() + totalsize, packet, packet + size);
 		totalsize += size;
 
 	} while(size > 0);
@@ -162,18 +184,9 @@ int TCPSocket::read(char* buffer, unsigned int packetsize) {
 		return 1;
 	}
 
-	buffer = new char[totalsize];
-
-	for (unsigned int i = 0; i < data.size(); ++i) {
-
-		if(i != data.size() - 1)
-			memcpy((void*) (intptr_t) buffer[i * packetsize], (void*) data[i], packetsize);
-		else
-			memcpy((void*) (intptr_t) buffer[i * packetsize], (void*) data[i], totalsize % packetsize);
-
-		delete data[i];
-	}
-
+	*buffer = new char[totalsize];
+	memcpy(*buffer, &data[0], totalsize);
+	data.clear();
 
 #elif defined(LINUX)
 //
@@ -214,6 +227,7 @@ int TCPSocket::close() {
 #ifdef WINDOWS
 
 	SOCKET sock = *((SOCKET*) host_entity);
+	shutdown(sock, SD_SEND);
 	closesocket(sock);
 
 #elif defined(LINUX)

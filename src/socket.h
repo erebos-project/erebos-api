@@ -8,22 +8,33 @@ namespace erebos {
 	namespace socket {
 
 		struct HTTPRequest {
+
 			unsigned int version_major {1};
 			unsigned int version_minor {1};
-			std::string user_agent {""};
+			std::string method {"GET"};
+			std::string URL {"/"};
+			std::string host {""};
+			std::string user_agent {"Mozilla/5.0"};
+			std::string language {"en-us"};
+			std::string encoding {"gzip, deflate"};
+			std::string connection {"Keep-Alive"};
+			std::string keepalive {"timeout=15"};
+			std::string cache {"no-cache"};
+
 		};
 
 		extern bool initialized;
 
-		int initialize();
+		ERAPI int initialize();
 
-		void destroy();
+		ERAPI void destroy();
 
-		std::string forge_http_packet(HTTPRequest request);
+		ERAPI std::string forge_http_packet(HTTPRequest request);
 
 		class Socket {
 			protected:
 				void* host_entity;
+				void* address;
 				bool open {false};
 			public:
 
@@ -33,7 +44,7 @@ namespace erebos {
 
 				virtual int write(std::string data) = 0;
 
-				//int write(std::unique_ptr<char[]> data, size_t size) = 0;
+				//ERAPI int write(std::unique_ptr<char[]> data, size_t size);
 
 				virtual int close() = 0;
 
@@ -43,19 +54,19 @@ namespace erebos {
 		class TCPSocket : Socket {
 			public:
 
-				TCPSocket();
+				ERAPI TCPSocket();
 
-				~TCPSocket();
+				ERAPI ~TCPSocket();
 
-				int connect(std::string hostname, unsigned int port);
+				ERAPI int connect(std::string hostname, unsigned int port);
 
-				int read(char* buffer, unsigned int packetsize = 512);
+				ERAPI int read(char** buffer, unsigned int packetsize = 512);
 
-				int write(std::string data);
+				ERAPI int write(std::string data);
 
-				//int write(std::unique_ptr<char[]> data, size_t size);
+				//ERAPI int write(std::unique_ptr<char[]> data, size_t size);
 
-				int close();
+				ERAPI int close();
 
 		};
 
@@ -63,19 +74,19 @@ namespace erebos {
 		class UDPSocket : Socket {
 			public:
 
-				UDPSocket();
+				ERAPI UDPSocket();
 
-				~UDPSocket();
+				ERAPI ~UDPSocket();
 
-				int connect(std::string hostname, unsigned int port);
+				ERAPI int connect(std::string hostname, unsigned int port);
 
-				int read(char* buffer, unsigned int packetsize);
+				ERAPI int read(char* buffer, unsigned int packetsize);
 
-				int write(std::string data);
+				ERAPI int write(std::string data);
 
-				//int write(std::unique_ptr<char[]> data, size_t size);
+				//ERAPI int write(std::unique_ptr<char[]> data, size_t size);
 
-				int close();
+				ERAPI int close();
 
 		};
 
