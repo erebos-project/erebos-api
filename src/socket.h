@@ -1,5 +1,8 @@
 #ifndef EREBOS_SOCKET_H
 #define EREBOS_SOCKET_H
+
+#ifndef _COMPILER_MSVC
+
 #include <string>
 #include "platform_defs.h"
 
@@ -93,5 +96,7 @@ namespace erebos {
 	}
 
 }
+
+#endif
 
 #endif

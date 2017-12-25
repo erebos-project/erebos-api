@@ -1,3 +1,5 @@
+#ifndef _COMPILER_MSVC
+
 #include "socket.h"
 #include <string>
 #include <vector>
@@ -239,3 +241,4 @@ int TCPSocket::close() {
 }
 
 
+#endif
