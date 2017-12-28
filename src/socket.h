@@ -1,7 +1,7 @@
 #ifndef EREBOS_SOCKET_H
 #define EREBOS_SOCKET_H
 
-#ifndef _COMPILER_MSVC
+#ifndef _MSC_VER
 
 #include <string>
 #include "platform_defs.h"

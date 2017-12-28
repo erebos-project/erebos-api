@@ -1,4 +1,4 @@
-#ifndef _COMPILER_MSVC
+#ifndef _MSC_VER
 
 #include "socket.h"
 #include <string>
