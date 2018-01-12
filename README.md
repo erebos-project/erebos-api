@@ -88,6 +88,7 @@ All you have to do is including `erebos.h` like this:
 #include "erebos.h"
 ~~~
 This will give you access to inline functions defined in headers without the need to compile the library.
+NOTE: You may need to rename `version.h.in` to `version.h` and change the version constants in the file.
 
 ### Recommended compilation flags
 

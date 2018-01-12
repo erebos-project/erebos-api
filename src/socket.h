@@ -24,7 +24,11 @@ namespace erebos {
 			std::string keepalive {"timeout=15"};
 			std::string cache {"no-cache"};
 
+			std::string str();
+
 		};
+
+		ERAPI std::string forge_http_packet(HTTPRequest request);
 
 		extern bool initialized;
 
@@ -32,29 +36,11 @@ namespace erebos {
 
 		ERAPI void destroy();
 
-		ERAPI std::string forge_http_packet(HTTPRequest request);
-
-		class Socket {
-			protected:
+		class TCPSocket {
+			private:
 				void* host_entity;
 				void* address;
 				bool open {false};
-			public:
-
-				virtual int connect(std::string hostname, unsigned int port) = 0;
-
-				virtual int read(char* buffer, unsigned int packetsize) = 0;
-
-				virtual int write(std::string data) = 0;
-
-				//ERAPI int write(std::unique_ptr<char[]> data, size_t size);
-
-				virtual int close() = 0;
-
-		};
-
-
-		class TCPSocket : Socket {
 			public:
 
 				ERAPI TCPSocket();
@@ -67,27 +53,7 @@ namespace erebos {
 
 				ERAPI int write(std::string data);
 
-				//ERAPI int write(std::unique_ptr<char[]> data, size_t size);
-
-				ERAPI int close();
-
-		};
-
-
-		class UDPSocket : Socket {
-			public:
-
-				ERAPI UDPSocket();
-
-				ERAPI ~UDPSocket();
-
-				ERAPI int connect(std::string hostname, unsigned int port);
-
-				ERAPI int read(char* buffer, unsigned int packetsize);
-
-				ERAPI int write(std::string data);
-
-				//ERAPI int write(std::unique_ptr<char[]> data, size_t size);
+				ERAPI int write(char* data, size_t size);
 
 				ERAPI int close();
 

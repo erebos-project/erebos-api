@@ -17,6 +17,10 @@
 #include <cstdio>
 #define POPEN_F popen
 #define PCLOSE_F pclose
+extern "C" FILE *popen(const char *command, const char *mode);
+extern "C" int pclose(FILE *stream);
+#define _MAX_PATH 260
+#define _MAX_DIR 260
 #endif
 
 // __stdcall ignored here

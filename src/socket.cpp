@@ -57,6 +57,12 @@ void erebos::socket::destroy() {
 #endif
 }
 
+
+std::string HTTPRequest::str() {
+	return forge_http_packet(*this);
+}
+
+
 std::string erebos::socket::forge_http_packet(HTTPRequest request) {
 
 	std::string packet = "";
@@ -200,6 +206,27 @@ int TCPSocket::read(char** buffer, unsigned int packetsize) {
 
 int TCPSocket::write(std::string data) {
 
+		if(!initialized || !open)
+			return -2;
+
+	#ifdef WINDOWS
+
+		SOCKET sock = *((SOCKET*) host_entity);
+
+		int err = send(sock, data.c_str(), data.size(), 0);
+		if(err == SOCKET_ERROR)
+			return -1;
+
+	#elif defined(LINUX)
+	//
+	#endif
+
+		return 0;
+}
+
+
+int TCPSocket::write(char* data, size_t size) {
+
 	if(!initialized || !open)
 		return -2;
 
@@ -207,7 +234,7 @@ int TCPSocket::write(std::string data) {
 
 	SOCKET sock = *((SOCKET*) host_entity);
 
-	int err = send(sock, data.c_str(), data.size(), 0);
+	int err = send(sock, data, size, 0);
 	if(err == SOCKET_ERROR)
 		return -1;
 
@@ -217,9 +244,6 @@ int TCPSocket::write(std::string data) {
 
 	return 0;
 }
-
-
-//int TCPSocket::write(std::unique_result<char[]> data, size_t size) {}
 
 int TCPSocket::close() {
 

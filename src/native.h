@@ -1,6 +1,6 @@
 /*!
  * @file native.h
- * @brief operating-system dependent utilities
+ * @brief functions implemented using native APIs
  */
 #ifndef _NATIVE_H
 #define _NATIVE_H
