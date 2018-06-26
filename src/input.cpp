@@ -22,6 +22,9 @@
 #define COPY_INPUT_EVENT(from_stream,dest) \
 	 for(unsigned i=0;i<sizeof(struct input_event);i++) \
 		  ((char*)&dest)[i] = fgetc(from_stream)
+
+using ERTypePhysicalKeyboard = erebos::input::PhysicalKeyboard;
+using ERTypeVirtualKeyboard = erebos::input::VirtualKeyboard;
 #endif
 
 using eikey = erebos::input::Key;
@@ -70,14 +73,14 @@ static int get_keyboard_evpath_s(char* target) {
 	 return 0;
 }
 
-FILE* erebos::input::getev_physical_keyboard() {
+ERTypePhysicalKeyboard erebos::input::getev_physical_keyboard() {
 	 char path[PATH_MAX];
 	 int ret = get_keyboard_evpath_s(path);
 
 	 return ret ? nullptr : fopen(path,"r");
 }
 
-int erebos::input::new_virtual_kb_device(const char* name, const bool& after_wait,
+ERTypeVirtualKeyboard erebos::input::new_virtual_kb_device(const char* name, const bool& after_wait,
 		const u16& bus_type, const u16& vendor,
 		const u16& product, const u16& version) {
 	 int fd=open("/dev/uinput",O_WRONLY | O_NONBLOCK);
@@ -113,7 +116,7 @@ int erebos::input::new_virtual_kb_device(const char* name, const bool& after_wai
 	 return fd;
 }
 
-bool erebos::input::destroy_virtual_kb_device(const int& devfd) {
+bool erebos::input::destroy_virtual_kb_device(const VirtualKeyboard& devfd) {
 	 if(ioctl(devfd,UI_DEV_DESTROY) < 0)
 		  return false;
 
@@ -145,7 +148,7 @@ eikey erebos::input::get_key(const unsigned& delta) {
 	}
 }
 #elif defined(LINUX)
-eikey erebos::input::get_key(FILE *physkb) {
+eikey erebos::input::get_key(PhysicalKeyboard physkb) {
 	 struct input_event current;
 
 	 while(true) {
@@ -174,7 +177,7 @@ bool erebos::input::fake_put(const Key& key) {
 	return res != 0;
 }
 #elif defined(LINUX)
-bool erebos::input::fake_put(const int& devfd, const Key& key,
+bool erebos::input::fake_put(const VirtualKeyboard& devfd, const Key& key,
 		const KeyPressType& type) {
 	 static struct input_event event;
 

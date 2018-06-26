@@ -583,6 +583,8 @@ namespace erebos {
 		ERAPI bool fake_put(const Key& key);
 
 #elif defined(LINUX)
+                using PhysicalKeyboard = FILE*;
+                using VirtualKeyboard = int;
 
 		  /*!
 			* @brief determine which kind of event, see fake_put
@@ -595,14 +597,14 @@ namespace erebos {
 		  /*!
 			* @return retrieve physical connected keyboard event path (see also get_key)
 			*/
-		FILE* getev_physical_keyboard();
+		PhysicalKeyboard getev_physical_keyboard();
 
 		  /*!
 			*
 			* @param physkb : the opened stream to keyboard event file
 			* @return pressed key
 			*/
-		Key get_key(FILE* physkb);
+		Key get_key(PhysicalKeyboard physkb);
 
 		  /*!
 			*
@@ -614,7 +616,7 @@ namespace erebos {
 			* @param version (default 0x03)
 			* @return a new file descriptor, representing the virtual keyboard, -1 otherwise
 			*/
-		int new_virtual_kb_device(const char* name,
+		VirtualKeyboard new_virtual_kb_device(const char* name,
 								  const bool& after_wait = true,
 								  const u16& bus_type = 0x03, //USB
 								  const u16& vendor = 0x01,
@@ -627,13 +629,13 @@ namespace erebos {
 			* @param type : press or release? (see KeyPressType)
 			* @return true if key pressed, false otherwise
 			*/
-		bool fake_put(const int& devfd, const Key& key, const KeyPressType& type);
+		bool fake_put(const VirtualKeyboard& devfd, const Key& key, const KeyPressType& type);
 
 		  /*!
 			* @param devfd : the virtual keyboard fd
 			* @return true if correctly destroyed, false otherwise
 			*/
-		bool destroy_virtual_kb_device(const int& devfd);
+		bool destroy_virtual_kb_device(const VirtualKeyboard& devfd);
 
 		  /*!
 			*
@@ -641,7 +643,7 @@ namespace erebos {
 			* @param key : key you wanna put
 			* @return true if key event emitted, false otherwise
 			*/
-		inline bool fake_put(const int& devfd, const Key& key) {
+		inline bool fake_put(const VirtualKeyboard& devfd, const Key& key) {
 			if(!fake_put(devfd, key, KeyPressType::KEY_PRESS))
 				return false;
 
