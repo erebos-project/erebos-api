@@ -1,0 +1,394 @@
+Start testing: Jun 26 20:57 UTC
+----------------------------------------------------------
+1/5 Testing: test-file
+1/5 Test: test-file
+Command: "/home/travis/build/erebos-project/erebos-api/test/test-file"
+Directory: /home/travis/build/erebos-project/erebos-api
+"test-file" start time: Jun 26 20:57 UTC
+Output:
+----------------------------------------------------------
+*** Test/ModuleTests/Start: starting tests for module: file
+
+	--> RunTest/Function/Begin: running test for function: file::get_path
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function file::get_path done.
+...
+
+	--> RunTest/Function/Begin: running test for function: file::get_extension
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function file::get_extension done.
+...
+
+	--> RunTest/Function/Begin: running test for function: file::get_name
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function file::get_name done.
+...
+
+	--> RunTest/Function/Begin: running test for function: file::get_basename
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function file::get_basename done.
+...
+
+	--> RunTest/Function/Begin: running test for function: file::write
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function file::write done.
+...
+
+	--> RunTest/Function/Begin: running test for function: file::read
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function file::read done.
+...
+
+	--> RunTest/Function/Begin: running test for function: file::get_exists
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function file::get_exists done.
+...
+
+	--> RunTest/Function/Begin: running test for function: file::remove
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function file::remove done.
+...
+
+	--> RunTest/Function/Begin: running test for function: file::write_bin
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function file::write_bin done.
+...
+
+	--> RunTest/Function/Begin: running test for function: file::read_bin
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function file::read_bin done.
+...
+
+	--> RunTest/Function/Begin: running test for function: file::remove
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function file::remove done.
+...
+
++++ Test/FinalResult: all tests passed successfully
+*** Test/ModuleTests/End: tests finished for module: file
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"test-file" end time: Jun 26 20:57 UTC
+"test-file" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/5 Testing: test-input
+2/5 Test: test-input
+Command: "/home/travis/build/erebos-project/erebos-api/test/test-input"
+Directory: /home/travis/build/erebos-project/erebos-api
+"test-input" start time: Jun 26 20:57 UTC
+Output:
+----------------------------------------------------------
+*** Test/ModuleTests/Start: starting tests for module: input
+
+	--> RunTest/Function/Begin: running test for function: input::getev_physical_keyboard
+	--> RunTest/Function/End: test for function input::getev_physical_keyboard done.
+...
+
+	--> RunTest/Function/Begin: running test for function: input::get_key
+	--> RunTest/Function/End: test for function input::get_key done.
+...
+
+	--> RunTest/Function/Begin: running test for function: bool input::fake_put(const int&, const input::Key&, const input::KeyPressType&)
+	--> RunTest/Function/End: test for function input::fake_put done.
+...
+
+	--> RunTest/Function/Begin: running test for function: bool input::fake_put(const int&, const input::Key&)
+	--> RunTest/Function/End: test for function input::fake_put done.
+...
+
+	--> RunTest/Function/Begin: running test for function: input::destroy_virtual_kb_device
+	--> RunTest/Function/End: test for function input::destroy_virtual_kb_device done.
+...
+
++++ Test/FinalResult: all tests passed successfully
+*** Test/ModuleTests/End: tests finished for module: input
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test-input" end time: Jun 26 20:57 UTC
+"test-input" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/5 Testing: test-native
+3/5 Test: test-native
+Command: "/home/travis/build/erebos-project/erebos-api/test/test-native"
+Directory: /home/travis/build/erebos-project/erebos-api
+"test-native" start time: Jun 26 20:57 UTC
+Output:
+----------------------------------------------------------
+*** Test/ModuleTests/Start: starting tests for module: native
+
+	--> RunTest/Function/Begin: running test for function: proc::get_pid
+	--> RunTest/Function/End: test for function proc::get_pid done.
+...
+
+	--> RunTest/Function/Begin: running test for function: proc::get_pid_by_name
+	--> RunTest/Function/End: test for function proc::get_pid_by_name done.
+...
+
+	--> RunTest/Function/Begin: running test for function: proc::kill
+	--> RunTest/Function/End: test for function proc::kill done.
+...
+
+	--> RunTest/Function/Begin: running test for function: proc::mem_read
+	--> RunTest/Function/End: test for function proc::mem_read done.
+...
+
+	--> RunTest/Function/Begin: running test for function: proc::mem_write
+	--> RunTest/Function/End: test for function proc::mem_write done.
+...
+
+	--> RunTest/Function/Begin: running test for function: proc::mem_lock
+	--> RunTest/Function/End: test for function proc::mem_lock done.
+...
+
+	--> RunTest/Function/Begin: running test for function: proc::mem_unlock
+	--> RunTest/Function/End: test for function proc::mem_unlock done.
+...
+
+	--> RunTest/Function/Begin: running test for function: file::get_dir_file_list
+	--> RunTest/Function/End: test for function file::get_dir_file_list done.
+...
+
+	--> RunTest/Function/Begin: running test for function: file::get_dir_folder_list
+	--> RunTest/Function/End: test for function file::get_dir_folder_list done.
+...
+
+	--> RunTest/Function/Begin: running test for function: file::get_folder_exists
+	--> RunTest/Function/End: test for function file::get_folder_exists done.
+...
+
+	--> RunTest/Function/Begin: running test for function: file::get_size
+	--> RunTest/Function/End: test for function file::get_size done.
+...
+
+	--> RunTest/Function/Begin: running test for function: file::readlink
+	--> RunTest/Function/End: test for function file::readlink done.
+...
+
+	--> RunTest/Function/Begin: running test for function: int pipe_open(const std::string&, int*)
+	--> RunTest/Function/End: test for function pipe_open done.
+...
+
+	--> RunTest/Function/Begin: running test for function: int pipe_open(const std::string&, std::string&, int*)
+	--> RunTest/Function/End: test for function pipe_open done.
+...
+
+	--> RunTest/Function/Begin: running test for function: set_cwd
+	--> RunTest/Function/End: test for function set_cwd done.
+...
+
+	--> RunTest/Function/Begin: running test for function: is_privileged
+	--> RunTest/Function/End: test for function is_privileged done.
+...
+
+	--> RunTest/Function/Begin: running test for function: string_from_errno
+	--> RunTest/Function/End: test for function string_from_errno done.
+...
+
+	--> RunTest/Function/Begin: running test for function: _get_exe_path_
+	--> RunTest/Function/End: test for function _get_exe_path_ done.
+...
+
++++ Test/FinalResult: all tests passed successfully
+*** Test/ModuleTests/End: tests finished for module: native
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test-native" end time: Jun 26 20:57 UTC
+"test-native" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/5 Testing: test-strutils
+4/5 Test: test-strutils
+Command: "/home/travis/build/erebos-project/erebos-api/test/test-strutils"
+Directory: /home/travis/build/erebos-project/erebos-api
+"test-strutils" start time: Jun 26 20:57 UTC
+Output:
+----------------------------------------------------------
+*** Test/ModuleTests/Start: starting tests for module: stringutils
+
+	--> RunTest/Function/Begin: running test for function: erebos::strutil::chomp
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::chomp done.
+...
+
+	--> RunTest/Function/Begin: running test for function: bool erebos::strutil::is_literal(const char&)
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::is_literal done.
+...
+
+	--> RunTest/Function/Begin: running test for function: bool erebos::strutil::is_numeral(const char&)
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::is_numeral done.
+...
+
+	--> RunTest/Function/Begin: running test for function: erebos::strutil::is_quotes
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::is_quotes done.
+...
+
+	--> RunTest/Function/Begin: running test for function: bool erebos::strutil::is_literal(const std::string&)
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::is_literal done.
+...
+
+	--> RunTest/Function/Begin: running test for function: bool erebos::strutil::is_numeral(const std::string&)
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::is_numeral done.
+...
+
+	--> RunTest/Function/Begin: running test for function: void erebos::strutil::split(const std::string&, const char&, std::vector<std::string>&)
+	--> RunTest/Function/CustomTest: test defined by user
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/CustomTest: test defined by user
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::split done.
+...
+
+	--> RunTest/Function/Begin: running test for function: erebos::strutil::ssize erebos::strutil::index_of(const char*,const char&)
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::index_of done.
+...
+
+	--> RunTest/Function/Begin: running test for function: erebos::strutil::ssize erebos::strutil::index_of(const char*, const char&, const erebos::strutil::ssize&)
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::index_of done.
+...
+
+	--> RunTest/Function/Begin: running test for function: void erebos::strutil::replace(std::string&, const std::string&, const std::string&, const size_t&)
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::replace done.
+...
+
+	--> RunTest/Function/Begin: running test for function: void erebos::strutil::replace(std::string&, const char&, const char&, const size_t&)
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::replace done.
+...
+
+	--> RunTest/Function/Begin: running test for function: erebos::strutil::cut
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::cut done.
+...
+
+	--> RunTest/Function/Begin: running test for function: erebos::strutil::mul
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::mul done.
+...
+
+	--> RunTest/Function/Begin: running test for function: erebos::strutil::base64::encode
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::base64::encode done.
+...
+
+	--> RunTest/Function/Begin: running test for function: erebos::strutil::base64::decode
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::base64::decode done.
+...
+
+	--> RunTest/Function/Begin: running test for function: erebos::strutil::to_unix_slash
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::to_unix_slash done.
+...
+
+	--> RunTest/Function/Begin: running test for function: erebos::strutil::parse_quotes
+	--> RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::strutil::parse_quotes done.
+...
+
++++ Test/FinalResult: all tests passed successfully
+*** Test/ModuleTests/End: tests finished for module: stringutils
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test-strutils" end time: Jun 26 20:57 UTC
+"test-strutils" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/5 Testing: test-time
+5/5 Test: test-time
+Command: "/home/travis/build/erebos-project/erebos-api/test/test-time"
+Directory: /home/travis/build/erebos-project/erebos-api
+"test-time" start time: Jun 26 20:57 UTC
+Output:
+----------------------------------------------------------
+*** Test/ModuleTests/Start: starting tests for module: time
+
+	--> RunTest/Function/Begin: running test for function: erebos::get_localtime
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> [Custom] RunTest/Function/Result: positive result, test passed
+	--> RunTest/Function/End: test for function erebos::get_localtime done.
+...
+
++++ Test/FinalResult: all tests passed successfully
+*** Test/ModuleTests/End: tests finished for module: time
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"test-time" end time: Jun 26 20:57 UTC
+"test-time" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Jun 26 20:57 UTC

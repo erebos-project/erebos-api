@@ -1,0 +1,6 @@
+test-file 1 0.007617
+test-input 1 0.00262213
+test-native 1 0.00206995
+test-strutils 1 0.0015862
+test-time 1 0.00259686
+---
